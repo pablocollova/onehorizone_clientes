@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InvoiceType {
+  ONEHORIZON_FEE
+  VENDOR_REBILL
+  VENDOR_DIRECT
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  OVERDUE
+  CANCELED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  name      String
+  clientId  String?
+  client    Client?  @relation(fields: [clientId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Client {
+  id        String     @id @default(cuid())
+  name      String
+  email     String?
+  users     User[]
+  locations Location[]
+  invoices  Invoice[]
+  documents Document[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Location {
+  id        String   @id @default(cuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+  label     String
+  address   String
+  city      String?
+  country   String?
+  invoices  Invoice[]
+  documents Document[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vendor {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  invoices  Invoice[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id          String        @id @default(cuid())
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+  locationId  String?
+  location    Location?     @relation(fields: [locationId], references: [id])
+  vendorId    String?
+  vendor      Vendor?       @relation(fields: [vendorId], references: [id])
+
+  type        InvoiceType
+  status      InvoiceStatus @default(ISSUED)
+  number      String?
+  issueDate   DateTime      @default(now())
+  dueDate     DateTime?
+  currency    String        @default("EUR")
+  totalCents  Int
+
+  payments    Payment[]
+  documents   Document[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+  paidAt      DateTime @default(now())
+  amountCents Int
+  method      String?
+  reference   String?
+}
+
+model Document {
+  id          String    @id @default(cuid())
+  clientId    String
+  client      Client    @relation(fields: [clientId], references: [id])
+  locationId  String?
+  location    Location? @relation(fields: [locationId], references: [id])
+  invoiceId   String?
+  invoice     Invoice?  @relation(fields: [invoiceId], references: [id])
+
+  name        String
+  mimeType    String?
+  sizeBytes   Int?
+  storagePath String
+  createdAt   DateTime  @default(now())
+}
