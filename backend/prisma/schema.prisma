@@ -34,7 +34,7 @@ model User {
 model Client {
   id        String     @id @default(cuid())
   name      String
-  email     String?
+  email     String     @unique
   users     User[]
   locations Location[]
   invoices  Invoice[]
