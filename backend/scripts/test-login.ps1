@@ -1,24 +1,30 @@
-Write-Host "--- Testing /health endpoint ---"
-$health = Invoke-RestMethod -Uri "http://localhost:4000/health" -Method Get
-$health | ConvertTo-Json
+# backend/scripts/test-login.ps1
+# Guarda $token en la sesión actual de PowerShell para que otros scripts lo usen.
+# Uso: . .\scripts\test-login.ps1  (dot-sourcing para que $token quede en scope)
 
-Write-Host "`n--- Testing POST /auth/login (Invoke-RestMethod) ---"
-$body = @{
-    username = "admin"
-    password = "password"
-} | ConvertTo-Json
+$BASE = "http://localhost:4000"
+$USERNAME = "admin"      # <-- cambiá si tu usuario es distinto
+$PASSWORD = "admin"      # <-- cambiá si tu password es distinto
 
+Write-Host "`n=== POST /auth/login ===" -ForegroundColor Cyan
+
+$body = @{ username = $USERNAME; password = $PASSWORD } | ConvertTo-Json
 try {
-    $response = Invoke-RestMethod -Uri "http://localhost:4000/auth/login" -Method Post -Body $body -ContentType "application/json"
-    Write-Host "Status: 200 OK"
-    $response | ConvertTo-Json
-} catch {
-    Write-Host "Status: $($_.Exception.Response.StatusCode)"
-    if ($_.Exception.Response) {
-        $streamReader = [System.IO.StreamReader]::new($_.Exception.Response.GetResponseStream())
-        $errResp = $streamReader.ReadToEnd()
-        $errResp | ConvertFrom-Json | ConvertTo-Json
-    } else {
-        Write-Host $_.Exception.Message
-    }
+    $resp = Invoke-WebRequest -Uri "$BASE/auth/login" `
+        -Method POST `
+        -ContentType "application/json" `
+        -Body $body `
+        -UseBasicParsing
+
+    Write-Host "Status  : $($resp.StatusCode)" -ForegroundColor Green
+    $json = $resp.Content | ConvertFrom-Json
+    Write-Host "Payload : $($resp.Content)"
+
+    # Exportar $token al scope padre si se usa dot-sourcing
+    $global:token = $json.token
+    Write-Host "`n✅ `$global:token guardado. Usalo en otros scripts de la misma sesión." -ForegroundColor Yellow
+}
+catch {
+    Write-Host "Status  : $($_.Exception.Response.StatusCode.value__)" -ForegroundColor Red
+    Write-Host "Error   : $($_.Exception.Message)"
 }
