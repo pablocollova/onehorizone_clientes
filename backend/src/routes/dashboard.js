@@ -32,49 +32,29 @@ function docTypeLabel(doc) {
 const { requireAuth } = require("../middleware/auth");
 router.use(requireAuth);
 
-// GET /dashboard (sin /api)
-router.get("/dashboard", async (req, res) => {
+// GET / → resolves to /api/dashboard (mounted under /api/dashboard in server.js)
+router.get("/", async (req, res) => {
   try {
-    console.log('📊 Dashboard - Usuario:', req.user?.userId, 'Cliente:', req.user?.clientId);
-    
-    // ✅ multi-tenant: usamos clientId del token
-    let clientId = req.user?.clientId;
+    const clientId = req.user?.clientId;
 
-    // Si no hay clientId en el token (solo para desarrollo)
     if (!clientId) {
-      console.log('⚠️ No clientId en token, buscando primer cliente...');
-      const firstClient = await prisma.client.findFirst({ 
-        select: { id: true } 
-      });
-      
-      if (!firstClient) {
-        console.log('❌ No hay clientes en la base de datos');
-        return res.json({
-          currentBalance: 0,
-          balanceByLocation: 0,
-          pendingInvoices: 0,
-          recentDocuments: [],
-        });
-      }
-      clientId = firstClient.id;
+      return res.status(401).json({ error: "UNAUTHORIZED_CLIENT_REQUIRED" });
     }
-
-    console.log('📍 Usando clientId:', clientId);
 
     const pendingStatuses = ["ISSUED", "OVERDUE"];
 
     // 1) Pending invoices count + sum
     const [pendingCount, pendingAgg, recentDocs] = await Promise.all([
       prisma.invoice.count({
-        where: { 
-          clientId, 
-          status: { in: pendingStatuses } 
+        where: {
+          clientId,
+          status: { in: pendingStatuses }
         },
       }),
       prisma.invoice.aggregate({
-        where: { 
-          clientId, 
-          status: { in: pendingStatuses } 
+        where: {
+          clientId,
+          status: { in: pendingStatuses }
         },
         _sum: { totalCents: true },
       }),
@@ -82,12 +62,12 @@ router.get("/dashboard", async (req, res) => {
         where: { clientId },
         orderBy: { createdAt: "desc" },
         take: 4,
-        select: { 
-          id: true, 
-          name: true, 
-          mimeType: true, 
-          sizeBytes: true, 
-          createdAt: true 
+        select: {
+          id: true,
+          name: true,
+          mimeType: true,
+          sizeBytes: true,
+          createdAt: true
         },
       }),
     ]);
@@ -119,16 +99,15 @@ router.get("/dashboard", async (req, res) => {
         name: d.name,
         type: docTypeLabel(d),
         date: d.createdAt.toISOString(),
-        size: d.sizeBytes ? formatBytes(d.sizeBytes) : "",
+        size: d.sizeBytes !== null && d.sizeBytes !== undefined ? formatBytes(d.sizeBytes) : "",
       })),
     };
 
-    console.log('✅ Dashboard respondiendo:', response);
     res.json(response);
-    
+
   } catch (err) {
     console.error("🔥 GET /dashboard failed:", err);
-    res.status(500).json({ error: "DASHBOARD_FETCH_FAILED" });
+    res.status(500).json({ ok: false, error: "DASHBOARD_FETCH_FAILED" });
   }
 });
 

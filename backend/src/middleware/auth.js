@@ -9,7 +9,7 @@ function requireAuth(req, res, next) {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET || "dev_secret");
-    req.user = payload; // { userId, clientId, name, username }
+    req.user = payload; // { id, clientId, username }
     return next();
   } catch (e) {
     return res.status(401).json({ error: "Invalid token" });

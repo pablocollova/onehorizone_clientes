@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Lock, User } from 'lucide-react';
 
 export const Login = () => {
-    const [username, setUsername] = useState('Juan');
-    const [password, setPassword] = useState('12345');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -23,7 +23,7 @@ export const Login = () => {
             await login(username, password);
             navigate('/app/dashboard');
         } catch (err) {
-            setError('Invalid credentials. Try Juan / 12345');
+            setError(err.message || 'Invalid credentials');
         } finally {
             setLoading(false);
         }
@@ -96,9 +96,7 @@ export const Login = () => {
                         {loading ? 'Logging in...' : 'Login'}
                     </Button>
 
-                    <div className="text-center text-xs text-text-dark/40 mt-4">
-                        Demo Credentials: Juan / 12345
-                    </div>
+
                 </form>
             </motion.div>
         </div>

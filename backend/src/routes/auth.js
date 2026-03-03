@@ -2,7 +2,7 @@ const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const prisma = require('../prisma'); // 👈 IMPORTANTE: importar prisma
 
-router.post("/auth/login", (req, res, next) => {
+router.post("/login", (req, res, next) => {
     console.log('\n--- [auth/login] Request Logger ---');
     console.log('Content-Type:', req.headers['content-type']);
     console.log('Body:', JSON.stringify(req.body));
@@ -35,9 +35,8 @@ router.post("/auth/login", (req, res, next) => {
 
         // Crear payload del token
         const payload = {
-            userId: user.id,
+            id: user.id,
             clientId: user.clientId,
-            name: user.name,
             username: user.username,
         };
 

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiPost } from '../lib/api';
 
 const AuthContext = createContext();
 
@@ -17,25 +18,25 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = (username, password) => {
-        return new Promise((resolve, reject) => {
-            // Mock network delay
-            setTimeout(() => {
-                if (username === 'Juan' && password === '12345') {
-                    const userData = { name: 'Juan', role: 'client', avatar: 'https://ui-avatars.com/api/?name=Juan&background=0D8ABC&color=fff' };
-                    setUser(userData);
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    resolve(userData);
-                } else {
-                    reject(new Error('Invalid credentials'));
-                }
-            }, 500);
-        });
+    const login = async (username, password) => {
+        try {
+            const data = await apiPost('/api/auth/login', { username, password });
+            const userData = data.user;
+            const token = data.token;
+
+            setUser(userData);
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('token', token);
+            return userData;
+        } catch (error) {
+            throw error;
+        }
     };
 
     const logout = () => {
         setUser(null);
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
     };
 
     return (
