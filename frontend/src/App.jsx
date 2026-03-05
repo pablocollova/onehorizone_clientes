@@ -2,11 +2,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { PublicLayout } from './layouts/PublicLayout';
 import { AppLayout } from './layouts/AppLayout';
+import { AdminLayout } from './layouts/AdminLayout';
 import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { AccountStatement } from './pages/AccountStatement';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { Activate } from './pages/Activate';
+import { Users } from './pages/admin/Users';
+import { Clients } from './pages/admin/Clients';
+import { Invite } from './pages/admin/Invite';
 
 function App() {
   return (
@@ -19,8 +24,17 @@ function App() {
           </Route>
 
           <Route path="/login" element={<Login />} />
+          <Route path="/activate" element={<Activate />} />
 
-          {/* Protected Routes */}
+          {/* Platform Admin Routes — guarded by AdminLayout */}
+          <Route path="/app/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="clients" replace />} />
+            <Route path="clients" element={<Clients />} />
+            <Route path="users" element={<Users />} />
+            <Route path="invite" element={<Invite />} />
+          </Route>
+
+          {/* Client Protected Routes — guarded by AppLayout */}
           <Route path="/app" element={<AppLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />

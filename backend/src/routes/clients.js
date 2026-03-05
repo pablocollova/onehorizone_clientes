@@ -8,9 +8,7 @@ const { requireAuth } = require("../middleware/auth");
 // - Si clientId es null (admin) → devuelve todos
 router.get("/clients", requireAuth, async (req, res) => {
     try {
-        const { clientId } = req.user;
-
-        const where = clientId ? { id: clientId } : {};
+        const where = req.tenantId ? { id: req.tenantId } : {};
         const clients = await prisma.client.findMany({
             where,
             select: { id: true, name: true, email: true, createdAt: true },
@@ -31,14 +29,8 @@ router.get("/clients", requireAuth, async (req, res) => {
 router.get("/clients/:id/locations", requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
-        const { clientId: tokenClientId } = req.user;
-
-        if (!id || !id.trim()) {
-            return res.status(400).json({ error: "Invalid client id" });
-        }
-
-        // Verificar autorización: si el token tiene clientId, solo puede ver el suyo
-        if (tokenClientId && tokenClientId !== id) {
+        // Verify authorization: scoped clients can only see their own
+        if (req.tenantId && req.tenantId !== id) {
             return res.status(403).json({ error: "Forbidden: client id mismatch" });
         }
 

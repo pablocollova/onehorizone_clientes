@@ -35,9 +35,41 @@ router.use(requireAuth);
 // GET / → resolves to /api/dashboard (mounted under /api/dashboard in server.js)
 router.get("/", async (req, res) => {
   try {
-    const clientId = req.user?.clientId;
+    const clientId = req.tenantId;
+    const isPlatformAdmin = req.user?.role === "PLATFORM_ADMIN";
+
+    // PLATFORM_ADMIN with no clientId → return global aggregates
+    if (!clientId && isPlatformAdmin) {
+      const pendingStatuses = ["ISSUED", "OVERDUE"];
+      const [pendingCount, pendingAgg, recentDocs] = await Promise.all([
+        prisma.invoice.count({ where: { status: { in: pendingStatuses } } }),
+        prisma.invoice.aggregate({
+          where: { status: { in: pendingStatuses } },
+          _sum: { totalCents: true },
+        }),
+        prisma.document.findMany({
+          orderBy: { createdAt: "desc" },
+          take: 4,
+          select: { id: true, name: true, mimeType: true, sizeBytes: true, createdAt: true }
+        }),
+      ]);
+      const currentBalanceCents = pendingAgg._sum.totalCents || 0;
+      return res.json({
+        currentBalance: Number((currentBalanceCents / 100).toFixed(2)),
+        balanceByLocation: 0,
+        pendingInvoices: pendingCount,
+        recentDocuments: recentDocs.map((d) => ({
+          id: d.id,
+          name: d.name,
+          type: docTypeLabel(d),
+          date: d.createdAt.toISOString(),
+          size: d.sizeBytes != null ? formatBytes(d.sizeBytes) : "",
+        })),
+      });
+    }
 
     if (!clientId) {
+      console.log("DASHBOARD req.user =", req.user);
       return res.status(401).json({ error: "UNAUTHORIZED_CLIENT_REQUIRED" });
     }
 
@@ -112,41 +144,4 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
-/*
-const router = require("express").Router();
-const prisma = require("../prisma"); // default export — no destructuring
-const { requireAuth } = require("../middleware/auth");
 
-router.get("/dashboard/summary", requireAuth, async (req, res) => {
-  try {
-    const clientId = req.user.clientId;
-
-    const invoicesTotal = await prisma.invoice.count({ where: { clientId } });
-    const pendingInvoices = await prisma.invoice.count({
-      where: { clientId, status: { in: ["ISSUED", "OVERDUE"] } },
-    });
-
-    const recentDocuments = await prisma.document.findMany({
-      where: { clientId },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-      select: { id: true, name: true, mimeType: true, sizeBytes: true, createdAt: true },
-    });
-
-    return res.json({
-      cards: {
-        currentBalanceCents: 1245000, // MVP: fijo por ahora
-        balanceByLocationCents: 420000,
-        pendingInvoices,
-        invoicesTotal,
-      },
-      recentDocuments,
-    });
-  } catch (error) {
-    console.error("🔥 Error en GET /dashboard/summary:", error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-module.exports = router;
-*/

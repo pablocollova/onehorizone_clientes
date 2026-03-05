@@ -1,0 +1,36 @@
+[dotenv@17.3.1] injecting env (3) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+🌱 Seeding database...
+PrismaClientKnownRequestError: 
+Invalid `prisma.user.deleteMany()` invocation in
+C:\dev\onehorizone_clientes\backend\prisma\seed.js:13:21
+
+  10 await prisma.document.deleteMany();
+  11 await prisma.invoice.deleteMany();
+  12 await prisma.location.deleteMany();
+→ 13 await prisma.user.deleteMany(
+Foreign key constraint violated on the constraint: `InviteToken_userId_fkey`
+    at zr.handleRequestError (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:65:8286)
+    at zr.handleAndLogRequestError (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:65:7581)
+    at zr.request (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:65:7288)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async a (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:75:5816)
+    at async main (C:\dev\onehorizone_clientes\backend\prisma\seed.js:13:3) {
+  code: 'P2003',
+  meta: {
+    modelName: 'User',
+    driverAdapterError: DriverAdapterError: ForeignKeyConstraintViolation
+        at PrismaPgAdapter.onError (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\adapter-pg\dist\index.js:687:11)
+        at PrismaPgAdapter.performIO (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\adapter-pg\dist\index.js:682:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+        at async PrismaPgAdapter.executeRaw (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\adapter-pg\dist\index.js:641:13)
+        at async e.interpretNode (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:11:44175)
+        at async e.interpretNode (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:11:46032)
+        at async e.run (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:11:43121)
+        at async e.execute (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:57:815)
+        at async qt.request (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:58:2327)
+        at async Object.singleLoader (C:\dev\onehorizone_clientes\backend\node_modules\@prisma\client\runtime\client.js:65:6569) {
+      cause: [Object]
+    }
+  },
+  clientVersion: '7.4.1'
+}

@@ -20,15 +20,47 @@ enum InvoiceStatus {
   CANCELED
 }
 
+enum UserStatus {
+  INVITED
+  ACTIVE
+  DISABLED
+}
+
+enum Role {
+  CLIENT_ADMIN
+  CLIENT_USER
+  PLATFORM_ADMIN
+}
+
 model User {
-  id        String   @id @default(cuid())
-  username  String   @unique
-  password  String
-  name      String
-  clientId  String?
-  client    Client?  @relation(fields: [clientId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String      @id @default(cuid())
+  username        String      @unique
+  email           String?     @unique
+  password        String?
+  name            String
+  clientId        String?
+  client          Client?     @relation(fields: [clientId], references: [id])
+  status          UserStatus  @default(INVITED)
+  role            Role        @default(CLIENT_USER)
+  phone           String?
+  address         String?
+  docType         String?
+  docNumber       String?
+  emailVerifiedAt DateTime?
+  inviteTokens    InviteToken[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model InviteToken {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  tokenHash   String
+  expiresAt   DateTime
+  usedAt      DateTime?
+  sentToEmail String?
+  createdAt   DateTime @default(now())
 }
 
 model Client {

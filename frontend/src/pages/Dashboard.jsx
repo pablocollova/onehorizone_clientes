@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
     ArrowUpRight,
     ArrowDownRight,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { apiGet } from '../lib/api';
+import { useAuth } from '../context/AuthContext';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -117,9 +119,15 @@ const formatSize = (bytes) => {
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
 export const Dashboard = () => {
+    const { user } = useAuth();
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Guard: platform admin has no client context — redirect to admin console
+    if (user?.role === 'PLATFORM_ADMIN') {
+        return <Navigate to="/app/admin/clients" replace />;
+    }
 
     const fetchDashboard = useCallback(async () => {
         setLoading(true);

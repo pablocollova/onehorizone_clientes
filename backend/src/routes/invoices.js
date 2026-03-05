@@ -11,7 +11,6 @@ const VALID_STATUSES = ["DRAFT", "ISSUED", "PAID", "OVERDUE", "CANCELED"];
 // - status es validado contra el enum InvoiceStatus del schema
 router.get("/invoices", requireAuth, async (req, res) => {
     try {
-        const { clientId: tokenClientId } = req.user;
         const { clientId: queryClientId, status } = req.query;
 
         // Validar status si se proveyó
@@ -21,10 +20,10 @@ router.get("/invoices", requireAuth, async (req, res) => {
             });
         }
 
-        // Determinar clientId efectivo:
-        // - Si el token tiene clientId → siempre use ese (ignora query param)
-        // - Si el token no tiene clientId (admin) → usa el query param si vino
-        const effectiveClientId = tokenClientId || queryClientId || undefined;
+        // req.tenantId is set by tenantMiddleware:
+        //   - client roles → their clientId (always scoped, ignores query param)
+        //   - PLATFORM_ADMIN → null (can filter by optional ?clientId= query param)
+        const effectiveClientId = req.tenantId || queryClientId || undefined;
 
         const where = {};
         if (effectiveClientId) where.clientId = effectiveClientId;

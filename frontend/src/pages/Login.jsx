@@ -20,8 +20,12 @@ export const Login = () => {
         setLoading(true);
 
         try {
-            await login(username, password);
-            navigate('/app/dashboard');
+            const userData = await login(username, password);
+            if (userData.role === 'PLATFORM_ADMIN') {
+                navigate('/app/admin/clients');
+            } else {
+                navigate('/app/dashboard');
+            }
         } catch (err) {
             setError(err.message || 'Invalid credentials');
         } finally {

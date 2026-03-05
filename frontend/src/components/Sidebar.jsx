@@ -6,7 +6,9 @@ import {
     MapPin,
     Folder,
     CreditCard,
-    LogOut
+    LogOut,
+    Users as UsersIcon,
+    Building2
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../lib/utils';
@@ -21,7 +23,7 @@ const navItems = [
 ];
 
 export const Sidebar = () => {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
 
     return (
         <aside className="w-64 bg-white border-r border-gray-100 flex flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex">
@@ -38,6 +40,7 @@ export const Sidebar = () => {
 
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+                <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">Menu</div>
                 {navItems.map((item) => (
                     <NavLink
                         key={item.path}
@@ -66,6 +69,69 @@ export const Sidebar = () => {
                         )}
                     </NavLink>
                 ))}
+
+                {/* Optional Admin section */}
+                {(user?.role === 'PLATFORM_ADMIN' || user?.role === 'CLIENT_ADMIN') && (
+                    <>
+                        <div className="mt-8 mb-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            Administration
+                        </div>
+
+                        {user?.role === 'PLATFORM_ADMIN' && (
+                            <NavLink
+                                to="/app/admin/clients"
+                                className={({ isActive }) =>
+                                    cn(
+                                        "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group",
+                                        isActive
+                                            ? "bg-primary text-white shadow-md shadow-primary/20"
+                                            : "text-text-dark/70 hover:bg-neutral-bg hover:text-primary"
+                                    )
+                                }
+                            >
+                                {({ isActive }) => (
+                                    <>
+                                        <Building2
+                                            size={18}
+                                            className={
+                                                isActive
+                                                    ? "text-white"
+                                                    : "text-gray-400 group-hover:text-primary"
+                                            }
+                                        />
+                                        Clients
+                                    </>
+                                )}
+                            </NavLink>
+                        )}
+
+                        <NavLink
+                            to="/app/admin/users"
+                            className={({ isActive }) =>
+                                cn(
+                                    "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group",
+                                    isActive
+                                        ? "bg-primary text-white shadow-md shadow-primary/20"
+                                        : "text-text-dark/70 hover:bg-neutral-bg hover:text-primary"
+                                )
+                            }
+                        >
+                            {({ isActive }) => (
+                                <>
+                                    <UsersIcon
+                                        size={18}
+                                        className={
+                                            isActive
+                                                ? "text-white"
+                                                : "text-gray-400 group-hover:text-primary"
+                                        }
+                                    />
+                                    Invite Users
+                                </>
+                            )}
+                        </NavLink>
+                    </>
+                )}
             </nav>
 
             {/* Logout */}
