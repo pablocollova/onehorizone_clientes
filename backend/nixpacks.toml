@@ -2,10 +2,15 @@
 nixPkgs = ["nodejs"]
 
 [phases.install]
+# npm install runs postinstall which calls `prisma generate`
 cmds = ["npm install"]
 
 [phases.build]
+# Explicit generate in build phase is the safe belt-and-suspenders approach.
+# `prisma generate` reads prisma.config.ts (datasource URL comes from DATABASE_URL env var).
 cmds = ["npx prisma generate"]
 
 [start]
+# migrate deploy applies pending migrations safely (idempotent).
+# Then starts the Node.js server.
 cmd = "npx prisma migrate deploy && node src/server.js"

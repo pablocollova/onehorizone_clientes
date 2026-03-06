@@ -1,9 +1,8 @@
-import { defineConfig } from "prisma/config";
-import dotenv from "dotenv";
-import path from "path";
-
-// fuerza carga del .env que está en backend/.env
-dotenv.config({ path: path.resolve(process.cwd(), ".env") });
+// prisma.config.ts
+// This file is read exclusively by the Prisma CLI (not by Node.js at runtime).
+// CommonJS backend is fully compatible — this file's ESM syntax doesn't conflict.
+import "dotenv/config"; // loads .env for local dev; no-op in Railway (vars are injected)
+import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
@@ -12,6 +11,8 @@ export default defineConfig({
     seed: "node prisma/seed.js",
   },
   datasource: {
-    url: process.env.DATABASE_URL,
+    // env() from "prisma/config" throws at CLI startup if DATABASE_URL is not set —
+    // this gives a clear error rather than a silent connection failure.
+    url: env("DATABASE_URL"),
   },
 });
