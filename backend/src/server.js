@@ -4,6 +4,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 
+
+
 const healthRoutes = require("./routes/health");
 const authRoutes = require("./routes/auth");
 const meRoutes = require("./routes/me");
@@ -17,6 +19,14 @@ const tenantMiddleware = require("./middleware/tenant");
 
 const app = express();
 
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  console.log(`➡️ ${req.method} ${req.url}`);
+  next();
+});
 // ── CORS ───────────────────────────────────────────────────────────────────────
 // CORS_ORIGINS is a comma-separated list of allowed origins.
 // Falls back to localhost for local development.
