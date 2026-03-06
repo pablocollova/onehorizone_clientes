@@ -1,6 +1,8 @@
 // src/lib/api.js
 // Thin fetch wrapper — throws on non-2xx so callers can catch a single error type.
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 /** Build headers, attaching Authorization if a token is stored in localStorage. */
 function buildHeaders(extra = {}) {
     const token = localStorage.getItem("token");
@@ -9,15 +11,9 @@ function buildHeaders(extra = {}) {
     return headers;
 }
 
-/**
- * @param {string} path — relative path starting with "/" (proxied by Vite to http://localhost:4000)
- * @param {RequestInit} [options]
- * @returns {Promise<any>} parsed JSON body
- * @throws {Error} with message from server or HTTP status text
- */
 export async function apiGet(path, options = {}) {
     const { headers: extraHeaders, ...rest } = options;
-    const res = await fetch(path, {
+    const res = await fetch(`${API_BASE_URL}${path}`, {
         method: "GET",
         headers: buildHeaders(extraHeaders),
         ...rest,
@@ -28,24 +24,16 @@ export async function apiGet(path, options = {}) {
         try {
             const body = await res.json();
             if (body?.error) message = body.error;
-        } catch {
-            // ignore — body not JSON
-        }
+        } catch {}
         throw new Error(message);
     }
 
     return res.json();
 }
 
-/**
- * @param {string} path
- * @param {object} body
- * @param {RequestInit} [options]
- * @returns {Promise<any>}
- */
 export async function apiPost(path, body, options = {}) {
     const { headers: extraHeaders, ...rest } = options;
-    const res = await fetch(path, {
+    const res = await fetch(`${API_BASE_URL}${path}`, {
         method: "POST",
         headers: buildHeaders(extraHeaders),
         body: JSON.stringify(body),
@@ -57,24 +45,16 @@ export async function apiPost(path, body, options = {}) {
         try {
             const errBody = await res.json();
             if (errBody?.error) message = errBody.error;
-        } catch {
-            // ignore
-        }
+        } catch {}
         throw new Error(message);
     }
 
     return res.json();
 }
 
-/**
- * @param {string} path
- * @param {object} body
- * @param {RequestInit} [options]
- * @returns {Promise<any>}
- */
 export async function apiPatch(path, body, options = {}) {
     const { headers: extraHeaders, ...rest } = options;
-    const res = await fetch(path, {
+    const res = await fetch(`${API_BASE_URL}${path}`, {
         method: "PATCH",
         headers: buildHeaders(extraHeaders),
         body: JSON.stringify(body),
@@ -86,9 +66,7 @@ export async function apiPatch(path, body, options = {}) {
         try {
             const errBody = await res.json();
             if (errBody?.error) message = errBody.error;
-        } catch {
-            // ignore
-        }
+        } catch {}
         throw new Error(message);
     }
 
