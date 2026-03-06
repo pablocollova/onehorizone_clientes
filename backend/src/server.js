@@ -65,6 +65,7 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`✅ API listening on http://localhost:${port}`);
+
+app.listen(port, "0.0.0.0", () => {
+  console.log(`✅ API listening on 0.0.0.0:${port}`);
 });
