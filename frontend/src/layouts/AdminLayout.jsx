@@ -5,12 +5,14 @@
 import React from 'react';
 import { Outlet, Navigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Building2, Users, UserPlus, LogOut } from 'lucide-react';
+import { Building2, Users, UserPlus, LogOut, FileText, Wrench } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 const adminNav = [
     { icon: Building2, label: 'Clients', to: '/app/admin/clients' },
     { icon: Users, label: 'Users', to: '/app/admin/users' },
+    { icon: FileText, label: 'Invoices', to: '/app/admin/invoices' },
+    { icon: Wrench, label: 'Service Records', to: '/app/admin/service-records' },
     { icon: UserPlus, label: 'Invite User', to: '/app/admin/invite' },
 ];
 

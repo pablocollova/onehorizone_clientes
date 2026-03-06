@@ -32,6 +32,17 @@ enum Role {
   PLATFORM_ADMIN
 }
 
+enum BillingMode {
+  REBILL
+  DIRECT_VENDOR
+}
+
+enum ServiceStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
 model User {
   id              String      @id @default(cuid())
   username        String      @unique
@@ -64,62 +75,66 @@ model InviteToken {
 }
 
 model Client {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  users     User[]
-  locations Location[]
-  invoices  Invoice[]
-  documents Document[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id             String          @id @default(cuid())
+  name           String
+  email          String          @unique
+  users          User[]
+  locations      Location[]
+  invoices       Invoice[]
+  documents      Document[]
+  serviceRecords ServiceRecord[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Location {
-  id        String   @id @default(cuid())
-  clientId  String
-  client    Client   @relation(fields: [clientId], references: [id])
-  label     String
-  address   String
-  city      String?
-  country   String?
-  invoices  Invoice[]
-  documents Document[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String          @id @default(cuid())
+  clientId       String
+  client         Client          @relation(fields: [clientId], references: [id])
+  label          String
+  address        String
+  city           String?
+  country        String?
+  invoices       Invoice[]
+  documents      Document[]
+  serviceRecords ServiceRecord[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Vendor {
-  id        String   @id @default(cuid())
-  name      String
-  email     String?
-  invoices  Invoice[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String          @id @default(cuid())
+  name           String
+  email          String?
+  invoices       Invoice[]
+  serviceRecords ServiceRecord[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Invoice {
-  id          String        @id @default(cuid())
-  clientId    String
-  client      Client        @relation(fields: [clientId], references: [id])
-  locationId  String?
-  location    Location?     @relation(fields: [locationId], references: [id])
-  vendorId    String?
-  vendor      Vendor?       @relation(fields: [vendorId], references: [id])
+  id             String          @id @default(cuid())
+  clientId       String
+  client         Client          @relation(fields: [clientId], references: [id])
+  locationId     String?
+  location       Location?       @relation(fields: [locationId], references: [id])
+  vendorId       String?
+  vendor         Vendor?         @relation(fields: [vendorId], references: [id])
 
-  type        InvoiceType
-  status      InvoiceStatus @default(ISSUED)
-  number      String?
-  issueDate   DateTime      @default(now())
-  dueDate     DateTime?
-  currency    String        @default("EUR")
-  totalCents  Int
+  type           InvoiceType
+  status         InvoiceStatus   @default(ISSUED)
+  number         String?
+  issueDate      DateTime        @default(now())
+  dueDate        DateTime?
+  currency       String          @default("EUR")
+  totalCents     Int
 
-  payments    Payment[]
-  documents   Document[]
+  payments       Payment[]
+  documents      Document[]
+  serviceRecords ServiceRecord[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Payment {
@@ -146,4 +161,25 @@ model Document {
   sizeBytes   Int?
   storagePath String
   createdAt   DateTime  @default(now())
+}
+
+model ServiceRecord {
+  id          String        @id @default(cuid())
+  clientId    String
+  client      Client        @relation(fields: [clientId], references: [id])
+  locationId  String?
+  location    Location?     @relation(fields: [locationId], references: [id])
+  vendorId    String?
+  vendor      Vendor?       @relation(fields: [vendorId], references: [id])
+  title       String
+  description String?
+  serviceDate DateTime
+  costCents   Int
+  currency    String        @default("EUR")
+  billingMode BillingMode   @default(REBILL)
+  status      ServiceStatus @default(PENDING)
+  invoiceId   String?
+  invoice     Invoice?      @relation(fields: [invoiceId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }

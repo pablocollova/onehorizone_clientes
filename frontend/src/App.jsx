@@ -12,6 +12,8 @@ import { Activate } from './pages/Activate';
 import { Users } from './pages/admin/Users';
 import { Clients } from './pages/admin/Clients';
 import { Invite } from './pages/admin/Invite';
+import { Invoices } from './pages/admin/Invoices';
+import { ServiceRecords } from './pages/admin/ServiceRecords';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
             <Route index element={<Navigate to="clients" replace />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
+            <Route path="invoices" element={<Invoices />} />
+            <Route path="service-records" element={<ServiceRecords />} />
             <Route path="invite" element={<Invite />} />
           </Route>
 

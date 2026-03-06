@@ -65,3 +65,32 @@ export async function apiPost(path, body, options = {}) {
 
     return res.json();
 }
+
+/**
+ * @param {string} path
+ * @param {object} body
+ * @param {RequestInit} [options]
+ * @returns {Promise<any>}
+ */
+export async function apiPatch(path, body, options = {}) {
+    const { headers: extraHeaders, ...rest } = options;
+    const res = await fetch(path, {
+        method: "PATCH",
+        headers: buildHeaders(extraHeaders),
+        body: JSON.stringify(body),
+        ...rest,
+    });
+
+    if (!res.ok) {
+        let message = `HTTP ${res.status}: ${res.statusText}`;
+        try {
+            const errBody = await res.json();
+            if (errBody?.error) message = errBody.error;
+        } catch {
+            // ignore
+        }
+        throw new Error(message);
+    }
+
+    return res.json();
+}
