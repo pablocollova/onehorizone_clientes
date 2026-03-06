@@ -1,33 +1,6 @@
 // backend/src/server.js
-
-
-// Al principio del archivo
-console.log('🚀 ===== INICIO DE DIAGNÓSTICO =====');
-console.log('📅 Fecha:', new Date().toISOString());
-console.log('📂 Directorio actual:', process.cwd());
-console.log('📄 Archivo ejecutado:', __filename);
-console.log('🔧 PID:', process.pid);
-console.log('🌍 Node version:', process.version);
-console.log('💻 Plataforma:', process.platform);
-console.log('🔌 PORT variable:', process.env.PORT);
-console.log('📦 Módulos cargados:', Object.keys(require.cache).length);
-console.log('🚀 ===== FIN DE DIAGNÓSTICO =====\n');
-
-// Y al final, cuando se cierre
-process.on('beforeExit', (code) => {
-  console.log(`🔴 Process beforeExit with code: ${code}`);
-  console.log('📊 Event loop active handles:', process._getActiveHandles());
-  console.log('📊 Event loop active requests:', process._getActiveRequests());
-});
-
-process.on('exit', (code) => {
-  console.log(`🔴 Process exit with code: ${code}`);
-});
-
-
-
-
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -44,22 +17,30 @@ const tenantMiddleware = require("./middleware/tenant");
 
 const app = express();
 
-// ── Global middleware ──────────────────────────────────────────────────────────
-app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-  credentials: true,
-}));
+// ── CORS ───────────────────────────────────────────────────────────────────────
+// CORS_ORIGINS is a comma-separated list of allowed origins.
+// Falls back to localhost for local development.
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(",").map((o) => o.trim())
+  : ["http://localhost:5173", "http://127.0.0.1:5173"];
 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. curl, Postman, server-to-server)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin '${origin}' not allowed`));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// ── Global middleware ──────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get("/", (req, res) => {
-  res.status(200).json({ ok: true, service: "onehorizone-backend-root" });
-});
-
-app.get("/health", (req, res) => {
-  res.status(200).json({ ok: true, service: "onehorizone-backend-health" });
-});
 
 // JSON parse error handler (must be before routes)
 app.use((err, req, res, next) => {
@@ -70,12 +51,16 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
+// ── Root + Health endpoints ────────────────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.status(200).json({ ok: true, service: "onehorizone-backend" });
+});
+
 // ── Public routes (no auth required) ──────────────────────────────────────────
 app.use(healthRoutes);
 app.use("/api/auth", authRoutes);
 
 // ── Auth + tenant resolution for all routes below ─────────────────────────────
-// requireAuth populates req.user, then tenantMiddleware sets req.tenantId.
 app.use(requireAuth);
 app.use(tenantMiddleware);
 
@@ -92,25 +77,20 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal Server Error" });
 });
 
-const port = process.env.PORT || 4000;
+// ── Start server ───────────────────────────────────────────────────────────────
+const PORT = process.env.PORT || 4000;
 
-app.listen(port, "0.0.0.0", () => {
-  console.log(`✅ API listening on 0.0.0.0:${port}`);
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ API listening on 0.0.0.0:${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`🔗 CORS allowed origins: ${allowedOrigins.join(", ")}`);
 });
 
-// 🟢 NUEVO: Log cada 10 segundos para ver que está vivo
-  setInterval(() => {
-    console.log(`🟢 Server still alive at ${new Date().toISOString()}`);
-    console.log(`🟢 Memory usage: ${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB`);
-  }, 10000);
+server.on("close", () => {
+  console.log("🔴 Server closed at", new Date().toISOString());
 });
 
-// 🟢 NUEVO: Manejador de cierre
-server.on('close', () => {
-  console.log('🔴 Server closed at', new Date().toISOString());
-});
-
-// 🟢 NUEVO: Manejador de errores del servidor
-server.on('error', (err) => {
-  console.error('🔴 Server error:', err);
+server.on("error", (err) => {
+  console.error("🔴 Server error:", err);
+  process.exit(1);
 });
