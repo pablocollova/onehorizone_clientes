@@ -1,4 +1,32 @@
 // backend/src/server.js
+
+
+// Al principio del archivo
+console.log('🚀 ===== INICIO DE DIAGNÓSTICO =====');
+console.log('📅 Fecha:', new Date().toISOString());
+console.log('📂 Directorio actual:', process.cwd());
+console.log('📄 Archivo ejecutado:', __filename);
+console.log('🔧 PID:', process.pid);
+console.log('🌍 Node version:', process.version);
+console.log('💻 Plataforma:', process.platform);
+console.log('🔌 PORT variable:', process.env.PORT);
+console.log('📦 Módulos cargados:', Object.keys(require.cache).length);
+console.log('🚀 ===== FIN DE DIAGNÓSTICO =====\n');
+
+// Y al final, cuando se cierre
+process.on('beforeExit', (code) => {
+  console.log(`🔴 Process beforeExit with code: ${code}`);
+  console.log('📊 Event loop active handles:', process._getActiveHandles());
+  console.log('📊 Event loop active requests:', process._getActiveRequests());
+});
+
+process.on('exit', (code) => {
+  console.log(`🔴 Process exit with code: ${code}`);
+});
+
+
+
+
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -70,3 +98,19 @@ app.listen(port, "0.0.0.0", () => {
   console.log(`✅ API listening on 0.0.0.0:${port}`);
 });
 
+// 🟢 NUEVO: Log cada 10 segundos para ver que está vivo
+  setInterval(() => {
+    console.log(`🟢 Server still alive at ${new Date().toISOString()}`);
+    console.log(`🟢 Memory usage: ${Math.round(process.memoryUsage().rss / 1024 / 1024)}MB`);
+  }, 10000);
+});
+
+// 🟢 NUEVO: Manejador de cierre
+server.on('close', () => {
+  console.log('🔴 Server closed at', new Date().toISOString());
+});
+
+// 🟢 NUEVO: Manejador de errores del servidor
+server.on('error', (err) => {
+  console.error('🔴 Server error:', err);
+});
