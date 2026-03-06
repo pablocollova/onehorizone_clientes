@@ -25,6 +25,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.status(200).json({ ok: true, service: "onehorizone-backend-root" });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).json({ ok: true, service: "onehorizone-backend-health" });
+});
+
 // JSON parse error handler (must be before routes)
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
