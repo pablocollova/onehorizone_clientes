@@ -43,7 +43,7 @@ export const WhoWeAre = () => {
                         </ul>
                     </motion.div>
 
-                    {/* Abstract Visual / Image Placeholder */}
+                    {/* Real Image */}
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -51,23 +51,23 @@ export const WhoWeAre = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative"
                     >
-                        <div className="aspect-square rounded-2xl overflow-hidden bg-neutral-bg relative">
-                            {/* Decorative Gradient Blob */}
-                            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-primary/5 to-accent/10" />
-
-                            {/* Abstract Shapes */}
-                            <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-white rounded-full shadow-xl flex items-center justify-center p-8">
-                                <div className="text-center">
-                                    <span className="block text-4xl font-bold text-primary mb-1">10+</span>
-                                    <span className="text-sm text-text-dark/60 uppercase tracking-wide">Years Experience</span>
-                                </div>
-                            </div>
-
-                            {/* Decorative Elements */}
-                            <div className="absolute bottom-10 right-10 w-20 h-20 bg-accent rounded-full opacity-20 blur-xl" />
-                            <div className="absolute top-10 left-10 w-32 h-32 bg-primary rounded-full opacity-10 blur-xl" />
+                        <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                            <img
+                                src="/images/who_we_are_team.png"
+                                alt="One Horizon Spain team"
+                                className="w-full h-full object-cover"
+                            />
                         </div>
-
+                        {/* Floating badge */}
+                        <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
+                                <span className="text-white font-bold text-lg">10+</span>
+                            </div>
+                            <div>
+                                <p className="font-bold text-primary text-sm">Years</p>
+                                <p className="text-text-dark/60 text-xs">Experience</p>
+                            </div>
+                        </div>
                         {/* Outline Frame */}
                         <div className="absolute -inset-4 border-2 border-primary/5 rounded-3xl -z-10" />
                     </motion.div>

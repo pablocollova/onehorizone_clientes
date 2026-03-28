@@ -6,10 +6,14 @@ import { ArrowRight } from 'lucide-react';
 export const Hero = () => {
     return (
         <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden bg-neutral-bg">
-            {/* Background Elements */}
+            {/* Background Image */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-3xl opacity-50 animate-pulse" />
-                <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl opacity-50" />
+                <img
+                    src="/images/hero_barcelona.png"
+                    alt="Barcelona Spain"
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-neutral-bg/90" />
             </div>
 
             <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">

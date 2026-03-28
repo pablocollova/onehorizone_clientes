@@ -18,7 +18,9 @@ export const Navbar = () => {
     return (
         <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <Link to="/" className="text-2xl font-bold text-primary tracking-tight">ONE HORIZON</Link>
+                <Link to="/">
+                    <img src="/images/logo.png" alt="One Horizon Logo" style={{ width: '180px', height: 'auto' }} />
+                </Link>
 
                 <div className="hidden md:flex items-center space-x-8">
                     <NavLink href="/#who-we-are">Who We Are</NavLink>

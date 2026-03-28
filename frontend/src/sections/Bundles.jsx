@@ -59,6 +59,22 @@ export const Bundles = () => {
                     </p>
                 </div>
 
+                {/* Lifestyle image banner */}
+                <div className="relative rounded-2xl overflow-hidden mb-16 h-64 shadow-xl">
+                    <img
+                        src="/images/lifestyle_spain.png"
+                        alt="Luxury lifestyle in Spain"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent flex items-center px-12">
+                        <div className="text-white max-w-md">
+                            <p className="text-sm font-semibold uppercase tracking-widest mb-2 text-accent">Your New Beginning</p>
+                            <h4 className="text-3xl font-bold mb-2">Life in Spain,<br/>Exactly as You Imagined</h4>
+                            <p className="text-white/80 text-sm">From the first day you arrive to the moment you feel at home.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                     {bundles.map((bundle, index) => (
                         <motion.div
