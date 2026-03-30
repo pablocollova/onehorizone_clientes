@@ -9,8 +9,8 @@ export const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="/images/hero_barcelona.png"
-                    alt="Barcelona Spain"
+                    src="/images/hero_costa_del_sol.png"
+                    alt="Costa del Sol Spain"
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/50 to-neutral-bg/90" />
@@ -26,13 +26,11 @@ export const Hero = () => {
                         Start Your Journey
                     </span>
                     <h1 className="text-5xl md:text-7xl font-bold text-primary mb-6 leading-tight">
-                        Your Life in Spain, <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                            Perfectly Simplified
-                        </span>
+                        Buying or opening a business in <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Spain?</span> <br />
+                        We get it open, compliant, and running.
                     </h1>
                     <p className="text-xl md:text-2xl text-text-dark/80 mb-10 max-w-2xl mx-auto">
-                        Premium concierge, relocation, and business setup services tailored to your unique lifestyle and goals.
+                        Utilities, licences, hygiene plans, insurance — all coordinated for you, from day one.
                     </p>
 
                     <div className="flex flex-col md:flex-row items-center justify-center gap-4">

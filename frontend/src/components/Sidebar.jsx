@@ -8,7 +8,8 @@ import {
     CreditCard,
     LogOut,
     Users as UsersIcon,
-    Building2
+    Building2,
+    Shield
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../lib/utils';
@@ -20,6 +21,7 @@ const navItems = [
     { icon: MapPin, label: 'Locations', path: '/app/locations' },
     { icon: Folder, label: 'Files', path: '/app/files' },
     { icon: CreditCard, label: 'Payments', path: '/app/payments' },
+    { icon: Shield, label: 'Privacy Settings', path: '/app/privacy-settings' },
 ];
 
 export const Sidebar = () => {

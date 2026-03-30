@@ -44,23 +44,29 @@ enum ServiceStatus {
 }
 
 model User {
-  id              String      @id @default(cuid())
-  username        String      @unique
-  email           String?     @unique
+  id              String       @id @default(cuid())
+  username        String       @unique
+  email           String?      @unique
   password        String?
   name            String
   clientId        String?
-  client          Client?     @relation(fields: [clientId], references: [id])
-  status          UserStatus  @default(INVITED)
-  role            Role        @default(CLIENT_USER)
+  client          Client?      @relation(fields: [clientId], references: [id])
+  status          UserStatus   @default(INVITED)
+  role            Role         @default(CLIENT_USER)
   phone           String?
   address         String?
   docType         String?
   docNumber       String?
   emailVerifiedAt DateTime?
   inviteTokens    InviteToken[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  // GDPR fields
+  consentedAt     DateTime?
+  deletedAt       DateTime?
+  consentLogs     ConsentLog[]
+  gdprRequests    GdprRequest[]
+  auditLogs       AuditLog[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model InviteToken {
@@ -182,4 +188,62 @@ model ServiceRecord {
   invoice     Invoice?      @relation(fields: [invoiceId], references: [id])
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+}
+
+// ─── GDPR Models ─────────────────────────────────────────────────────────────
+
+enum ConsentType {
+  NECESSARY
+  ANALYTICS
+  MARKETING
+}
+
+enum GdprRequestType {
+  ACCESS
+  EXPORT
+  DELETION
+  RECTIFICATION
+}
+
+enum GdprRequestStatus {
+  PENDING
+  COMPLETED
+  REJECTED
+}
+
+// Stores each consent event (banner acceptance, revocation, etc.)
+model ConsentLog {
+  id         String      @id @default(cuid())
+  userId     String?
+  user       User?       @relation(fields: [userId], references: [id])
+  type       ConsentType
+  value      Boolean     // true = granted, false = revoked
+  source     String?     // e.g. "cookie_banner", "settings"
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime    @default(now())
+}
+
+// Tracks right-to-access / deletion / portability / rectification requests
+model GdprRequest {
+  id          String             @id @default(cuid())
+  userId      String
+  user        User               @relation(fields: [userId], references: [id])
+  type        GdprRequestType
+  status      GdprRequestStatus  @default(PENDING)
+  requestedAt DateTime           @default(now())
+  resolvedAt  DateTime?
+  notes       String?
+}
+
+// Audit log: who accessed personal data, when, from where
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  action     String   // e.g. "GDPR_ACCESS", "GDPR_EXPORT", "GDPR_DELETE"
+  endpoint   String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
 }

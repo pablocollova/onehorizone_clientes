@@ -5,43 +5,32 @@ import { Button } from '../components/ui/Button';
 
 const bundles = [
     {
-        name: "Essential Relocation",
-        price: "From €2,500",
-        desc: "Perfect for individuals and couples seeking a smooth transition.",
+        label: "STAGE 1 — ONE-OFF SETUP",
+        name: "Business Kickstart",
+        desc: "Everything you need to open or take over a business in Spain, managed end to end.",
         features: [
-            "NIE & Residency application",
-            "Bank account opening",
-            "Initial home search (3 properties)",
-            "Utility setup assistance"
+            "Utilities setup",
+            "Hygiene Plan",
+            "Business licence",
+            "Commercial insurance",
+            "Client portal setup"
         ],
-        popular: false
+        buttonText: "Request a Quote",
+        dark: false
     },
     {
-        name: "Premium Lifestyle",
-        price: "Custom Quote",
-        desc: "Complete peace of mind with our full-service concierge package.",
+        label: "STAGE 2 — MONTHLY RETAINER",
+        name: "Operations Retainer",
+        desc: "Once open, we keep everything running. One monthly fee. No surprises.",
         features: [
-            "All Essential features",
-            "Dedicated Concierge Manager",
-            "School search & enrollment",
-            "Healthcare & Insurance setup",
-            "Vehicle registration/import",
-            "Ongoing lifestyle support (3 months)"
+            "Accounting coordination",
+            "1 maintenance visit per month",
+            "Document portal",
+            "Utility & bill management",
+            "Compliance monitoring"
         ],
-        popular: true
-    },
-    {
-        name: "Business Launch",
-        price: "From €3,500",
-        desc: "Strategic support for entrepreneurs and companies.",
-        features: [
-            "Company incorporation (SL/SA)",
-            "Corporate tax planning",
-            "Office search & lease negotiation",
-            "Recruitment assistance",
-            "Commercial bank account setup"
-        ],
-        popular: false
+        buttonText: "Get In Touch",
+        dark: true
     }
 ];
 
@@ -75,7 +64,7 @@ export const Bundles = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-4xl mx-auto">
                     {bundles.map((bundle, index) => (
                         <motion.div
                             key={index}
@@ -83,29 +72,31 @@ export const Bundles = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
-                            className={`relative bg-white rounded-2xl p-8 border ${bundle.popular ? 'border-primary shadow-2xl scale-105 z-10' : 'border-gray-100 shadow-sm hover:shadow-lg'}`}
+                            className={`relative rounded-2xl p-8 shadow-xl ${bundle.dark ? 'bg-primary text-white border-primary border' : 'bg-white border-gray-100 border'}`}
                         >
-                            {bundle.popular && (
-                                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-primary to-accent text-white px-4 py-1 rounded-full text-sm font-bold flex items-center gap-1 shadow-md">
-                                    <Star size={14} fill="currentColor" /> Most Popular
-                                </div>
-                            )}
+                            <div className="text-sm font-bold uppercase tracking-wider mb-2 text-accent">
+                                {bundle.label}
+                            </div>
+                            <h4 className={`text-3xl font-bold mb-4 ${bundle.dark ? 'text-white' : 'text-primary'}`}>
+                                {bundle.name}
+                            </h4>
+                            <p className={`mb-8 h-12 ${bundle.dark ? 'text-white/80' : 'text-text-dark/70'}`}>
+                                {bundle.desc}
+                            </p>
 
-                            <h4 className="text-2xl font-bold text-primary mb-2">{bundle.name}</h4>
-                            <div className="text-3xl font-bold text-text-dark mb-4">{bundle.price}</div>
-                            <p className="text-text-dark/70 mb-8 h-12">{bundle.desc}</p>
-
-                            <ul className="space-y-4 mb-8">
+                            <ul className="space-y-4 mb-8 text-left">
                                 {bundle.features.map((feature, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <Check className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
-                                        <span className="text-text-dark/80 text-sm">{feature}</span>
+                                        <span className={`text-sm ${bundle.dark ? 'text-white/90' : 'text-text-dark/80'}`}>
+                                            {feature}
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
 
-                            <Button variant={bundle.popular ? "primary" : "outline"} className="w-full">
-                                Get Started
+                            <Button variant={bundle.dark ? "outline" : "primary"} className={`w-full ${bundle.dark ? 'text-white border-white hover:bg-white hover:text-primary' : ''}`}>
+                                {bundle.buttonText}
                             </Button>
                         </motion.div>
                     ))}

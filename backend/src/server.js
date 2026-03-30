@@ -13,6 +13,7 @@ const dashboardRoutes = require("./routes/dashboard");
 const clientsRoutes = require("./routes/clients");
 const invoicesRoutes = require("./routes/invoices");
 const adminRoutes = require("./routes/admin");
+const gdprRoutes = require("./routes/gdpr");
 
 const { requireAuth } = require("./middleware/auth");
 const tenantMiddleware = require("./middleware/tenant");
@@ -69,6 +70,7 @@ app.get("/", (req, res) => {
 // ── Public routes (no auth required) ──────────────────────────────────────────
 app.use(healthRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/gdpr", gdprRoutes);
 
 // ── Auth + tenant resolution for all routes below ─────────────────────────────
 app.use(requireAuth);

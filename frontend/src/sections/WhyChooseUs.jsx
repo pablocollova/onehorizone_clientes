@@ -1,37 +1,27 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Clock, Heart, Globe, Star, Users } from 'lucide-react';
+import { Map, Clock, ShieldCheck, UserCheck } from 'lucide-react';
 
 const reasons = [
     {
-        icon: <Globe className="w-8 h-8 text-white" />,
-        title: "Local Expertise, Global Standards",
-        description: "Deep knowledge of the Spanish market combined with world-class service standards."
+        icon: <Map className="w-8 h-8 text-white" />,
+        title: "Local Knowledge",
+        description: "Deep knowledge of how Spanish councils, utilities and compliance actually work."
     },
     {
         icon: <Clock className="w-8 h-8 text-white" />,
-        title: "Time-Saving Efficiency",
-        description: "We handle the bureaucracy and logistics so you can focus on enjoying your new life."
+        title: "Time-Saving",
+        description: "We handle the bureaucracy so you can focus on running your business."
     },
     {
-        icon: <Shield className="w-8 h-8 text-white" />,
-        title: "Trusted Network",
-        description: "Access our exclusive network of vetted professionals, from lawyers to interior designers."
+        icon: <ShieldCheck className="w-8 h-8 text-white" />,
+        title: "Trusted Partners",
+        description: "Vetted lawyers, gestorías, insurers and tradespeople, all coordinated by us."
     },
     {
-        icon: <Heart className="w-8 h-8 text-white" />,
-        title: "Personalized Care",
-        description: "Tailored solutions that respect your unique preferences, lifestyle, and goals."
-    },
-    {
-        icon: <Star className="w-8 h-8 text-white" />,
-        title: "Premium Experience",
-        description: "From luxury accommodation to private transport, we ensure every detail is exquisite."
-    },
-    {
-        icon: <Users className="w-8 h-8 text-white" />,
-        title: "Dedicated Support",
-        description: "Your personal concierge manager is always just a message away."
+        icon: <UserCheck className="w-8 h-8 text-white" />,
+        title: "One Point of Contact",
+        description: "You deal with one person. We deal with everyone else."
     }
 ];
 
@@ -57,10 +47,10 @@ export const WhyChooseUs = () => {
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Why Choose Us</h2>
                     <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                        Excellence in Every Detail
+                        One Contact. Every Solution.
                     </h3>
                     <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
-                        We go beyond standard relocation services to curate a seamless lifestyle experience for you.
+                        We’re not a gestoría. We’re not a law firm. We’re the operational backbone that makes your life or business in Spain actually work.
                     </p>
                 </div>
 
@@ -69,7 +59,7 @@ export const WhyChooseUs = () => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8"
                 >
                     {reasons.map((reason, index) => (
                         <motion.div

@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
 const features = [
-    "Comprehensive relocation support",
-    "Exclusive concierge services",
-    "Business setup and legal guidance",
-    "Personalized lifestyle management"
+    "Utilities setup & management",
+    "Hygiene Plan",
+    "APPCC compliance",
+    "Business licence coordination",
+    "Ongoing retainer & document portal"
 ];
 
 export const WhoWeAre = () => {
@@ -24,11 +25,10 @@ export const WhoWeAre = () => {
                     >
                         <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Who We Are</h2>
                         <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-                            Your Trusted Partners in Spain
+                            Your Operational Backbone in Spain
                         </h3>
                         <p className="text-lg text-text-dark/80 mb-8 leading-relaxed">
-                            At One Horizon Spain, we understand that moving to or managing a life in a new country can be complex. We are here to simplify that journey.
-                            Our team of experts provides seamless, high-end support for individuals and businesses looking to establish themselves in Spain with confidence and ease.
+                            We’re not a gestoría. We’re not a law firm. We started as energy advisors on the Costa del Sol, working alongside lawyers on business purchases. While they handled the legal side, we handled everything after — utilities, hygiene plans, insurance, compliance. That gap became our business.
                         </p>
 
                         <ul className="space-y-4">
@@ -58,17 +58,6 @@ export const WhoWeAre = () => {
                                 className="w-full h-full object-cover"
                             />
                         </div>
-                        {/* Floating badge */}
-                        <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
-                            <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">10+</span>
-                            </div>
-                            <div>
-                                <p className="font-bold text-primary text-sm">Years</p>
-                                <p className="text-text-dark/60 text-xs">Experience</p>
-                            </div>
-                        </div>
-                        {/* Outline Frame */}
                         <div className="absolute -inset-4 border-2 border-primary/5 rounded-3xl -z-10" />
                     </motion.div>
 

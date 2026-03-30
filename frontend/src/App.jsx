@@ -14,15 +14,20 @@ import { Clients } from './pages/admin/Clients';
 import { Invite } from './pages/admin/Invite';
 import { Invoices } from './pages/admin/Invoices';
 import { ServiceRecords } from './pages/admin/ServiceRecords';
+import { CookieConsentBanner } from './components/CookieConsentBanner';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { PrivacySettings } from './pages/PrivacySettings';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        <CookieConsentBanner />
         <Routes>
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Landing />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Route>
 
           <Route path="/login" element={<Login />} />
@@ -47,6 +52,7 @@ function App() {
             <Route path="locations" element={<PlaceholderPage title="Locations" />} />
             <Route path="files" element={<PlaceholderPage title="Files" />} />
             <Route path="payments" element={<PlaceholderPage title="Payments" />} />
+            <Route path="privacy-settings" element={<PrivacySettings />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -4,20 +4,21 @@ import { Home, Briefcase, ChevronRight } from 'lucide-react';
 
 const services = {
     personal: [
-        { title: "Golden Visa & Residency", desc: "Expert guidance on visa applications and residency permits." },
-        { title: "Home Finding", desc: "Curated property search for purchase or rental in prime locations." },
-        { title: "Education & Schools", desc: "Advisory on top international schools and enrollment support." },
-        { title: "Banking & Finance", desc: "Opening bank accounts and connecting with financial advisors." },
-        { title: "Healthcare", desc: "Navigating the private healthcare system and insurance options." },
-        { title: "Lifestyle Concierge", desc: "From private chefs to yacht charters, we manage your lifestyle." }
+        { title: "Utilities Setup", desc: "Electricity, water and internet set up for your home" },
+        { title: "NIE & Empadronamiento", desc: "Coordinated through our legal partner network" },
+        { title: "Residential Insurance", desc: "Home and contents cover arranged for you" },
+        { title: "Bill Management", desc: "We track your bills so nothing gets missed" },
+        { title: "Home Maintenance", desc: "Reliable local tradespeople, coordinated by us" },
+        { title: "Document Portal", desc: "All your important documents in one secure place" }
     ],
     business: [
-        { title: "Company Formation", desc: "Full legal setup of SL or SA companies in Spain." },
-        { title: "Tax Planning", desc: "Strategic tax advice for businesses and entrepreneurs." },
-        { title: "Office Relocation", desc: "Finding and setting up your ideal office space." },
-        { title: "Recruitment", desc: "Sourcing top local talent for your growing team." },
-        { title: "Legal Compliance", desc: "Ongoing support to ensure regulatory compliance." },
-        { title: "Market Entry", desc: "Consultancy on entering the Spanish market successfully." }
+        { title: "Utilities Setup & Mgt", desc: "Commercial contracts for electricity, water and internet" },
+        { title: "Hygiene Plan / APPCC", desc: "Mandatory food safety compliance, we produce and file it" },
+        { title: "Licence Coordination", desc: "Licencia de apertura, with our legal partners" },
+        { title: "Commercial Insurance", desc: "Right cover for your premises and liability" },
+        { title: "Trades & Maintenance", desc: "Vetted electricians, plumbers, refrigeration specialists" },
+        { title: "Company setup", desc: "Autónomo, SL and SA setup" },
+        { title: "Document Portal", desc: "Invoices, compliance records and contracts in one place" }
     ]
 };
 
