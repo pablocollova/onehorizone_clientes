@@ -49,7 +49,7 @@ export const Contact = () => {
                                 <div className="w-10 h-10 bg-neutral-bg rounded-full flex items-center justify-center text-primary">
                                     <Mail size={20} />
                                 </div>
-                                <span>concierge@onehorizonspain.com</span>
+                                <span>info@onehorizon.es</span>
                             </div>
                             <div className="flex items-center space-x-4 text-text-dark/80">
                                 <div className="w-10 h-10 bg-neutral-bg rounded-full flex items-center justify-center text-primary">
