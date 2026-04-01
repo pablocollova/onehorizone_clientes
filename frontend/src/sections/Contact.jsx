@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../components/ui/Button';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const Contact = () => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -34,12 +36,12 @@ export const Contact = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Get in Touch</h2>
+                        <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">{t('contact.subtitle')}</h2>
                         <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
-                            Let's Start the Conversation
+                            {t('contact.title')}
                         </h3>
                         <p className="text-lg text-text-dark/80 mb-8 max-w-md">
-                            Ready to simplify your life in Spain? Contact us today for a confidential consultation.
+                            {t('contact.description')}
                         </p>
 
                         <div className="space-y-6">
@@ -53,13 +55,13 @@ export const Contact = () => {
                                 <div className="w-10 h-10 bg-neutral-bg rounded-full flex items-center justify-center text-primary">
                                     <Phone size={20} />
                                 </div>
-                                <span>+34 900 123 456</span>
+                                <span>+34 613 942 784</span>
                             </div>
                             <div className="flex items-center space-x-4 text-text-dark/80">
                                 <div className="w-10 h-10 bg-neutral-bg rounded-full flex items-center justify-center text-primary">
                                     <MapPin size={20} />
                                 </div>
-                                <span>Marbella</span>
+                                <span>{t('contact.location')}</span>
                             </div>
                         </div>
                     </motion.div>
@@ -74,58 +76,58 @@ export const Contact = () => {
                     >
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Full Name</label>
+                                <label className="block text-sm font-medium text-text-dark mb-2">{t('contact.form.name')}</label>
                                 <input
                                     type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all"
-                                    placeholder="John Doe"
+                                    placeholder={t('contact.form.name_placeholder')}
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Email Address</label>
+                                <label className="block text-sm font-medium text-text-dark mb-2">{t('contact.form.email')}</label>
                                 <input
                                     type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all"
-                                    placeholder="john@example.com"
+                                    placeholder={t('contact.form.email_placeholder')}
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Service Interest</label>
+                                <label className="block text-sm font-medium text-text-dark mb-2">{t('contact.form.service')}</label>
                                 <select
                                     name="service"
                                     value={formData.service}
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all bg-white"
                                 >
-                                    <option value="">Select a service...</option>
-                                    <option value="Personal Relocation">Personal Relocation</option>
-                                    <option value="Business Setup">Business Setup</option>
-                                    <option value="Concierge">Lifestyle Concierge</option>
-                                    <option value="Other">Other</option>
+                                    <option value="">{t('contact.form.service_placeholder')}</option>
+                                    <option value="Personal Relocation">{t('contact.form.service_options.personal')}</option>
+                                    <option value="Business Setup">{t('contact.form.service_options.business')}</option>
+                                    <option value="Concierge">{t('contact.form.service_options.concierge')}</option>
+                                    <option value="Other">{t('contact.form.service_options.other')}</option>
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-dark mb-2">Message</label>
+                                <label className="block text-sm font-medium text-text-dark mb-2">{t('contact.form.message')}</label>
                                 <textarea
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
                                     rows={4}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all"
-                                    placeholder="How can we help you?"
+                                    placeholder={t('contact.form.message_placeholder')}
                                     required
                                 />
                             </div>
                             <Button type="submit" variant="primary" className="w-full">
-                                Send Message
+                                {t('contact.form.submit')}
                             </Button>
                         </form>
                     </motion.div>

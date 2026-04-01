@@ -1,0 +1,137 @@
+{
+  "navbar": {
+    "who_we_are": "Who We Are",
+    "why_choose_us": "Why Choose Us",
+    "services": "Services",
+    "login": "Login",
+    "contact_us": "Contact Us"
+  },
+  "hero": {
+    "start_journey": "Start Your Journey",
+    "heading_start": "Buying or opening a business in ",
+    "heading_spain": "Spain?",
+    "heading_end": "We get it open, compliant, and running.",
+    "subheading": "Utilities, licences, hygiene plans, insurance — all coordinated for you, from day one.",
+    "explore_services": "Explore Our Services",
+    "contact_us": "Contact Us"
+  },
+  "who_we_are": {
+    "subtitle": "Who We Are",
+    "title": "Your Operational Backbone in Spain",
+    "description": "We’re not a gestoría. We’re not a law firm. We started as energy advisors, working alongside lawyers on business purchases. While they handled the legal side, we handled everything after — utilities, hygiene plans, insurance, compliance. That gap became our business.",
+    "features": {
+      "0": "Utilities setup & management",
+      "1": "Hygiene Plan",
+      "2": "APPCC compliance",
+      "3": "Business licence coordination",
+      "4": "Ongoing retainer & document portal"
+    }
+  },
+  "why_choose_us": {
+    "subtitle": "Why Choose Us",
+    "title": "One Contact. Every Solution.",
+    "description": "We’re not a gestoría. We’re not a law firm. We’re the operational backbone that makes your life or business in Spain actually work.",
+    "reasons": {
+      "local_title": "Local Knowledge",
+      "local_desc": "Deep knowledge of how Spanish councils, utilities and compliance actually work.",
+      "time_title": "Time-Saving",
+      "time_desc": "We handle the bureaucracy so you can focus on running your business.",
+      "trusted_title": "Trusted Partners",
+      "trusted_desc": "Vetted lawyers, gestorías, insurers and tradespeople, all coordinated by us.",
+      "contact_title": "One Point of Contact",
+      "contact_desc": "You deal with one person. We deal with everyone else."
+    }
+  },
+  "services": {
+    "subtitle": "Our Expertise",
+    "title": "Services Tailored to You",
+    "description": "Whether you are moving your family or expanding your business, we provide the specialized support you need.",
+    "tabs": {
+      "personal": "Personal & Relocation",
+      "business": "Business & Corporate"
+    },
+    "personal": {
+      "0": { "title": "Utilities Setup", "desc": "Electricity, water and internet set up for your home" },
+      "1": { "title": "NIE & Empadronamiento", "desc": "Coordinated through our legal partner network" },
+      "2": { "title": "Residential Insurance", "desc": "Home and contents cover arranged for you" },
+      "3": { "title": "Bill Management", "desc": "We track your bills so nothing gets missed" },
+      "4": { "title": "Home Maintenance", "desc": "Reliable local tradespeople, coordinated by us" },
+      "5": { "title": "Document Portal", "desc": "All your important documents in one secure place" }
+    },
+    "business": {
+      "0": { "title": "Utilities Setup & Mgt", "desc": "Commercial contracts for electricity, water and internet" },
+      "1": { "title": "Hygiene Plan / APPCC", "desc": "Mandatory food safety compliance, we produce and file it" },
+      "2": { "title": "Licence Coordination", "desc": "Licencia de apertura, with our legal partners" },
+      "3": { "title": "Commercial Insurance", "desc": "Right cover for your premises and liability" },
+      "4": { "title": "Trades & Maintenance", "desc": "Vetted electricians, plumbers, refrigeration specialists" },
+      "5": { "title": "Company setup", "desc": "Autónomo, SL and SA setup" },
+      "6": { "title": "Document Portal", "desc": "Invoices, compliance records and contracts in one place" }
+    },
+    "learn_more": "Learn More"
+  },
+  "bundles": {
+    "subtitle": "Our Bundles",
+    "title": "Everything You Need, Packaged",
+    "description": "Choose a package that suits your needs, or contact us for a bespoke proposal.",
+    "banner": {
+      "subtitle": "Your New Beginning",
+      "title": "Life in Spain,\nExactly as You Imagined",
+      "description": "From the first day you arrive to the moment you feel at home."
+    },
+    "bundle_0": {
+      "label": "STAGE 1 — ONE-OFF SETUP",
+      "name": "Business Kickstart",
+      "desc": "Everything you need to open or take over a business in Spain, managed end to end.",
+      "button": "Request a Quote",
+      "features": {
+        "0": "Utilities setup",
+        "1": "Hygiene Plan",
+        "2": "Business licence",
+        "3": "Commercial insurance",
+        "4": "Client portal setup"
+      }
+    },
+    "bundle_1": {
+      "label": "STAGE 2 — MONTHLY RETAINER",
+      "name": "Operations Retainer",
+      "desc": "Once open, we keep everything running. One monthly fee. No surprises.",
+      "button": "Get In Touch",
+      "features": {
+        "0": "Accounting coordination",
+        "1": "1 maintenance visit per month",
+        "2": "Document portal",
+        "3": "Utility & bill management",
+        "4": "Compliance monitoring"
+      }
+    }
+  },
+  "contact": {
+    "subtitle": "Get in Touch",
+    "title": "Let's Start the Conversation",
+    "description": "Ready to simplify your life in Spain? Contact us today for a confidential consultation.",
+    "location": "Costa del Sol",
+    "form": {
+      "name": "Full Name",
+      "name_placeholder": "John Doe",
+      "email": "Email Address",
+      "email_placeholder": "john@example.com",
+      "service": "Service Interest",
+      "service_placeholder": "Select a service...",
+      "service_options": {
+        "personal": "Personal Relocation",
+        "business": "Business Setup",
+        "concierge": "Lifestyle Concierge",
+        "other": "Other"
+      },
+      "message": "Message",
+      "message_placeholder": "How can we help you?",
+      "submit": "Send Message"
+    }
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookie": "Cookie Policy",
+    "rights": "One Horizon Spain. All rights reserved."
+  }
+}

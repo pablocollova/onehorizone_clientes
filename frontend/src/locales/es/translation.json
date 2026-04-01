@@ -1,0 +1,137 @@
+{
+  "navbar": {
+    "who_we_are": "Quiénes Somos",
+    "why_choose_us": "Por Qué Elegirnos",
+    "services": "Servicios",
+    "login": "Ingresar",
+    "contact_us": "Contáctanos"
+  },
+  "hero": {
+    "start_journey": "Empieza Tu Viaje",
+    "heading_start": "¿Comprando o abriendo un negocio en ",
+    "heading_spain": "España?",
+    "heading_end": "Te ayudamos a abrir, cumplir normativas y funcionar.",
+    "subheading": "Suministros, licencias, planes de higiene, seguros — todo coordinado para ti, desde el primer día.",
+    "explore_services": "Explorar Servicios",
+    "contact_us": "Contáctanos"
+  },
+  "who_we_are": {
+    "subtitle": "Quiénes Somos",
+    "title": "Tu Columna Vertebral Operativa en España",
+    "description": "No somos una gestoría. No somos un bufete de abogados. Comenzamos como asesores energéticos, trabajando junto a abogados en compras de negocios. Mientras ellos manejaban el lado legal, nosotros manejábamos todo lo demás — suministros, planes de higiene, seguros, cumplimiento. Esa brecha se convirtió en nuestro negocio.",
+    "features": {
+      "0": "Configuración y gestión de suministros",
+      "1": "Plan de Higiene",
+      "2": "Cumplimiento APPCC",
+      "3": "Coordinación de licencias de apertura",
+      "4": "Servicio mensual y portal de documentos"
+    }
+  },
+  "why_choose_us": {
+    "subtitle": "Por Qué Elegirnos",
+    "title": "Un Contacto. Cada Solución.",
+    "description": "No somos una gestoría. No somos un bufete de abogados. Somos la columna vertebral operativa que hace que tu vida o negocio en España realmente funcione.",
+    "reasons": {
+      "local_title": "Conocimiento Local",
+      "local_desc": "Profundo conocimiento de cómo funcionan realmente los ayuntamientos, suministros y normativas españolas.",
+      "time_title": "Ahorro de Tiempo",
+      "time_desc": "Manejamos la burocracia para que puedas concentrarte en administrar tu negocio.",
+      "trusted_title": "Socios de Confianza",
+      "trusted_desc": "Abogados, gestorías, aseguradoras y profesionales de confianza, todos coordinados por nosotros.",
+      "contact_title": "Un Punto de Contacto",
+      "contact_desc": "Tratas con una sola persona. Nosotros tratamos con todos los demás."
+    }
+  },
+  "services": {
+    "subtitle": "Nuestra Experiencia",
+    "title": "Servicios a Tu Medida",
+    "description": "Ya sea que estés mudando a tu familia o expandiendo tu negocio, te brindamos el apoyo especializado que necesitas.",
+    "tabs": {
+      "personal": "Personal y Reubicación",
+      "business": "Negocios y Corporativo"
+    },
+    "personal": {
+      "0": { "title": "Alta de Suministros", "desc": "Configuración de luz, agua e internet para tu hogar" },
+      "1": { "title": "NIE y Empadronamiento", "desc": "Coordinado a través de nuestra red de socios legales" },
+      "2": { "title": "Seguro de Hogar", "desc": "Seguro de hogar y contenido gestionado por ti" },
+      "3": { "title": "Gestión de Facturas", "desc": "Rastreamos tus facturas para que no se te pase nada" },
+      "4": { "title": "Mantenimiento del Hogar", "desc": "Profesionales locales confiables, coordinados por nosotros" },
+      "5": { "title": "Portal de Documentos", "desc": "Todos tus documentos importantes en un lugar seguro" }
+    },
+    "business": {
+      "0": { "title": "Alta de Suministros", "desc": "Contratos comerciales de luz, agua e internet" },
+      "1": { "title": "Plan de Higiene / APPCC", "desc": "Cumplimiento obligatorio de seguridad alimentaria, lo creamos y lo presentamos" },
+      "2": { "title": "Coordinación de Licencias", "desc": "Licencia de apertura, con nuestros socios legales" },
+      "3": { "title": "Seguros Comerciales", "desc": "La cobertura correcta para tus instalaciones y responsabilidad civil" },
+      "4": { "title": "Mantenimiento Comercial", "desc": "Electricistas, fontaneros y especialistas en refrigeración investigados" },
+      "5": { "title": "Creación de Empresas", "desc": "Configuración de Autónomo, SL y SA" },
+      "6": { "title": "Portal de Documentos", "desc": "Facturas, registros de cumplimiento y contratos en un solo lugar" }
+    },
+    "learn_more": "Saber Más"
+  },
+  "bundles": {
+    "subtitle": "Nuestros Paquetes",
+    "title": "Todo lo Que Necesitas, Paquetizado",
+    "description": "Elige un paquete que se adapte a tus necesidades, o contáctanos para una propuesta personalizada.",
+    "banner": {
+      "subtitle": "Tu Nuevo Comienzo",
+      "title": "Tu Vida en España,\nExactamente Como la Imaginabas",
+      "description": "Desde el primer día que llegas hasta el momento en que te sientes en casa."
+    },
+    "bundle_0": {
+      "label": "FASE 1 — CONFIGURACIÓN INICIAL",
+      "name": "Arranque de Negocio",
+      "desc": "Todo lo que necesitas para abrir o hacerte cargo de un negocio en España, gestionado de principio a fin.",
+      "button": "Solicitar Cotización",
+      "features": {
+        "0": "Alta de suministros",
+        "1": "Plan de Higiene",
+        "2": "Licencia de apertura",
+        "3": "Seguro comercial",
+        "4": "Configuración del portal del cliente"
+      }
+    },
+    "bundle_1": {
+      "label": "FASE 2 — SERVICIO MENSUAL",
+      "name": "Servicio Operativo",
+      "desc": "Una vez abierto, mantenemos todo funcionando. Una tarifa mensual. Sin sorpresas.",
+      "button": "Contáctanos",
+      "features": {
+        "0": "Coordinación contable",
+        "1": "1 visita de mantenimiento al mes",
+        "2": "Portal de documentos",
+        "3": "Gestión de suministros y facturas",
+        "4": "Monitoreo de normativas"
+      }
+    }
+  },
+  "contact": {
+    "subtitle": "Ponte en Contacto",
+    "title": "Comencemos la Conversación",
+    "description": "¿Listo para simplificar tu vida en España? Contáctanos hoy para una consulta confidencial.",
+    "location": "Costa del Sol",
+    "form": {
+      "name": "Nombre Completo",
+      "name_placeholder": "Juan Pérez",
+      "email": "Correo Electrónico",
+      "email_placeholder": "juan@ejemplo.com",
+      "service": "Servicio de Interés",
+      "service_placeholder": "Selecciona un servicio...",
+      "service_options": {
+        "personal": "Reubicación Personal",
+        "business": "Configuración de Negocio",
+        "concierge": "Servicio de Concierge",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "message_placeholder": "¿Cómo podemos ayudarte?",
+      "submit": "Enviar Mensaje"
+    }
+  },
+  "footer": {
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "cookie": "Política de Cookies",
+    "rights": "One Horizon Spain. Todos los derechos reservados."
+  }
+}

@@ -1,16 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
-
-const features = [
-    "Utilities setup & management",
-    "Hygiene Plan",
-    "APPCC compliance",
-    "Business licence coordination",
-    "Ongoing retainer & document portal"
-];
+import { useTranslation } from 'react-i18next';
 
 export const WhoWeAre = () => {
+    const { t } = useTranslation();
     return (
         <section id="who-we-are" className="py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
@@ -23,21 +17,21 @@ export const WhoWeAre = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Who We Are</h2>
+                        <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">{t('who_we_are.subtitle')}</h2>
                         <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
-                            Your Operational Backbone in Spain
+                            {t('who_we_are.title')}
                         </h3>
                         <p className="text-lg text-text-dark/80 mb-8 leading-relaxed">
-                            We’re not a gestoría. We’re not a law firm. We started as energy advisors, working alongside lawyers on business purchases. While they handled the legal side, we handled everything after — utilities, hygiene plans, insurance, compliance. That gap became our business.
+                            {t('who_we_are.description')}
                         </p>
 
                         <ul className="space-y-4">
-                            {features.map((feature, index) => (
+                            {[0, 1, 2, 3, 4].map((index) => (
                                 <li key={index} className="flex items-center space-x-3">
                                     <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">
                                         <Check size={14} strokeWidth={3} />
                                     </span>
-                                    <span className="text-text-dark font-medium">{feature}</span>
+                                    <span className="text-text-dark font-medium">{t(`who_we_are.features.${index}`)}</span>
                                 </li>
                             ))}
                         </ul>
