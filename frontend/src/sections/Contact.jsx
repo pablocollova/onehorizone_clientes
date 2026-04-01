@@ -25,7 +25,7 @@ export const Contact = () => {
     return (
         <section id="contact" className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
 
                     {/* Contact Info */}
                     <motion.div
@@ -35,7 +35,7 @@ export const Contact = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Get in Touch</h2>
-                        <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+                        <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
                             Let's Start the Conversation
                         </h3>
                         <p className="text-lg text-text-dark/80 mb-8 max-w-md">
@@ -59,7 +59,7 @@ export const Contact = () => {
                                 <div className="w-10 h-10 bg-neutral-bg rounded-full flex items-center justify-center text-primary">
                                     <MapPin size={20} />
                                 </div>
-                                <span>Marbella • Madrid • Barcelona</span>
+                                <span>Marbella</span>
                             </div>
                         </div>
                     </motion.div>

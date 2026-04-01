@@ -46,7 +46,7 @@ export const WhyChooseUs = () => {
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Why Choose Us</h2>
-                    <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
                         One Contact. Every Solution.
                     </h3>
                     <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
@@ -59,7 +59,7 @@ export const WhyChooseUs = () => {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true }}
-                    className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                    className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
                 >
                     {reasons.map((reason, index) => (
                         <motion.div

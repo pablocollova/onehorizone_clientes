@@ -25,19 +25,19 @@ export const Hero = () => {
                     <span className="inline-block py-1 px-3 rounded-full bg-white border border-gray-200 text-primary text-sm font-semibold tracking-wide mb-6 uppercase">
                         Start Your Journey
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-bold text-primary mb-6 leading-tight">
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight">
                         Buying or opening a business in <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Spain?</span> <br />
                         We get it open, compliant, and running.
                     </h1>
-                    <p className="text-xl md:text-2xl text-text-dark/80 mb-10 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl lg:text-2xl text-text-dark/80 mb-10 max-w-2xl mx-auto">
                         Utilities, licences, hygiene plans, insurance — all coordinated for you, from day one.
                     </p>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-                        <Button variant="primary" className="flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+                        <Button variant="primary" className="flex items-center justify-center gap-2 w-full sm:w-auto">
                             Explore Our Services <ArrowRight size={18} />
                         </Button>
-                        <Button variant="outline">
+                        <Button variant="outline" className="w-full sm:w-auto">
                             Contact Us
                         </Button>
                     </div>

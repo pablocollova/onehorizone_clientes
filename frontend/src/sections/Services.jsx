@@ -30,7 +30,7 @@ export const Services = () => {
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">Our Expertise</h2>
-                    <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+                    <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-6">
                         Services Tailored to You
                     </h3>
                     <p className="text-lg text-text-dark/80 max-w-2xl mx-auto">
@@ -39,19 +39,19 @@ export const Services = () => {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex justify-center mb-12">
-                    <div className="bg-neutral-bg p-1 rounded-full inline-flex">
+                <div className="flex justify-center mb-12 px-2">
+                    <div className="bg-neutral-bg p-1.5 rounded-3xl sm:rounded-full flex flex-col sm:flex-row inline-flex w-full sm:w-auto">
                         <button
                             onClick={() => setActiveTab('personal')}
-                            className={`px-8 py-3 rounded-full text-base font-semibold transition-all duration-300 ${activeTab === 'personal' ? 'bg-primary text-white shadow-md' : 'text-text-dark hover:text-primary'}`}
+                            className={`px-6 py-3 rounded-full text-sm sm:text-base font-semibold transition-all duration-300 w-full sm:w-auto flex justify-center ${activeTab === 'personal' ? 'bg-primary text-white shadow-md' : 'text-text-dark hover:text-primary'}`}
                         >
-                            <span className="flex items-center gap-2"><Home size={18} /> Personal & Relocation</span>
+                            <span className="flex items-center justify-center gap-2"><Home size={18} /> Personal & Relocation</span>
                         </button>
                         <button
                             onClick={() => setActiveTab('business')}
-                            className={`px-8 py-3 rounded-full text-base font-semibold transition-all duration-300 ${activeTab === 'business' ? 'bg-primary text-white shadow-md' : 'text-text-dark hover:text-primary'}`}
+                            className={`px-6 py-3 rounded-full text-sm sm:text-base font-semibold transition-all duration-300 w-full sm:w-auto flex justify-center ${activeTab === 'business' ? 'bg-primary text-white shadow-md' : 'text-text-dark hover:text-primary'}`}
                         >
-                            <span className="flex items-center gap-2"><Briefcase size={18} /> Business & Corporate</span>
+                            <span className="flex items-center justify-center gap-2"><Briefcase size={18} /> Business & Corporate</span>
                         </button>
                     </div>
                 </div>
