@@ -1,8 +1,30 @@
 // backend/src/routes/gdpr.js
 const router = require("express").Router();
 const prisma = require("../prisma");
-const { requireAuth } = require("../middleware/auth");
+const { getJwtSecret, requireAuth } = require("../middleware/auth");
 const auditLog = require("../middleware/auditLog");
+
+function publicUserData(user) {
+  return {
+    id: user.id,
+    username: user.username,
+    email: user.email,
+    name: user.name,
+    clientId: user.clientId,
+    status: user.status,
+    role: user.role,
+    phone: user.phone,
+    address: user.address,
+    docType: user.docType,
+    docNumber: user.docNumber,
+    emailVerifiedAt: user.emailVerifiedAt,
+    consentedAt: user.consentedAt,
+    deletedAt: user.deletedAt,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    consentLogs: user.consentLogs || [],
+  };
+}
 
 // Public route to store cookie consent
 router.post("/consent", async (req, res) => {
@@ -20,7 +42,7 @@ router.post("/consent", async (req, res) => {
     if (token) {
       const jwt = require("jsonwebtoken");
       try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET || "dev_secret");
+        const payload = jwt.verify(token, getJwtSecret());
         userId = payload.userId || payload.id;
       } catch (e) {
         // ignore invalid token for public consent
@@ -50,13 +72,20 @@ router.post("/consent", async (req, res) => {
   }
 });
 
+router.use((req, res, next) => {
+  if (req.query.token) {
+    return res.status(400).json({ error: "Token query parameter is not supported" });
+  }
+  next();
+});
+
 // Protect all following routes
 router.use(requireAuth);
 
 // Get all user personal data
 router.get("/me/data", auditLog("GDPR_ACCESS"), async (req, res) => {
   try {
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.id;
     
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -67,7 +96,7 @@ router.get("/me/data", auditLog("GDPR_ACCESS"), async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    res.json({ user });
+    res.json({ user: publicUserData(user) });
   } catch (error) {
     console.error("🔥 Error in GET /gdpr/me/data:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -77,7 +106,7 @@ router.get("/me/data", auditLog("GDPR_ACCESS"), async (req, res) => {
 // Export user personal data as JSON
 router.get("/me/export", auditLog("GDPR_EXPORT"), async (req, res) => {
   try {
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.id;
     
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -88,12 +117,9 @@ router.get("/me/export", auditLog("GDPR_EXPORT"), async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Ensure we don't export password hash
-    delete user.password;
-
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Content-Disposition', `attachment; filename="gdpr_export_${userId}.json"`);
-    res.send(JSON.stringify({ data: user }, null, 2));
+    res.send(JSON.stringify({ data: publicUserData(user) }, null, 2));
   } catch (error) {
     console.error("🔥 Error in GET /gdpr/me/export:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -103,7 +129,7 @@ router.get("/me/export", auditLog("GDPR_EXPORT"), async (req, res) => {
 // Rectify user personal data
 router.put("/me/rectify", auditLog("GDPR_RECTIFY"), async (req, res) => {
   try {
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.id;
     const { name, phone, address, docType, docNumber } = req.body;
     
     const updatedUser = await prisma.user.update({
@@ -117,9 +143,7 @@ router.put("/me/rectify", auditLog("GDPR_RECTIFY"), async (req, res) => {
       }
     });
 
-    delete updatedUser.password;
-
-    res.json({ ok: true, user: updatedUser });
+    res.json({ ok: true, user: publicUserData({ ...updatedUser, consentLogs: [] }) });
   } catch (error) {
     console.error("🔥 Error in PUT /gdpr/me/rectify:", error);
     res.status(500).json({ error: "Internal server error" });
@@ -129,7 +153,7 @@ router.put("/me/rectify", auditLog("GDPR_RECTIFY"), async (req, res) => {
 // Request account deletion (Right to erasure)
 router.post("/me/delete", auditLog("GDPR_DELETE"), async (req, res) => {
   try {
-    const userId = req.user.userId || req.user.id;
+    const userId = req.user.id;
     
     // Soft delete / anonymize
     await prisma.user.update({

@@ -7,22 +7,35 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host " Full E2E: Admin Invite + Activation Flow" -ForegroundColor Cyan
 Write-Host "=============================================" -ForegroundColor Cyan
 
-# STEP 1: Login as admin (PLATFORM_ADMIN)
-Write-Host "`n[STEP 1] Login as PLATFORM_ADMIN (admin)..." -ForegroundColor Yellow
-$loginBody = @{ username = "admin"; password = "admin123" } | ConvertTo-Json
+# STEP 1: Login as PLATFORM_ADMIN
+Write-Host "`n[STEP 1] Login as PLATFORM_ADMIN (platform_admin)..." -ForegroundColor Yellow
+$loginBody = @{ username = "platform_admin"; password = "admin123" } | ConvertTo-Json
 try {
     $loginResponse = Invoke-RestMethod -Uri "$BaseUrl/api/auth/login" -Method Post -Body $loginBody -ContentType "application/json"
     $adminToken = $loginResponse.token
-    $adminClientId = $loginResponse.user.clientId
-    Write-Host "  ✅ Login OK. Role: $($loginResponse.user.role). ClientId: $adminClientId" -ForegroundColor Green
+    Write-Host "  ✅ Login OK. Role: $($loginResponse.user.role)." -ForegroundColor Green
 }
 catch {
     Write-Host "  ❌ Login failed: $_" -ForegroundColor Red; exit
 }
 
-# STEP 2: Invite a new user
+# STEP 2: Select a client for the invited user
+Write-Host "`n[STEP 2] Loading clients..." -ForegroundColor Yellow
+try {
+    $clients = Invoke-RestMethod -Uri "$BaseUrl/api/admin/clients" -Method Get -Headers @{ Authorization = "Bearer $adminToken" }
+    if (-not $clients -or $clients.Count -eq 0) {
+        Write-Host "  ❌ No clients available for invite." -ForegroundColor Red; exit
+    }
+    $adminClientId = $clients[0].id
+    Write-Host "  ✅ Using client: $($clients[0].name) ($adminClientId)" -ForegroundColor Green
+}
+catch {
+    Write-Host "  ❌ Client load failed: $_" -ForegroundColor Red; exit
+}
+
+# STEP 3: Invite a new user
 $TestEmail = "e2e_test_$(Get-Date -Format 'HHmmss')@onehorizon.com"
-Write-Host "`n[STEP 2] Inviting new user: $TestEmail ..." -ForegroundColor Yellow
+Write-Host "`n[STEP 3] Inviting new user: $TestEmail ..." -ForegroundColor Yellow
 $inviteBody = @{
     email    = $TestEmail
     name     = "E2E Test User"
@@ -31,8 +44,9 @@ $inviteBody = @{
 } | ConvertTo-Json
 
 try {
-    $inviteResponse = Invoke-RestMethod -Uri "$BaseUrl/api/admin/users/invite" -Method Post -Body $inviteBody -ContentType "application/json" -Headers @{ Authorization = "Bearer $adminToken" }
+    $inviteResponse = Invoke-RestMethod -Uri "$BaseUrl/api/admin/invites" -Method Post -Body $inviteBody -ContentType "application/json" -Headers @{ Authorization = "Bearer $adminToken" }
     Write-Host "  ✅ Invite sent! $($inviteResponse.message)" -ForegroundColor Green
+    $inviteLink = $inviteResponse.inviteLink
 }
 catch {
     Write-Host "  ❌ Invite failed: $_" -ForegroundColor Red
@@ -43,27 +57,18 @@ catch {
     exit
 }
 
-# STEP 3: Extract the activation token from _logs.txt
-Write-Host "`n[STEP 3] Extracting activation token from backend logs..." -ForegroundColor Yellow
-Start-Sleep -Milliseconds 500
-
-$logLine = Select-String -Path "_logs.txt" -Pattern "activate\?token=" | Select-Object -Last 1
-if (-not $logLine) {
-    Write-Host "  ❌ Could not find activation link in logs." -ForegroundColor Red; exit
-}
-
-# Parse the token from the full URL
-$rawLogLine = $logLine.Line
-if ($rawLogLine -match "token=([a-f0-9]+)") {
+# STEP 4: Extract the activation token from the invite response
+Write-Host "`n[STEP 4] Extracting activation token from invite response..." -ForegroundColor Yellow
+if ($inviteLink -match "token=([a-f0-9]+)") {
     $activationToken = $Matches[1]
     Write-Host "  ✅ Token found (last 8 chars): ....$($activationToken.Substring($activationToken.Length - 8))" -ForegroundColor Green
 }
 else {
-    Write-Host "  ❌ Could not parse token from: $rawLogLine" -ForegroundColor Red; exit
+    Write-Host "  ❌ Could not parse token from invite response." -ForegroundColor Red; exit
 }
 
-# STEP 4: Activate the account
-Write-Host "`n[STEP 4] Activating account..." -ForegroundColor Yellow
+# STEP 5: Activate the account
+Write-Host "`n[STEP 5] Activating account..." -ForegroundColor Yellow
 $activateBody = @{
     token    = $activationToken
     password = "SecurePass123!"
@@ -83,8 +88,8 @@ catch {
     exit
 }
 
-# STEP 5: Login with EMAIL (new UX flow)
-Write-Host "`n[STEP 5] Login with email after activation..." -ForegroundColor Yellow
+# STEP 6: Login with EMAIL
+Write-Host "`n[STEP 6] Login with email after activation..." -ForegroundColor Yellow
 $loginBody2 = @{ username = $TestEmail; password = "SecurePass123!" } | ConvertTo-Json
 try {
     $loginResponse2 = Invoke-RestMethod -Uri "$BaseUrl/api/auth/login" -Method Post -Body $loginBody2 -ContentType "application/json"
@@ -95,14 +100,14 @@ catch {
     Write-Host "  ❌ Login failed: $_" -ForegroundColor Red
 }
 
-# STEP 6: Verify admin/admin123 still works
-Write-Host "`n[STEP 6] Verify admin/admin123 still works..." -ForegroundColor Yellow
+# STEP 7: Verify platform_admin/admin123 still works
+Write-Host "`n[STEP 7] Verify platform_admin/admin123 still works..." -ForegroundColor Yellow
 try {
-    $adminCheck = Invoke-RestMethod -Uri "$BaseUrl/api/auth/login" -Method Post -Body (@{username = "admin"; password = "admin123" } | ConvertTo-Json) -ContentType "application/json"
-    Write-Host "  ✅ admin/admin123 still works! Role: $($adminCheck.user.role)" -ForegroundColor Green
+    $adminCheck = Invoke-RestMethod -Uri "$BaseUrl/api/auth/login" -Method Post -Body (@{username = "platform_admin"; password = "admin123" } | ConvertTo-Json) -ContentType "application/json"
+    Write-Host "  ✅ platform_admin/admin123 still works! Role: $($adminCheck.user.role)" -ForegroundColor Green
 }
 catch {
-    Write-Host "  ❌ admin/admin123 broken! $_" -ForegroundColor Red
+    Write-Host "  ❌ platform_admin/admin123 broken! $_" -ForegroundColor Red
 }
 
 Write-Host "`n=============================================" -ForegroundColor Cyan

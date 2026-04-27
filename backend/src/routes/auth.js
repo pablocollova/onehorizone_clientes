@@ -1,11 +1,23 @@
 // backend/src/routes/auth.js
 const router = require("express").Router();
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const rateLimit = require("express-rate-limit");
 const prisma = require('../prisma'); // 👈 IMPORTANTE: importar prisma
+const { signAuthToken } = require("../middleware/auth");
 const { sendActivationEmail } = require("../services/email");
+
+function publicUser(user) {
+    return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        status: user.status,
+        clientId: user.clientId,
+    };
+}
 
 // Rate limit for resend-invite
 const resendInviteLimiter = rateLimit({
@@ -15,22 +27,13 @@ const resendInviteLimiter = rateLimit({
 });
 
 // POST /api/auth/login
-router.post("/login", (req, res, next) => {
-    console.log('\n--- [auth/login] Request Logger ---');
-    console.log('Content-Type:', req.headers['content-type']);
-    console.log('Body:', JSON.stringify(req.body));
-    console.log('-----------------------------------\n');
-    next();
-}, async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
 
         if (!username || !password) {
             return res.status(400).json({ error: "username and password required" });
         }
-
-        console.log('🔍 Buscando usuario:', username);
-
         // Support login by username OR email
         const isEmail = username.includes('@');
         const user = await prisma.user.findUnique({
@@ -38,10 +41,8 @@ router.post("/login", (req, res, next) => {
             include: { client: true },
         });
 
-        console.log('👤 Usuario encontrado:', user ? 'Sí' : 'No');
-
         // Check if user exists and has a password
-        if (!user || user.status === "INVITED" || !user.password) {
+        if (!user || user.status !== "ACTIVE" || !user.password) {
             return res.status(401).json({ error: "Invalid credentials or account not active" });
         }
 
@@ -51,35 +52,11 @@ router.post("/login", (req, res, next) => {
             return res.status(401).json({ error: "Invalid credentials" });
         }
 
-        // Crear payload del token
-        const payload = {
-            id: user.id,
-            clientId: user.clientId,
-            username: user.username,
-            role: user.role, // Added role
-            status: user.status // Added status
-        };
-
-        // Generar token
-        const token = jwt.sign(
-            payload,
-            process.env.JWT_SECRET || "dev_secret",
-            { expiresIn: "7d" }
-        );
-
-        console.log('✅ Login exitoso para:', username);
+        const token = signAuthToken(user);
 
         return res.json({
             token,
-            user: {
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                name: user.name,
-                role: user.role,
-                status: user.status,
-                clientId: user.clientId
-            },
+            user: publicUser(user),
         });
 
     } catch (error) {
@@ -140,32 +117,11 @@ router.post("/activate", async (req, res) => {
             data: { usedAt: new Date() }
         });
 
-        // Generate JWT for auto-login
-        const payload = {
-            id: updatedUser.id,
-            clientId: updatedUser.clientId,
-            username: updatedUser.username,
-            role: updatedUser.role,
-            status: updatedUser.status
-        };
-
-        const jwtToken = jwt.sign(
-            payload,
-            process.env.JWT_SECRET || "dev_secret",
-            { expiresIn: "7d" }
-        );
+        const jwtToken = signAuthToken(updatedUser);
 
         return res.json({
             token: jwtToken,
-            user: {
-                id: updatedUser.id,
-                username: updatedUser.username,
-                email: updatedUser.email,
-                name: updatedUser.name,
-                role: updatedUser.role,
-                status: updatedUser.status,
-                clientId: updatedUser.clientId
-            }
+            user: publicUser(updatedUser)
         });
 
     } catch (error) {

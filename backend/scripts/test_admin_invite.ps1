@@ -6,10 +6,10 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host " Testing Admin Invite Flow" -ForegroundColor Cyan
 Write-Host "=============================================" -ForegroundColor Cyan
 
-# 1. Login as PLATFORM_ADMIN (admin/admin123)
-Write-Host "`n1. Logging in as PLATFORM_ADMIN (admin)..." -ForegroundColor Yellow
+# 1. Login as PLATFORM_ADMIN (platform_admin/admin123)
+Write-Host "`n1. Logging in as PLATFORM_ADMIN (platform_admin)..." -ForegroundColor Yellow
 $loginBody = @{
-    username = "admin"
+    username = "platform_admin"
     password = "admin123"
 } | ConvertTo-Json
 
@@ -18,8 +18,13 @@ try {
     $apiToken = $loginResponse.token
     Write-Host "✅ Login successful. Token received." -ForegroundColor Green
     
-    # Store clientId of the platform admin for later
-    $adminClient = $loginResponse.user.clientId
+    $clients = Invoke-RestMethod -Uri "$BaseUrl/api/admin/clients" -Method Get -Headers @{ Authorization = "Bearer $apiToken" }
+    if (-not $clients -or $clients.Count -eq 0) {
+        Write-Host "❌ No clients available for invite." -ForegroundColor Red
+        exit 1
+    }
+    $targetClientId = $clients[0].id
+    Write-Host "Using clientId: $targetClientId" -ForegroundColor Gray
 }
 catch {
     Write-Host "❌ Login failed: $_" -ForegroundColor Red
@@ -32,13 +37,13 @@ $inviteBody = @{
     email    = "test_invite@onehorizon.com"
     name     = "Test Invite"
     role     = "CLIENT_USER"
-    clientId = $adminClient  # Use the same client ID for simplicity
+    clientId = $targetClientId
 } | ConvertTo-Json
 
 try {
-    $inviteResponse = Invoke-RestMethod -Uri "$BaseUrl/api/admin/users/invite" -Method Post -Body $inviteBody -ContentType "application/json" -Headers @{ Authorization = "Bearer $apiToken" }
+    $inviteResponse = Invoke-RestMethod -Uri "$BaseUrl/api/admin/invites" -Method Post -Body $inviteBody -ContentType "application/json" -Headers @{ Authorization = "Bearer $apiToken" }
     Write-Host "✅ Invite sent successfully!" -ForegroundColor Green
-    Write-Host ($inviteResponse | ConvertTo-Json) -ForegroundColor Gray
+    Write-Host "Activation link: $($inviteResponse.inviteLink)" -ForegroundColor Gray
 }
 catch {
     Write-Host "❌ Invite failed: $_" -ForegroundColor Red
@@ -53,5 +58,5 @@ catch {
 }
 
 Write-Host "`n=============================================" -ForegroundColor Cyan
-Write-Host " Please check the backend console for the Activation Link." -ForegroundColor Cyan
+Write-Host " Use the activation link printed above for test_activation.ps1." -ForegroundColor Cyan
 Write-Host "=============================================" -ForegroundColor Cyan

@@ -6,7 +6,7 @@ $BASE = "http://localhost:4000"
 $TOKEN = $global:token
 $CLIENT_ID = "REEMPLAZAR_CON_CLIENT_ID"  # <-- cambiá este valor
 
-Write-Host "`n=== GET /clients/$CLIENT_ID/locations ===" -ForegroundColor Cyan
+Write-Host "`n=== GET /api/clients/$CLIENT_ID/locations ===" -ForegroundColor Cyan
 
 if (-not $TOKEN) {
     Write-Host "⚠️  Sin token. Corré: . .\scripts\test-login.ps1" -ForegroundColor Red
@@ -20,7 +20,7 @@ if ($CLIENT_ID -eq "REEMPLAZAR_CON_CLIENT_ID") {
 }
 
 try {
-    $resp = Invoke-WebRequest -Uri "$BASE/clients/$CLIENT_ID/locations" `
+    $resp = Invoke-WebRequest -Uri "$BASE/api/clients/$CLIENT_ID/locations" `
         -Method GET `
         -Headers @{ Authorization = "Bearer $TOKEN" } `
         -UseBasicParsing

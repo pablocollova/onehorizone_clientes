@@ -36,21 +36,20 @@ const NewRecordModal = ({ clients, onClose, onCreate }) => {
         costEur: '', billingMode: 'REBILL', status: 'PENDING',
     });
     const [locations, setLocations] = useState([]);
-    const [vendors, setVendors] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         if (!form.clientId) { setLocations([]); return; }
         apiGet(`/api/clients/${form.clientId}/locations`)
-            .then(setLocations)
+            .then(data => setLocations(data.locations || []))
             .catch(() => setLocations([]));
     }, [form.clientId]);
 
     // load vendors once
     useEffect(() => {
         apiGet('/api/admin/service-records?_vendors=1') // just to have vendors; we'll add a dedicated endpoint if needed
-            .catch(() => { });
+            .catch(() => undefined);
         // For now we don't have a vendors endpoint, so vendor field is optional text
     }, []);
 
@@ -176,8 +175,6 @@ export const ServiceRecords = () => {
     const [showModal, setShowModal] = useState(false);
     const [filters, setFilters] = useState({ clientId: '', billingMode: '', status: '' });
 
-    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
-
     const fetchRecords = useCallback(() => {
         setLoading(true);
         setError(null);
@@ -194,12 +191,12 @@ export const ServiceRecords = () => {
 
     useEffect(() => {
         if (user?.role === 'PLATFORM_ADMIN') {
-            apiGet('/api/admin/clients').then(setClients).catch(() => { });
+            apiGet('/api/admin/clients').then(setClients).catch(() => undefined);
         }
     }, [user]);
 
     useEffect(() => {
-        if (user?.role === 'PLATFORM_ADMIN') fetchRecords();
+        if (user?.role === 'PLATFORM_ADMIN') queueMicrotask(fetchRecords);
     }, [user, fetchRecords]);
 
     const handleStatusChange = async (rec, newStatus) => {
@@ -210,6 +207,8 @@ export const ServiceRecords = () => {
             alert(err.message);
         }
     };
+
+    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
 
     return (
         <div className="p-8">

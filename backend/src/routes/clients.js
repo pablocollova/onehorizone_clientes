@@ -25,7 +25,7 @@ router.get("/clients", requireAuth, async (req, res) => {
 // GET /clients/:id/locations
 // - Valida que el client exista (404)
 // - Si el token tiene clientId y no coincide con :id → 403
-// - Si existe pero sin locations → 404
+// - Si existe pero sin locations → devuelve array vacío
 router.get("/clients/:id/locations", requireAuth, async (req, res) => {
     try {
         const { id } = req.params;
@@ -56,10 +56,6 @@ router.get("/clients/:id/locations", requireAuth, async (req, res) => {
             },
             orderBy: { label: "asc" },
         });
-
-        if (locations.length === 0) {
-            return res.status(404).json({ error: "No locations found for this client" });
-        }
 
         return res.json({ clientId: id, locations });
     } catch (error) {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const CONSENT_KEY = 'onehorizon_gdpr_consent';
 
@@ -8,7 +8,7 @@ export function useConsent() {
     if (saved) {
       try {
         return JSON.parse(saved);
-      } catch (e) {
+      } catch {
         return null;
       }
     }

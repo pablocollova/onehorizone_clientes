@@ -1,7 +1,0 @@
-﻿
-_logs.txt:21:LINK    : http://loca
-lhost:5173/activate?token=2813b801
-c49041377c50ff809ae3f4df4a108a25d2
-f9143c1eea376b18b803e1
-
-

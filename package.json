@@ -1,6 +1,20 @@
 {
+  "scripts": {
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:db:setup": "node backend/scripts/setup-test-db.js",
+    "test:backend": "npm run test:db:setup && npm run test --prefix backend",
+    "test:frontend": "npm run test --prefix frontend",
+    "test:e2e": "npm run test:db:setup && playwright test",
+    "qa": "npm run lint --prefix frontend && npm run prisma:validate && npm run test && npm run test:e2e",
+    "prisma:validate": "node backend/node_modules/prisma/build/index.js validate --schema backend/prisma/schema.prisma"
+  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.1",
     "pg": "^8.19.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "concurrently": "^9.2.1",
+    "wait-on": "^9.0.5"
   }
 }

@@ -3,14 +3,14 @@
 # Uso: . .\scripts\test-login.ps1  (dot-sourcing para que $token quede en scope)
 
 $BASE = "http://localhost:4000"
-$USERNAME = "admin"      # <-- cambiá si tu usuario es distinto
-$PASSWORD = "admin"      # <-- cambiá si tu password es distinto
+$USERNAME = "platform_admin"
+$PASSWORD = "admin123"
 
-Write-Host "`n=== POST /auth/login ===" -ForegroundColor Cyan
+Write-Host "`n=== POST /api/auth/login ===" -ForegroundColor Cyan
 
 $body = @{ username = $USERNAME; password = $PASSWORD } | ConvertTo-Json
 try {
-    $resp = Invoke-WebRequest -Uri "$BASE/auth/login" `
+    $resp = Invoke-WebRequest -Uri "$BASE/api/auth/login" `
         -Method POST `
         -ContentType "application/json" `
         -Body $body `

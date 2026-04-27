@@ -167,13 +167,7 @@ export const Clients = () => {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    // Guard: redirect non-admins
-    if (user && user.role !== 'PLATFORM_ADMIN') {
-        return <Navigate to="/app/dashboard" replace />;
-    }
-
     const fetchClients = useCallback(() => {
-        setLoading(true);
         apiGet('/api/admin/clients')
             .then(setClients)
             .catch(err => setError(err.message))
@@ -183,6 +177,11 @@ export const Clients = () => {
     useEffect(() => {
         if (user?.role === 'PLATFORM_ADMIN') fetchClients();
     }, [user, fetchClients]);
+
+    // Guard: redirect non-admins
+    if (user && user.role !== 'PLATFORM_ADMIN') {
+        return <Navigate to="/app/dashboard" replace />;
+    }
 
     const handleCreated = (newClient) => {
         // Append the new client immediately (counts default to 0)

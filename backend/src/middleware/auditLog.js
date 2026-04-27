@@ -15,18 +15,22 @@ function auditLog(action) {
         req.socket?.remoteAddress ||
         null;
 
-      // Fire-and-forget — don't block the request
-      prisma.auditLog
-        .create({
-          data: {
-            userId,
-            action,
-            endpoint: `${req.method} ${req.originalUrl}`,
-            ipAddress: ip,
-            userAgent: req.headers['user-agent'] || null,
-          },
-        })
-        .catch((err) => console.error('⚠️ AuditLog write failed:', err.message));
+      const writeAuditLog = prisma.auditLog.create({
+        data: {
+          userId,
+          action,
+          endpoint: `${req.method} ${req.originalUrl}`,
+          ipAddress: ip,
+          userAgent: req.headers['user-agent'] || null,
+        },
+      });
+
+      if (process.env.NODE_ENV === 'test') {
+        await writeAuditLog;
+      } else {
+        // Fire-and-forget outside tests — don't block the request.
+        writeAuditLog.catch((err) => console.error('⚠️ AuditLog write failed:', err.message));
+      }
     } catch (err) {
       console.error('⚠️ AuditLog middleware error:', err.message);
     }

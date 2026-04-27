@@ -11,6 +11,20 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+backend/.env
+frontend/.env
+gdpr_export.json
+playwright-report/
+test-results/
+backend/_logs*.txt
+backend/*output*.txt
+backend/seed-error.txt
+backend/token.txt
 
 # Editor directories and files
 .vscode/*

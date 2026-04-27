@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Eye, Trash2, Edit3, ShieldAlert } from 'lucide-react';
+import React, { useState } from 'react';
+import { Download, Eye, Trash2, Edit3 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 export const PrivacySettings = () => {
     const [userData, setUserData] = useState(null);
     const [viewingData, setViewingData] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
+    const [error, setError] = useState(null);
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
 
     const fetchMyData = async () => {
+        setError(null);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/gdpr/me/data`, {
+            const res = await fetch(`${API_BASE_URL}/api/gdpr/me/data`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
+            if (!res.ok) throw new Error(`Could not load personal data (HTTP ${res.status})`);
             const data = await res.json();
             if (data.user) {
                 setUserData(data.user);
@@ -27,18 +31,18 @@ export const PrivacySettings = () => {
             }
         } catch (e) {
             console.error(e);
+            setError(e.message || 'Could not load personal data');
         }
     };
 
-    const handleExportData = () => {
-        window.open(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/gdpr/me/export?token=${token}`, '_blank');
-        // Normally, passing token in URL isn't perfectly secure but since it's an export download 
-        // passing it or triggering a blob download is standard. Let's do a fetch + blob download.
-        fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/gdpr/me/export`, {
+    const handleExportData = async () => {
+        setError(null);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/gdpr/me/export`, {
             headers: { 'Authorization': `Bearer ${token}` }
-        })
-        .then(res => res.blob())
-        .then(blob => {
+            });
+            if (!res.ok) throw new Error(`Export failed with HTTP ${res.status}`);
+            const blob = await res.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -46,12 +50,17 @@ export const PrivacySettings = () => {
             document.body.appendChild(a);
             a.click();    
             a.remove();
-        });
+            window.URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error(e);
+            setError(e.message || 'Could not export personal data');
+        }
     };
 
     const handleRectify = async () => {
+        setError(null);
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/gdpr/me/rectify`, {
+            const res = await fetch(`${API_BASE_URL}/api/gdpr/me/rectify`, {
                 method: 'PUT',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -67,16 +76,19 @@ export const PrivacySettings = () => {
             }
         } catch (e) {
             console.error(e);
+            setError(e.message || 'Could not update personal data');
         }
     };
 
     const handleDeleteAccount = async () => {
         if (window.confirm("WARNING: This will anonymize your personal data and disable your account. This action cannot be undone. Are you sure?")) {
+            setError(null);
             try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/gdpr/me/delete`, {
+                const res = await fetch(`${API_BASE_URL}/api/gdpr/me/delete`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
+                if (!res.ok) throw new Error(`Could not delete account (HTTP ${res.status})`);
                 if (res.ok) {
                     alert("Your account has been deleted.");
                     localStorage.removeItem("token");
@@ -85,6 +97,7 @@ export const PrivacySettings = () => {
                 }
             } catch (e) {
                 console.error(e);
+                setError(e.message || 'Could not delete account');
             }
         }
     };
@@ -93,6 +106,12 @@ export const PrivacySettings = () => {
         <div className="max-w-4xl mx-auto py-10 px-6">
             <h1 className="text-3xl font-bold text-primary mb-2">Privacy & GDPR Settings</h1>
             <p className="text-text-dark/70 mb-8">Manage your personal data, consents, and account status.</p>
+
+            {error && (
+                <div className="bg-red-50 text-red-600 p-4 rounded-xl mb-6 text-sm border border-red-100">
+                    {error}
+                </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                 {/* Access Data */}
@@ -138,7 +157,7 @@ export const PrivacySettings = () => {
 
             {/* Data Viewing & Editing Section */}
             {viewingData && (
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-bold text-primary">Your Personal Data</h2>
                         <Button variant="outline" size="sm" onClick={() => setViewingData(false)}>Close</Button>
@@ -184,7 +203,7 @@ export const PrivacySettings = () => {
                             </div>
                         </div>
                     )}
-                </motion.div>
+                </div>
             )}
         </div>
     );
