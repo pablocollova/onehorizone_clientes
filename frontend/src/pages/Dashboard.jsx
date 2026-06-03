@@ -123,13 +123,10 @@ export const Dashboard = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Guard: platform admin has no client context — redirect to admin console
-    if (user?.role === 'PLATFORM_ADMIN') {
-        return <Navigate to="/app/admin/clients" replace />;
-    }
+    const isPlatformAdmin = user?.role === 'PLATFORM_ADMIN';
 
     const fetchDashboard = useCallback(async () => {
+        if (isPlatformAdmin) return;
         setLoading(true);
         setError(null);
         try {
@@ -140,11 +137,16 @@ export const Dashboard = () => {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [isPlatformAdmin]);
 
     useEffect(() => {
         fetchDashboard();
     }, [fetchDashboard]);
+
+    // Guard: platform admin has no client context — redirect to admin console
+    if (isPlatformAdmin) {
+        return <Navigate to="/app/admin/clients" replace />;
+    }
 
     // ── Error state ──
     if (error) {

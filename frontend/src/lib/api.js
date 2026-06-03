@@ -24,7 +24,7 @@ export async function apiGet(path, options = {}) {
         try {
             const body = await res.json();
             if (body?.error) message = body.error;
-        } catch {}
+        } catch { /* response body was not JSON */ }
         throw new Error(message);
     }
 
@@ -45,7 +45,7 @@ export async function apiPost(path, body, options = {}) {
         try {
             const errBody = await res.json();
             if (errBody?.error) message = errBody.error;
-        } catch {}
+        } catch { /* response body was not JSON */ }
         throw new Error(message);
     }
 
@@ -66,7 +66,7 @@ export async function apiPatch(path, body, options = {}) {
         try {
             const errBody = await res.json();
             if (errBody?.error) message = errBody.error;
-        } catch {}
+        } catch { /* response body was not JSON */ }
         throw new Error(message);
     }
 

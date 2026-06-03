@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiGet, apiPost, apiPatch } from '../../lib/api';
-import { FileText, Plus, X, Loader2, Check } from 'lucide-react';
+import { FileText, Plus, X, Loader2 } from 'lucide-react';
 
 const TYPE_COLORS = {
     ONEHORIZON_FEE: 'bg-primary/10 text-primary',
@@ -42,7 +42,7 @@ const NewInvoiceModal = ({ clients, onClose, onCreate }) => {
     useEffect(() => {
         if (!form.clientId) { setLocations([]); return; }
         apiGet(`/api/clients/${form.clientId}/locations`)
-            .then(setLocations)
+            .then(data => setLocations(data.locations || []))
             .catch(() => setLocations([]));
     }, [form.clientId]);
 
@@ -151,8 +151,6 @@ export const Invoices = () => {
     const [showModal, setShowModal] = useState(false);
     const [filters, setFilters] = useState({ clientId: '', type: '', status: '' });
 
-    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
-
     const fetchInvoices = useCallback(() => {
         setLoading(true);
         setError(null);
@@ -169,12 +167,12 @@ export const Invoices = () => {
 
     useEffect(() => {
         if (user?.role === 'PLATFORM_ADMIN') {
-            apiGet('/api/admin/clients').then(setClients).catch(() => { });
+            apiGet('/api/admin/clients').then(setClients).catch(() => undefined);
         }
     }, [user]);
 
     useEffect(() => {
-        if (user?.role === 'PLATFORM_ADMIN') fetchInvoices();
+        if (user?.role === 'PLATFORM_ADMIN') queueMicrotask(fetchInvoices);
     }, [user, fetchInvoices]);
 
     const handleStatusChange = async (inv, newStatus) => {
@@ -185,6 +183,8 @@ export const Invoices = () => {
             alert(err.message);
         }
     };
+
+    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
 
     return (
         <div className="p-8">

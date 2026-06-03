@@ -6,6 +6,10 @@ const prisma = require("../src/prisma");
 async function main() {
   console.log("🌱 Seeding database...");
 
+  await prisma.auditLog.deleteMany();
+  await prisma.gdprRequest.deleteMany();
+  await prisma.consentLog.deleteMany();
+  await prisma.serviceRecord.deleteMany();
   await prisma.payment.deleteMany();
   await prisma.document.deleteMany();
   await prisma.invoice.deleteMany();
@@ -37,6 +41,7 @@ async function main() {
     data: [
       {
         username: "platform_admin",
+        email: "platform_admin@onehorizon.local",
         password,
         name: "Platform Admin",
         clientId: null, // Platform-level, no specific client
@@ -45,6 +50,7 @@ async function main() {
       },
       {
         username: "horizon_admin",
+        email: "horizon_admin@onehorizon.local",
         password,
         name: "Horizon Admin",
         clientId: horizon.id,
@@ -53,6 +59,7 @@ async function main() {
       },
       {
         username: "manager",
+        email: "manager@onehorizon.local",
         password,
         name: "Horizon Manager",
         clientId: horizon.id,
@@ -61,6 +68,7 @@ async function main() {
       },
       {
         username: "atlantic_admin",
+        email: "atlantic_admin@onehorizon.local",
         password,
         name: "Atlantic Admin",
         clientId: atlantic.id,
@@ -69,6 +77,7 @@ async function main() {
       },
       {
         username: "atlantic_user",
+        email: "atlantic_user@onehorizon.local",
         password,
         name: "Atlantic User",
         clientId: atlantic.id,

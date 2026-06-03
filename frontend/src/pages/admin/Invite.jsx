@@ -20,14 +20,16 @@ export const Invite = () => {
     const [copied, setCopied] = useState(false);
     const [error, setError] = useState(null);
 
-    // Guard
-    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
-
     useEffect(() => {
+        if (user?.role !== 'PLATFORM_ADMIN') return;
+
         apiGet('/api/admin/clients')
             .then(setClients)
-            .catch(() => { }); // non-critical failure
-    }, []);
+            .catch(() => { /* non-critical failure */ });
+    }, [user]);
+
+    // Guard
+    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
 
     const needsClient = form.role !== 'PLATFORM_ADMIN';
 
@@ -58,7 +60,7 @@ export const Invite = () => {
             await navigator.clipboard.writeText(inviteLink);
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
-        } catch { }
+        } catch { /* clipboard access can fail without blocking invite creation */ }
     };
 
     return (

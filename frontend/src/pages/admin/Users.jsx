@@ -24,11 +24,6 @@ export const Users = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Guard
-    if (user && user.role !== 'PLATFORM_ADMIN') {
-        return <Navigate to="/app/dashboard" replace />;
-    }
-
     useEffect(() => {
         if (user?.role !== 'PLATFORM_ADMIN') return;
 
@@ -47,6 +42,11 @@ export const Users = () => {
             .catch(err => setError(err.message))
             .finally(() => setLoading(false));
     }, [user, filter]);
+
+    // Guard
+    if (user && user.role !== 'PLATFORM_ADMIN') {
+        return <Navigate to="/app/dashboard" replace />;
+    }
 
     const handleFilterChange = (e) => {
         setLoading(true);

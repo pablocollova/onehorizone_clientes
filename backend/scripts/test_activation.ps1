@@ -1,7 +1,12 @@
 # scripts/test_activation.ps1
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$Token,
+    [string]$Email = "test_invite@onehorizon.com",
+    [string]$Password = "NewSecurePassword123!"
+)
 
 $BaseUrl = "http://localhost:4000"
-$Token = "2813b801c49041377c50ff809ae3f4df4a108a25d2f9143c1eea376b18b803e1"  # Token extracted from logs
 
 Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host " Testing User Activation Flow" -ForegroundColor Cyan
@@ -10,7 +15,7 @@ Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host "`n1. Activating user with token ending in $($Token.Substring($Token.Length - 6))..." -ForegroundColor Yellow
 $activateBody = @{
     token    = $Token
-    password = "NewSecurePassword123!"
+    password = $Password
     profile  = @{
         phone     = "+34 600 123 456"
         address   = "Test St. 123, Madrid"
@@ -44,8 +49,8 @@ catch {
 # 3. Test logging in with new credentials
 Write-Host "`n2. Logging in with new credentials..." -ForegroundColor Yellow
 $loginBody = @{
-    username = "test_invite@onehorizon.com"  # username is the email
-    password = "NewSecurePassword123!"
+    username = $Email
+    password = $Password
 } | ConvertTo-Json
 
 try {

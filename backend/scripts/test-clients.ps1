@@ -4,7 +4,7 @@
 $BASE = "http://localhost:4000"
 $TOKEN = $global:token
 
-Write-Host "`n=== GET /clients ===" -ForegroundColor Cyan
+Write-Host "`n=== GET /api/clients ===" -ForegroundColor Cyan
 
 if (-not $TOKEN) {
     Write-Host "⚠️  Sin token. Corré: . .\scripts\test-login.ps1" -ForegroundColor Red
@@ -12,7 +12,7 @@ if (-not $TOKEN) {
 }
 
 try {
-    $resp = Invoke-WebRequest -Uri "$BASE/clients" `
+    $resp = Invoke-WebRequest -Uri "$BASE/api/clients" `
         -Method GET `
         -Headers @{ Authorization = "Bearer $TOKEN" } `
         -UseBasicParsing

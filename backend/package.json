@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
+    "test": "cross-env NODE_ENV=test vitest run",
+    "test:watch": "cross-env NODE_ENV=test vitest",
+    "test:integration": "cross-env NODE_ENV=test vitest run tests/integration",
     "build:prisma": "prisma generate",
     "postinstall": "prisma generate"
   },
@@ -28,6 +31,9 @@
     "prisma": "^7.4.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "cross-env": "^10.1.0",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.5"
   }
 }

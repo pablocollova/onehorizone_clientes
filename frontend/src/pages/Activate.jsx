@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { apiPost } from '../lib/api';
 import { CheckCircle } from 'lucide-react';
 
 export const Activate = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
-    const { login } = useAuth();
 
     const [formData, setFormData] = useState({
         password: '',
