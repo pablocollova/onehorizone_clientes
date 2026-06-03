@@ -1,16 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Building2, BriefcaseBusiness, Hotel, Store } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { landingImages } from '../content/visualDirection';
+
+const audienceIcons = [BriefcaseBusiness, Building2, Hotel, Store];
 
 export const WhoWeAre = () => {
     const { t } = useTranslation();
+
     return (
-        <section id="who-we-are" className="py-24 bg-white overflow-hidden">
+        <section id="who-we-help" className="py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
-
-                    {/* Text Content */}
                     <motion.div
                         initial={{ opacity: 0, x: -50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -25,19 +27,38 @@ export const WhoWeAre = () => {
                             {t('who_we_are.description')}
                         </p>
 
-                        <ul className="space-y-4">
+                        <ul className="space-y-4 mb-10">
                             {[0, 1, 2, 3, 4].map((index) => (
                                 <li key={index} className="flex items-center space-x-3">
-                                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent">
-                                        <Check size={14} strokeWidth={3} />
+                                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-bold">
+                                        {index + 1}
                                     </span>
                                     <span className="text-text-dark font-medium">{t(`who_we_are.features.${index}`)}</span>
                                 </li>
                             ))}
                         </ul>
+
+                        <div className="grid gap-4 sm:grid-cols-2">
+                            {[0, 1, 2, 3].map((index) => {
+                                const Icon = audienceIcons[index];
+
+                                return (
+                                    <div key={index} className="rounded-2xl border border-primary/10 bg-neutral-bg p-5">
+                                        <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-white">
+                                            <Icon size={20} />
+                                        </div>
+                                        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-accent mb-2">
+                                            {t(`who_we_are.audiences.${index}.label`)}
+                                        </p>
+                                        <p className="text-text-dark/75 leading-relaxed">
+                                            {t(`who_we_are.audiences.${index}.desc`)}
+                                        </p>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </motion.div>
 
-                    {/* Real Image */}
                     <motion.div
                         initial={{ opacity: 0, x: 50 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -47,10 +68,22 @@ export const WhoWeAre = () => {
                     >
                         <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl">
                             <img
-                                src="/images/who_we_are_team.png"
-                                alt="One Horizon Spain team"
+                                src={landingImages.whoWeHelp.src}
+                                alt={t('images.who_we_help.alt')}
+                                data-image-prompt={landingImages.whoWeHelp.prompt}
                                 className="w-full h-full object-cover"
                             />
+                        </div>
+                        <div className="absolute bottom-6 left-6 right-6 rounded-2xl bg-white/90 p-5 shadow-lg backdrop-blur-sm">
+                            <p className="text-sm font-bold uppercase tracking-[0.18em] text-accent mb-2">
+                                {t('who_we_are.callout.subtitle')}
+                            </p>
+                            <p className="text-lg font-semibold text-primary leading-snug">
+                                {t('who_we_are.callout.title')}
+                            </p>
+                            <p className="mt-2 text-sm leading-relaxed text-text-dark/75">
+                                {t('who_we_are.callout.description')}
+                            </p>
                         </div>
                         <div className="absolute -inset-4 border-2 border-primary/5 rounded-3xl -z-10" />
                     </motion.div>

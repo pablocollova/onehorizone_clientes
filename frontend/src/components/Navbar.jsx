@@ -5,6 +5,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { useTranslation } from 'react-i18next';
 
+const businessLinks = [
+    { href: '/#who-we-help', key: 'who_we_help' },
+    { href: '/#services', key: 'business_services' },
+    { href: '/#how-we-work', key: 'how_we_work' },
+    { href: '/#portal', key: 'portal' },
+];
+
 export const Navbar = () => {
     const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
@@ -25,9 +32,12 @@ export const Navbar = () => {
                 </Link>
 
                 <div className="hidden md:flex items-center space-x-8">
-                    <NavLink href="/#who-we-are">{t('navbar.who_we_are')}</NavLink>
-                    <NavLink href="/#why-choose-us">{t('navbar.why_choose_us')}</NavLink>
-                    <NavLink href="/#services">{t('navbar.services')}</NavLink>
+                    {businessLinks.map((link) => (
+                        <NavLink key={link.key} href={link.href}>{t(`navbar.${link.key}`)}</NavLink>
+                    ))}
+                    <Link to="/private-services" className="rounded-full border border-primary/15 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5">
+                        {t('navbar.private_clients')}
+                    </Link>
                     
                     <div className="flex items-center gap-4 border-l border-gray-200 pl-4">
                         <button 
@@ -39,7 +49,9 @@ export const Navbar = () => {
                         <Button variant="outline" className="flex items-center gap-2 border-primary/20 hover:bg-primary/5" onClick={() => navigate('/login')}>
                             <LogIn size={16} /> {t('navbar.login')}
                         </Button>
-                        <Button variant="primary">{t('navbar.contact_us')}</Button>
+                        <Button variant="primary" onClick={() => { window.location.href = '/#contact'; }}>
+                            {t('navbar.book_consultation')}
+                        </Button>
                     </div>
                 </div>
 
@@ -57,9 +69,12 @@ export const Navbar = () => {
                         className="absolute top-full left-0 w-full bg-white shadow-lg overflow-hidden md:hidden"
                     >
                         <div className="flex flex-col p-6 space-y-4">
-                            <MobileNavLink href="#who-we-are" onClick={() => setIsOpen(false)}>{t('navbar.who_we_are')}</MobileNavLink>
-                            <MobileNavLink href="#why-choose-us" onClick={() => setIsOpen(false)}>{t('navbar.why_choose_us')}</MobileNavLink>
-                            <MobileNavLink href="#services" onClick={() => setIsOpen(false)}>{t('navbar.services')}</MobileNavLink>
+                            {businessLinks.map((link) => (
+                                <MobileNavLink key={link.key} href={link.href} onClick={() => setIsOpen(false)}>{t(`navbar.${link.key}`)}</MobileNavLink>
+                            ))}
+                            <Link to="/private-services" onClick={() => setIsOpen(false)} className="text-lg text-primary font-semibold block py-2 border-b border-gray-100">
+                                {t('navbar.private_clients')}
+                            </Link>
                             
                             <div className="flex items-center justify-between py-2 border-b border-gray-100">
                                 <span className="text-text-dark font-medium">Language</span>
@@ -77,7 +92,9 @@ export const Navbar = () => {
                             <Button variant="outline" className="w-full flex items-center justify-center gap-2" onClick={() => { navigate('/login'); setIsOpen(false); }}>
                                 <LogIn size={16} /> {t('navbar.login')}
                             </Button>
-                            <Button variant="primary" className="w-full">{t('navbar.contact_us')}</Button>
+                            <Button variant="primary" className="w-full" onClick={() => { window.location.href = '/#contact'; setIsOpen(false); }}>
+                                {t('navbar.book_consultation')}
+                            </Button>
                         </div>
                     </motion.div>
                 )}

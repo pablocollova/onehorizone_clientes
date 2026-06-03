@@ -1,13 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, Star } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useTranslation } from 'react-i18next';
+import { landingImages } from '../content/visualDirection';
 
 export const Bundles = () => {
     const { t } = useTranslation();
     return (
-        <section id="bundles" className="py-24 bg-neutral-bg">
+        <section id="how-we-work" className="py-24 bg-neutral-bg">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">{t('bundles.subtitle')}</h2>
@@ -19,11 +20,11 @@ export const Bundles = () => {
                     </p>
                 </div>
 
-                {/* Lifestyle image banner */}
-                <div className="relative rounded-2xl overflow-hidden mb-16 h-64 shadow-xl">
+                <div id="portal" className="relative rounded-2xl overflow-hidden mb-16 min-h-[18rem] shadow-xl">
                     <img
-                        src="/images/lifestyle_spain.png"
-                        alt="Luxury lifestyle in Spain"
+                        src={landingImages.portal.src}
+                        alt={t('images.portal.alt')}
+                        data-image-prompt={landingImages.portal.prompt}
                         className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent flex items-center px-6 md:px-12">
@@ -35,7 +36,7 @@ export const Bundles = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start max-w-5xl mx-auto">
                     {[0, 1].map((index) => {
                         const dark = index === 1;
                         return (

@@ -4,6 +4,7 @@ import { WhoWeAre } from '../sections/WhoWeAre';
 import { WhyChooseUs } from '../sections/WhyChooseUs';
 import { Services } from '../sections/Services';
 import { Bundles } from '../sections/Bundles';
+import { PrivateClientsTeaser } from '../sections/PrivateClientsTeaser';
 import { Contact } from '../sections/Contact';
 
 export const Landing = () => {
@@ -11,9 +12,10 @@ export const Landing = () => {
         <>
             <Hero />
             <WhoWeAre />
-            <WhyChooseUs />
             <Services />
+            <WhyChooseUs />
             <Bundles />
+            <PrivateClientsTeaser />
             <Contact />
         </>
     );

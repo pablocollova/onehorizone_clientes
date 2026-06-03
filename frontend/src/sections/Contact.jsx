@@ -108,9 +108,10 @@ export const Contact = () => {
                                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-transparent transition-all bg-white"
                                 >
                                     <option value="">{t('contact.form.service_placeholder')}</option>
-                                    <option value="Personal Relocation">{t('contact.form.service_options.personal')}</option>
-                                    <option value="Business Setup">{t('contact.form.service_options.business')}</option>
-                                    <option value="Concierge">{t('contact.form.service_options.concierge')}</option>
+                                    <option value="Business Setup">{t('contact.form.service_options.business_setup')}</option>
+                                    <option value="Operations Support">{t('contact.form.service_options.operations_support')}</option>
+                                    <option value="Compliance and Licences">{t('contact.form.service_options.compliance')}</option>
+                                    <option value="Private Support">{t('contact.form.service_options.private')}</option>
                                     <option value="Other">{t('contact.form.service_options.other')}</option>
                                 </select>
                             </div>

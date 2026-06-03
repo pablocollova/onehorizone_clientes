@@ -1,131 +1,229 @@
 {
   "navbar": {
-    "who_we_are": "Who We Are",
-    "why_choose_us": "Why Choose Us",
-    "services": "Services",
+    "who_we_help": "Who We Help",
+    "business_services": "Business Services",
+    "how_we_work": "How We Work",
+    "portal": "Client Portal",
+    "private_clients": "For Private Clients",
     "login": "Login",
-    "contact_us": "Contact Us"
+    "book_consultation": "Book a Business Consultation"
   },
   "hero": {
-    "start_journey": "Start Your Journey",
-    "heading_start": "Buying or opening a business in ",
-    "heading_spain": "Spain?",
-    "heading_end": "We get it open, compliant, and running.",
-    "subheading": "Utilities, licences, hygiene plans, insurance — all coordinated for you, from day one.",
-    "explore_services": "Explore Our Services",
-    "contact_us": "Contact Us"
+    "eyebrow": "Costa del Sol Business Operations",
+    "heading_start": "Open, acquire, or stabilise your",
+    "heading_focus": "business in Spain",
+    "heading_end": "with one operational partner coordinating the practical side.",
+    "subheading": "One Horizon supports entrepreneurs, investors, hotels, restaurants, commercial premises, and operating companies with utilities, licences, compliance, insurance, documentation, vendor coordination, and ongoing support.",
+    "primary_cta": "Get Your Business Operational",
+    "secondary_cta": "Looking for private support?",
+    "image_alt": "Costa del Sol coastline presented as a business destination in Spain",
+    "image_eyebrow": "Costa del Sol / Spain",
+    "image_title": "On-the-ground support for openings, takeovers, and active operations.",
+    "panel": {
+      "subtitle": "Operational Focus",
+      "title": "Built for active businesses on the Costa del Sol",
+      "sectors": {
+        "0": {
+          "label": "Investors",
+          "desc": "Acquisitions, takeovers, and post-deal operational setup."
+        },
+        "1": {
+          "label": "Hospitality",
+          "desc": "Hotels, restaurants, and venue operators needing continuity."
+        },
+        "2": {
+          "label": "Commercial",
+          "desc": "Retail, premises, and companies opening or reorganising in Spain."
+        }
+      },
+      "stack_subtitle": "What we coordinate",
+      "stack": {
+        "0": "Utilities, suppliers, and service onboarding",
+        "1": "Licences, compliance files, and operational documents",
+        "2": "Insurance, maintenance follow-up, and vendor coordination",
+        "3": "Ongoing support after opening, takeover, or relaunch"
+      }
+    },
+    "proofs": {
+      "0": {
+        "title": "Setup and opening support",
+        "desc": "From acquisition handover to first-day opening tasks across Spain and Costa del Sol."
+      },
+      "1": {
+        "title": "Compliance and documentation",
+        "desc": "Licences, hygiene plans, insurance records, and practical paperwork kept under control."
+      },
+      "2": {
+        "title": "Ongoing operational continuity",
+        "desc": "Utilities, vendors, renewals, and follow-up handled so your team can focus on trading."
+      }
+    }
   },
   "who_we_are": {
-    "subtitle": "Who We Are",
-    "title": "Your Operational Backbone in Spain",
-    "description": "We’re not a gestoría. We’re not a law firm. We started as energy advisors, working alongside lawyers on business purchases. While they handled the legal side, we handled everything after — utilities, hygiene plans, insurance, compliance. That gap became our business.",
+    "subtitle": "Who We Help",
+    "title": "Built for operators, owners, and investors who need business support on the ground in Spain.",
+    "description": "We are the operational backbone behind business openings, takeovers, and day-to-day continuity. We step in once the legal or transactional decision is made and keep the practical side moving.",
     "features": {
-      "0": "Utilities setup & management",
-      "1": "Hygiene Plan",
-      "2": "APPCC compliance",
-      "3": "Business licence coordination",
-      "4": "Ongoing retainer & document portal"
+      "0": "Business setup planning from acquisition or pre-opening stage",
+      "1": "Utilities, suppliers, and maintenance coordination",
+      "2": "Hygiene plans, APPCC, and compliance follow-through",
+      "3": "Insurance, licences, and documentation management",
+      "4": "Ongoing support through one point of contact and client portal"
+    },
+    "audiences": {
+      "0": {
+        "label": "Entrepreneurs",
+        "desc": "Founders launching a first operation or expanding into the Spanish market."
+      },
+      "1": {
+        "label": "Investors",
+        "desc": "Buyers taking over hospitality, retail, or commercial assets that must keep running."
+      },
+      "2": {
+        "label": "Hotels & Restaurants",
+        "desc": "Operators who need fast coordination across hygiene, vendors, utilities, and compliance."
+      },
+      "3": {
+        "label": "Commercial Premises",
+        "desc": "Businesses that need reliable local execution after signing, fitting out, or reopening."
+      }
+    },
+    "callout": {
+      "subtitle": "Operational Focus",
+      "title": "Not a law firm. Not a gestoría. The practical layer that gets business moving.",
+      "description": "We coordinate what happens after the decision to open, acquire, or reorganise has already been made."
     }
   },
   "why_choose_us": {
-    "subtitle": "Why Choose Us",
-    "title": "One Contact. Every Solution.",
-    "description": "We’re not a gestoría. We’re not a law firm. We’re the operational backbone that makes your life or business in Spain actually work.",
+    "subtitle": "Why Companies Choose Us",
+    "title": "One operational partner across the moving parts.",
+    "description": "Companies choose One Horizon when they need local execution, clear coordination, and fewer operational blind spots during setup or ongoing activity in Spain.",
     "reasons": {
-      "local_title": "Local Knowledge",
-      "local_desc": "Deep knowledge of how Spanish councils, utilities and compliance actually work.",
-      "time_title": "Time-Saving",
-      "time_desc": "We handle the bureaucracy so you can focus on running your business.",
-      "trusted_title": "Trusted Partners",
-      "trusted_desc": "Vetted lawyers, gestorías, insurers and tradespeople, all coordinated by us.",
-      "contact_title": "One Point of Contact",
-      "contact_desc": "You deal with one person. We deal with everyone else."
+      "local_title": "Local Execution Knowledge",
+      "local_desc": "We understand how Spanish councils, suppliers, insurers, and compliance requirements behave in practice.",
+      "time_title": "Management Time Back",
+      "time_desc": "You keep your focus on acquisition, opening, sales, or staff while we coordinate the operational backlog.",
+      "trusted_title": "Trusted Specialist Network",
+      "trusted_desc": "Lawyers, gestorías, insurers, and trades are brought in when needed, but coordinated through one relationship.",
+      "contact_title": "Single Point of Accountability",
+      "contact_desc": "Instead of chasing multiple providers, your team has one contact driving follow-up and continuity."
     }
   },
   "services": {
-    "subtitle": "Our Expertise",
-    "title": "Services Tailored to You",
-    "description": "Whether you are moving your family or expanding your business, we provide the specialized support you need.",
-    "tabs": {
-      "personal": "Personal & Relocation",
-      "business": "Business & Corporate"
-    },
-    "personal": {
-      "0": { "title": "Utilities Setup", "desc": "Electricity, water and internet set up for your home" },
-      "1": { "title": "NIE & Empadronamiento", "desc": "Coordinated through our legal partner network" },
-      "2": { "title": "Residential Insurance", "desc": "Home and contents cover arranged for you" },
-      "3": { "title": "Bill Management", "desc": "We track your bills so nothing gets missed" },
-      "4": { "title": "Home Maintenance", "desc": "Reliable local tradespeople, coordinated by us" },
-      "5": { "title": "Document Portal", "desc": "All your important documents in one secure place" }
-    },
+    "subtitle": "Business Services",
+    "title": "The practical support layer behind a functioning business in Spain.",
+    "description": "Our work is designed around the operational tasks that sit between acquisition, opening, compliance, suppliers, and daily continuity.",
     "business": {
-      "0": { "title": "Utilities Setup & Mgt", "desc": "Commercial contracts for electricity, water and internet" },
-      "1": { "title": "Hygiene Plan / APPCC", "desc": "Mandatory food safety compliance, we produce and file it" },
-      "2": { "title": "Licence Coordination", "desc": "Licencia de apertura, with our legal partners" },
-      "3": { "title": "Commercial Insurance", "desc": "Right cover for your premises and liability" },
-      "4": { "title": "Trades & Maintenance", "desc": "Vetted electricians, plumbers, refrigeration specialists" },
-      "5": { "title": "Company setup", "desc": "Autónomo, SL and SA setup" },
-      "6": { "title": "Document Portal", "desc": "Invoices, compliance records and contracts in one place" }
+      "0": { "title": "Utilities and Contracts", "desc": "Commercial electricity, water, internet, and other essential services configured, transferred, or optimised for active premises." },
+      "1": { "title": "Licences and Documentation", "desc": "Operational documentation, opening requirements, and licence coordination followed through with the right local partners." },
+      "2": { "title": "Hygiene Plans and Compliance", "desc": "APPCC, hygiene plans, and practical compliance actions prepared for hospitality and regulated operations." },
+      "3": { "title": "Insurance and Risk Cover", "desc": "Commercial insurance coordination for premises, liability, and business continuity requirements." },
+      "4": { "title": "Vendor and Maintenance Coordination", "desc": "Trades, refrigeration, repairs, inspections, and specialist follow-up organised through one operational contact." },
+      "5": { "title": "Ongoing Back-Office Support", "desc": "Bills, renewals, records, and recurring operational admin kept visible and organised after launch." }
     },
-    "learn_more": "Learn More"
+    "learn_more": "Business support"
   },
   "bundles": {
-    "subtitle": "Our Bundles",
-    "title": "Everything You Need, Packaged",
-    "description": "Choose a package that suits your needs, or contact us for a bespoke proposal.",
+    "subtitle": "How We Work",
+    "title": "From setup to stable operations.",
+    "description": "We support the two moments that matter most: getting the business operational, and keeping it operational without management friction.",
     "banner": {
-      "subtitle": "Your New Beginning",
-      "title": "Life in Spain,\nExactly as You Imagined",
-      "description": "From the first day you arrive to the moment you feel at home."
+      "subtitle": "Client Portal and Control",
+      "title": "Documents, invoices, follow-up,\nall in one operational view",
+      "description": "A structured place for business records, compliance items, supplier follow-up, and ongoing visibility."
     },
     "bundle_0": {
-      "label": "STAGE 1 — ONE-OFF SETUP",
-      "name": "Business Kickstart",
-      "desc": "Everything you need to open or take over a business in Spain, managed end to end.",
-      "button": "Request a Quote",
+      "label": "PHASE 1 - OPENING OR TAKEOVER",
+      "name": "Business Setup",
+      "desc": "We handle the practical layer around opening, acquisition, or reactivation so the business can start cleanly and faster.",
+      "button": "Start Your Business Setup",
       "features": {
-        "0": "Utilities setup",
-        "1": "Hygiene Plan",
-        "2": "Business licence",
-        "3": "Commercial insurance",
-        "4": "Client portal setup"
+        "0": "Utilities and supplier onboarding",
+        "1": "Hygiene plan and APPCC coordination",
+        "2": "Licence and documentation follow-up",
+        "3": "Insurance setup and coverage alignment",
+        "4": "Initial client portal and records organisation"
       }
     },
     "bundle_1": {
-      "label": "STAGE 2 — MONTHLY RETAINER",
-      "name": "Operations Retainer",
-      "desc": "Once open, we keep everything running. One monthly fee. No surprises.",
-      "button": "Get In Touch",
+      "label": "PHASE 2 - ONGOING SUPPORT",
+      "name": "Operational Continuity",
+      "desc": "Once the business is running, we stay close to the recurring operational work that owners and managers should not have to chase daily.",
+      "button": "Book Operational Support",
       "features": {
-        "0": "Accounting coordination",
-        "1": "1 maintenance visit per month",
-        "2": "Document portal",
-        "3": "Utility & bill management",
-        "4": "Compliance monitoring"
+        "0": "Vendor coordination and follow-up",
+        "1": "Utility and bill management",
+        "2": "Document portal upkeep",
+        "3": "Compliance reminders and renewals",
+        "4": "One point of contact for practical issues"
       }
     }
   },
+  "private_clients_teaser": {
+    "subtitle": "Private Services",
+    "title": "Private client support is still available, but intentionally separate from our core business offering.",
+    "description": "We continue to help selected private clients in Costa del Sol with practical relocation and property support, without diluting our main role as a business operations partner.",
+    "primary_cta": "View private client services",
+    "secondary_cta": "Book a business consultation",
+    "note": "Private support remains available through a dedicated route.",
+    "features": {
+      "0": { "title": "Home utilities", "desc": "Electricity, water, internet, and household setup handled in a practical way." },
+      "1": { "title": "Documents and local admin", "desc": "Support around paperwork, records, and trusted local coordination." },
+      "2": { "title": "Property maintenance", "desc": "Reliable trades and household follow-up when ongoing help is needed." },
+      "3": { "title": "Insurance and essentials", "desc": "Selected private cover and practical essentials arranged through our network." }
+    }
+  },
+  "private_page": {
+    "subtitle": "Private Client Services",
+    "title": "Selected private support for clients living, relocating, or managing property in Costa del Sol.",
+    "description": "Our main positioning is business-first, but we also support a smaller number of private clients who need reliable local coordination and practical help on the ground.",
+    "note": "If your priority is a business opening, acquisition, or operational issue, the main business consultation route remains the best place to start.",
+    "services": {
+      "0": { "title": "Home Utilities Setup", "desc": "Electricity, water, internet, and account configuration for a smoother arrival or property handover." },
+      "1": { "title": "Document Coordination", "desc": "Support with practical local admin, records, and the trusted partner coordination that private clients often need." },
+      "2": { "title": "Property Maintenance", "desc": "Reliable trades and local follow-up for repairs, inspections, and household continuity." },
+      "3": { "title": "Private Insurance Support", "desc": "Home and essential cover arranged through suitable insurance partners." },
+      "4": { "title": "Portal and Record Keeping", "desc": "Important documents and household references kept organised in one place." },
+      "5": { "title": "Trusted Ongoing Help", "desc": "A practical point of contact for recurring local issues that require coordination rather than legal work." }
+    },
+    "cta": {
+      "subtitle": "Need business support instead?",
+      "title": "One Horizon is built first for companies operating in Spain.",
+      "description": "If you are opening, acquiring, or running a business, we can help with the practical side that sits between strategy and daily operations.",
+      "primary": "Book a business consultation",
+      "secondary": "Back to business homepage"
+    }
+  },
   "contact": {
-    "subtitle": "Get in Touch",
-    "title": "Let's Start the Conversation",
-    "description": "Ready to simplify your life in Spain? Contact us today for a confidential consultation.",
+    "subtitle": "Business Consultation",
+    "title": "Tell us what your business needs to get operational in Spain.",
+    "description": "Whether you are planning an opening, taking over an existing business, or need operational support after launch, we can map the practical next steps.",
     "location": "Costa del Sol",
     "form": {
       "name": "Full Name",
       "name_placeholder": "John Doe",
       "email": "Email Address",
       "email_placeholder": "john@example.com",
-      "service": "Service Interest",
-      "service_placeholder": "Select a service...",
+      "service": "What do you need help with?",
+      "service_placeholder": "Select a consultation type...",
       "service_options": {
-        "personal": "Personal Relocation",
-        "business": "Business Setup",
-        "concierge": "Lifestyle Concierge",
+        "business_setup": "Business setup or opening",
+        "operations_support": "Ongoing operational support",
+        "compliance": "Compliance, licences, or documentation",
+        "private": "Private client support",
         "other": "Other"
       },
       "message": "Message",
-      "message_placeholder": "How can we help you?",
-      "submit": "Send Message"
+      "message_placeholder": "Tell us about the business, location, timeline, or operational issue.",
+      "submit": "Request Consultation"
+    }
+  },
+  "images": {
+    "who_we_help": {
+      "alt": "Operational coordination meeting for a business in Spain"
+    },
+    "portal": {
+      "alt": "Business documents and operational support workflow in Spain"
     }
   },
   "footer": {

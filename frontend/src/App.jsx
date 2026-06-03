@@ -17,6 +17,7 @@ import { ServiceRecords } from './pages/admin/ServiceRecords';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { PrivacySettings } from './pages/PrivacySettings';
+import { PrivateServices } from './pages/PrivateServices';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           {/* Public Routes */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Landing />} />
+            <Route path="/private-services" element={<PrivateServices />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Route>
 
