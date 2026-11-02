@@ -37,3 +37,10 @@ Próxima acción y responsable:
 - Validación: `npm ci --prefix frontend --ignore-scripts --no-audit --no-fund` completado; `npm run lint --prefix frontend` PASS. `npm run test:frontend` inicial falló 32/32 con Node v26.10.0 por localStorage no disponible. Repetido con `$env:NODE_OPTIONS='--no-experimental-webstorage'; npm run test:frontend`: 7 archivos, 32/32 PASS. Opción limitada al proceso de prueba; ningún cambio funcional. Nueve documentos con enlaces internos válidos; revisión de whitespace PASS, solo avisos LF/CRLF.
 - Producción: sin accesos a DB, migraciones, seed o despliegue. Publicación remota pendiente hasta verificar automatismos. No se afirma que estos archivos ya estén visibles para otros asistentes en GitHub.
 - Próximo paso propuesto: T01, entorno aislado T07/T13 y reproducción T02/T03 antes de ampliar módulos. Responsable pendiente de asignación.
+
+### 2026-11-02 - Codex - publicación documental autorizada
+
+- El usuario autorizó subir `docs/gestion-diagnostico-b2b` sin desplegar ni tocar producción, y abrió sesión Railway para revisar configuración.
+- Verificación previa en `publicacion-github.md`: Vercel identificado; Railway vinculado a main en los dos servicios existentes revisados; proyecto histórico exemplary-analysis sin servicios; GitHub sin workflows/webhooks propios.
+- Se incluyen dos archivos de protección Vercel, en raíz y frontend, que excluyen únicamente esta rama de autodeploy. No cambian lógica de aplicación ni ajustes remotos. No abrir PR, hacer merge o actualizar main.
+- Resultado de push y comprobaciones posteriores: por registrar tras ejecución.
