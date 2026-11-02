@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../../lib/permissions';
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -25,7 +26,7 @@ export const Users = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (user?.role !== 'PLATFORM_ADMIN') return;
+        if (!isPlatformReader(user?.role)) return;
 
         const url = filter
             ? `/api/admin/users?clientId=${encodeURIComponent(filter)}`
@@ -44,7 +45,7 @@ export const Users = () => {
     }, [user, filter]);
 
     // Guard
-    if (user && user.role !== 'PLATFORM_ADMIN') {
+    if (user && !isPlatformReader(user.role)) {
         return <Navigate to="/app/dashboard" replace />;
     }
 

@@ -36,7 +36,7 @@ router.use(requireAuth);
 router.get("/", async (req, res) => {
   try {
     const clientId = req.tenantId;
-    const isPlatformAdmin = req.user?.role === "PLATFORM_ADMIN";
+    const isPlatformAdmin = ["PLATFORM_ADMIN", "PLATFORM_USER"].includes(req.user?.role);
 
     // PLATFORM_ADMIN with no clientId → return global aggregates
     if (!clientId && isPlatformAdmin) {

@@ -17,7 +17,7 @@ async function inviteUser(actor, input, { requireExplicitRole = false } = {}) {
   const email = typeof input.email === 'string' ? input.email.trim().toLowerCase() : '';
   const role = input.role === undefined && !requireExplicitRole ? 'CLIENT_USER' : input.role;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      !['CLIENT_USER', 'CLIENT_ADMIN', 'PLATFORM_ADMIN'].includes(role) ||
+      !['CLIENT_USER', 'CLIENT_ADMIN', 'PLATFORM_ADMIN', 'PLATFORM_USER'].includes(role) ||
       (name !== undefined && typeof name !== 'string') ||
       (clientId !== undefined && clientId !== null && typeof clientId !== 'string')) {
     throw new InvitationError(400, 'Invalid invitation fields');
@@ -26,15 +26,16 @@ async function inviteUser(actor, input, { requireExplicitRole = false } = {}) {
     throw new InvitationError(403, 'Forbidden');
   }
   if (actor.role === 'CLIENT_ADMIN' &&
-      (!actor.clientId || (clientId && clientId !== actor.clientId) || role === 'PLATFORM_ADMIN')) {
+      (!actor.clientId || (clientId && clientId !== actor.clientId) || ['PLATFORM_ADMIN', 'PLATFORM_USER'].includes(role))) {
     throw new InvitationError(403, 'Cannot invite outside your client or invite platform admins');
   }
-  const targetClientId = role === 'PLATFORM_ADMIN' ? null :
+  const isPlatformRole = ['PLATFORM_ADMIN', 'PLATFORM_USER'].includes(role);
+  const targetClientId = isPlatformRole ? null :
     actor.role === 'CLIENT_ADMIN' ? actor.clientId : clientId;
-  if (role !== 'PLATFORM_ADMIN' && !targetClientId) {
+  if (!isPlatformRole && !targetClientId) {
     throw new InvitationError(400, 'clientId is required for client roles');
   }
-  if (role === 'PLATFORM_ADMIN' && clientId) {
+  if (isPlatformRole && clientId) {
     throw new InvitationError(400, 'Platform admins cannot belong to a client');
   }
 
@@ -46,7 +47,7 @@ async function inviteUser(actor, input, { requireExplicitRole = false } = {}) {
       const existing = await tx.user.findFirst({ where: { email: { equals: email, mode: 'insensitive' } } });
       // Invitations are not a transfer mechanism, even for a platform admin.
       if (existing && (existing.clientId !== targetClientId ||
-          (actor.role === 'CLIENT_ADMIN' && existing.role === 'PLATFORM_ADMIN'))) {
+          (actor.role === 'CLIENT_ADMIN' && ['PLATFORM_ADMIN', 'PLATFORM_USER'].includes(existing.role)))) {
         throw new InvitationError(403, 'Cannot modify an invitation outside the target client');
       }
       if (existing && (existing.status !== 'INVITED' || existing.deletedAt)) {

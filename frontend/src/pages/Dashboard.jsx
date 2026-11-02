@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import {
@@ -123,7 +124,7 @@ export const Dashboard = () => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const isPlatformAdmin = user?.role === 'PLATFORM_ADMIN';
+    const isPlatformAdmin = isPlatformReader(user?.role);
 
     const fetchDashboard = useCallback(async () => {
         if (isPlatformAdmin) return;

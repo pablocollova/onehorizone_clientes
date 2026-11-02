@@ -2,7 +2,7 @@
 // Injects req.tenantId based on req.user populated by requireAuth.
 //
 // CLIENT_ADMIN / CLIENT_USER → req.tenantId = req.user.clientId
-// PLATFORM_ADMIN             → req.tenantId = null  (cross-tenant access)
+// PLATFORM_ADMIN / PLATFORM_USER → req.tenantId = null (global read scope)
 // No req.user                → pass through (public routes)
 
 function tenantMiddleware(req, res, next) {
@@ -11,8 +11,11 @@ function tenantMiddleware(req, res, next) {
         return next();
     }
 
-    // Platform admins operate across tenants; tenantId is intentionally null
-    if (req.user.role === "PLATFORM_ADMIN") {
+    // Internal roles operate across tenants; write authorization is checked per route
+    if (["PLATFORM_ADMIN", "PLATFORM_USER"].includes(req.user.role)) {
+        if (req.user.role === "PLATFORM_USER" && req.user.clientId) {
+            return res.status(401).json({ error: "INVALID_PLATFORM_SCOPE" });
+        }
         req.tenantId = null;
         return next();
     }

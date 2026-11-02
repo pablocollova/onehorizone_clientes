@@ -24,6 +24,9 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T18 | P2 | Manejo global de 401 en frontend (limpiar sesión y redirigir) y reintento anónimo del consentimiento cuando el token está revocado | Pendiente / sin asignar. Hallazgo 5 R01 |
 | T19 | P2 | Flujo para corregir la empresa de una invitación pendiente (p. ej. cancelar y reinvitar), ahora bloqueado con 403 también para PLATFORM_ADMIN | Pendiente de decisión D12 / Pablo. Hallazgo 6 R01 |
 | T20 | P1 | Resumen administrativo global desde datos reales | Codex: primera vista de conteos implementada y probada localmente en codex/t04-operational-integrity; resumen financiero y documentos descargables siguen pendientes |
+| T21 | P1 | Cuarto rol interno de lectura: PLATFORM_USER, sin escrituras administrativas ni escalación desde cliente | Codex: implementado en codex/t04-operational-integrity, 102/102 backend y 43/43 frontend PASS; pendiente revisión. Migración aditiva solo local. D14 |
+| T22 | P1 | Recuperación de contraseña por correo, token aislado de invitación, un solo uso y revocación de sesiones | Pendiente; D17 autoriza desarrollo con correo ficticio, sin envíos reales ni resolución de D11/D12 |
+| T23 | P1 | Catálogo ampliable, solicitud, presupuesto versionado, aceptación por cliente_admin, fecha/trabajo y factura | Pendiente; alcance D16, estados/responsables detallados propuestos en modelo-operativo.md |
 | R01 | — | Revisión de T02/T03/T13 (Claude) sobre `4ad7b908` | Terminada: sin P0; hallazgos en comunicacion-ia.md. Revisión de otro agente pendiente |
 
 ## Datos aún no confirmados

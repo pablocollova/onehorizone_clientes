@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -166,13 +167,13 @@ export const Invoices = () => {
     }, [filters]);
 
     useEffect(() => {
-        if (user?.role === 'PLATFORM_ADMIN') {
+        if (isPlatformReader(user?.role)) {
             apiGet('/api/admin/clients').then(setClients).catch(() => undefined);
         }
     }, [user]);
 
     useEffect(() => {
-        if (user?.role === 'PLATFORM_ADMIN') queueMicrotask(fetchInvoices);
+        if (isPlatformReader(user?.role)) queueMicrotask(fetchInvoices);
     }, [user, fetchInvoices]);
 
     const handleStatusChange = async (inv, newStatus) => {
@@ -184,7 +185,7 @@ export const Invoices = () => {
         }
     };
 
-    if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
+    if (user && !isPlatformReader(user.role)) return <Navigate to="/app/dashboard" replace />;
 
     return (
         <div className="p-8">
@@ -194,9 +195,9 @@ export const Invoices = () => {
                     <h1 className="text-2xl font-bold text-primary">Invoices</h1>
                     <p className="text-sm text-gray-400 mt-0.5">{invoices.length} invoice{invoices.length !== 1 ? 's' : ''}</p>
                 </div>
-                <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-primary/20 text-sm">
+                {user?.role === 'PLATFORM_ADMIN' ? <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-primary/20 text-sm">
                     <Plus size={16} /> New Invoice
-                </button>
+                </button> : null}
             </div>
 
             {/* Filters */}
@@ -244,13 +245,13 @@ export const Invoices = () => {
                                     </td>
                                     <td className="px-3 py-3 text-sm text-right font-mono text-text-dark">{formatCents(inv.totalCents, inv.currency)}</td>
                                     <td className="px-3 py-3">
-                                        <select
+                                        {user?.role === 'PLATFORM_ADMIN' ? <select
                                             value={inv.status}
                                             onChange={e => handleStatusChange(inv, e.target.value)}
                                             className={`px-2 py-0.5 text-xs font-semibold rounded-full border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 ${STATUS_COLORS[inv.status] ?? 'bg-gray-100'}`}
                                         >
                                             {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                                        </select>
+                                        </select> : <span>{inv.status}</span>}
                                     </td>
                                     <td className="px-3 py-3 text-sm text-text-dark/70">{fmtDate(inv.dueDate)}</td>
                                     <td className="px-3 py-3 text-xs text-gray-300 font-mono truncate max-w-[100px]" title={inv.id}>{inv.id.slice(-8)}</td>

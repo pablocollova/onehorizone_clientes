@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -175,11 +176,11 @@ export const Clients = () => {
     }, []);
 
     useEffect(() => {
-        if (user?.role === 'PLATFORM_ADMIN') fetchClients();
+        if (isPlatformReader(user?.role)) fetchClients();
     }, [user, fetchClients]);
 
     // Guard: redirect non-admins
-    if (user && user.role !== 'PLATFORM_ADMIN') {
+    if (user && !isPlatformReader(user.role)) {
         return <Navigate to="/app/dashboard" replace />;
     }
 
@@ -199,13 +200,13 @@ export const Clients = () => {
                         {clients.length} tenant{clients.length !== 1 ? 's' : ''}
                     </p>
                 </div>
-                <button
+                {user?.role === 'PLATFORM_ADMIN' ? <button
                     onClick={() => setShowModal(true)}
                     className="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-medium px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-primary/20 text-sm"
                 >
                     <Plus size={16} />
                     New Client
-                </button>
+                </button> : null}
             </div>
 
             {/* Loading */}

@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../lib/permissions';
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { apiPost } from '../lib/api';
@@ -58,7 +59,7 @@ export const Activate = () => {
             // Redirect based on role — short delay so user sees success state
             setTimeout(() => {
                 const role = data.user?.role;
-                window.location.href = role === 'PLATFORM_ADMIN'
+                window.location.href = isPlatformReader(role)
                     ? '/app/admin/clients'
                     : '/app/dashboard';
             }, 1500);

@@ -30,6 +30,7 @@ enum Role {
   CLIENT_ADMIN
   CLIENT_USER
   PLATFORM_ADMIN
+  PLATFORM_USER
 }
 
 enum BillingMode {

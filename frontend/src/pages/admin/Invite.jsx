@@ -7,7 +7,8 @@ import { Copy, Check, Send } from 'lucide-react';
 const ROLES = [
     { value: 'CLIENT_USER', label: 'Client User' },
     { value: 'CLIENT_ADMIN', label: 'Client Admin' },
-    { value: 'PLATFORM_ADMIN', label: 'Platform Admin' },
+    { value: 'PLATFORM_ADMIN', label: 'One Horizon Admin' },
+    { value: 'PLATFORM_USER', label: 'One Horizon User (read only)' },
 ];
 
 export const Invite = () => {
@@ -31,7 +32,7 @@ export const Invite = () => {
     // Guard
     if (user && user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
 
-    const needsClient = form.role !== 'PLATFORM_ADMIN';
+    const needsClient = !['PLATFORM_ADMIN', 'PLATFORM_USER'].includes(form.role);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

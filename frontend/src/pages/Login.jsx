@@ -1,3 +1,4 @@
+import { isPlatformReader } from '../lib/permissions';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -21,7 +22,7 @@ export const Login = () => {
 
         try {
             const userData = await login(username, password);
-            if (userData.role === 'PLATFORM_ADMIN') {
+            if (isPlatformReader(userData.role)) {
                 navigate('/app/admin/clients');
             } else {
                 navigate('/app/dashboard');

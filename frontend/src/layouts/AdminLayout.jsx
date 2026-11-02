@@ -1,6 +1,7 @@
+import { isPlatformReader, roleLabels } from '../lib/permissions';
 // frontend/src/layouts/AdminLayout.jsx
 // Dedicated layout for /app/admin/* routes.
-// Guards: only PLATFORM_ADMIN can access; others are redirected.
+// Internal platform roles can read; operational writes remain admin-only.
 
 import React from 'react';
 import { Outlet, Navigate, NavLink } from 'react-router-dom';
@@ -20,9 +21,9 @@ const adminNav = [
 export const AdminLayout = () => {
     const { user, logout, logoutError, loggingOut } = useAuth();
 
-    // Guard — must be PLATFORM_ADMIN
+    // Guard — must be an internal platform role
     if (!user) return <Navigate to="/login" replace />;
-    if (user.role !== 'PLATFORM_ADMIN') return <Navigate to="/app/dashboard" replace />;
+    if (!isPlatformReader(user.role)) return <Navigate to="/app/dashboard" replace />;
 
     return (
         <div className="min-h-screen bg-neutral-bg flex">
@@ -46,7 +47,7 @@ export const AdminLayout = () => {
                     <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-4">
                         Platform
                     </div>
-                    {adminNav.map(({ icon: Icon, label, to }) => (
+                    {adminNav.filter(item => user.role === 'PLATFORM_ADMIN' || item.to !== '/app/admin/invite').map(({ icon: Icon, label, to }) => (
                         <NavLink
                             key={to}
                             to={to}
@@ -76,7 +77,7 @@ export const AdminLayout = () => {
                 <div className="p-4 border-t border-gray-50 space-y-2">
                     <div className="px-4 py-2">
                         <p className="text-sm font-semibold text-text-dark">{user.name}</p>
-                        <p className="text-xs text-gray-400">Platform Admin</p>
+                        <p className="text-xs text-gray-400">{roleLabels[user.role]}</p>
                     </div>
                     <button
                         disabled={loggingOut}
@@ -97,7 +98,7 @@ export const AdminLayout = () => {
                     <div className="flex items-center gap-3">
                         <div className="text-right">
                             <div className="text-sm font-bold text-text-dark">{user.name}</div>
-                            <div className="text-xs text-gray-400">PLATFORM_ADMIN</div>
+                            <div className="text-xs text-gray-400">{roleLabels[user.role]}</div>
                         </div>
                         <div className="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm border-2 border-white shadow-sm">
                             {user.name?.charAt(0) ?? 'P'}

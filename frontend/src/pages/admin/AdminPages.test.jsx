@@ -28,6 +28,32 @@ const renderAdminRoute = (element, path, authUser = users.platformAdmin) => {
   )
 }
 
+describe('One Horizon read-only user', () => {
+  const reader = { ...users.platformAdmin, role: 'PLATFORM_USER' }
+  it('reads companies without a create action', async () => {
+    renderAdminRoute(<Clients />, '/app/admin/clients', reader)
+    expect(await screen.findByText('Horizon Corp')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /new client/i })).not.toBeInTheDocument()
+  })
+  it('reads invoices with filters and without editing controls', async () => {
+    renderAdminRoute(<Invoices />, '/app/admin/invoices', reader)
+    expect(await screen.findByText('ONEHORIZON FEE')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /new invoice/i })).not.toBeInTheDocument()
+    expect(screen.getAllByRole('combobox')).toHaveLength(3)
+  })
+  it('reads service records without editing controls', async () => {
+    renderAdminRoute(<ServiceRecords />, '/app/admin/service-records', reader)
+    expect(await screen.findByText('HVAC Maintenance')).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /new service record/i })).not.toBeInTheDocument()
+    expect(screen.getAllByRole('combobox')).toHaveLength(3)
+  })
+  it('cannot open the invitation form', async () => {
+    renderAdminRoute(<Invite />, '/app/admin/invite', reader)
+    expect(await screen.findByRole('heading', { name: 'Client Dashboard' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /send invitation/i })).not.toBeInTheDocument()
+  })
+})
+
 describe('Admin Clients', () => {
   it('lists clients and creates a new client', async () => {
     const user = userEvent.setup()

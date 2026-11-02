@@ -24,3 +24,7 @@ Fuentes: `frontend/src/App.jsx`, `frontend/src/pages/`, `frontend/src/sections/`
 ## Actualización en rama operativa, 2026-11-02 (Codex)
 
 Base T16 70190d86; rama codex/t04-operational-integrity. Se incorpora una primera vista administrativa de conteos reales en /app/admin/overview (API /api/admin/overview, solo PLATFORM_ADMIN), menú Overview y entrada de /app/admin. Se validan relaciones e inputs en las escrituras administrativas existentes de facturas/trabajos. Detalle, límites y secuencia en [entregas operativas](entregas-operativas.md). El dashboard financiero cliente, estado de cuenta, pagos y almacenamiento documental no cambian en esta entrega; no se consideran terminados. Esta entrada actualiza el inventario histórico sin reescribirlo.
+
+## Cuarto rol y alcance ampliado (2026-11-02, Codex)
+
+PLATFORM_USER es el cuarto rol implementado en la rama local: lector interno global de los listados y resumen existentes, sin escrituras administrativas/invitaciones. CLIENT_USER sigue limitado a su empresa. El alcance confirmado de cliente_admin incluye confirmar/imputar pagos y aceptar presupuestos de su empresa, pero esos módulos aún están pendientes. Catálogo, presupuestos versionados, pagos con estados/imputaciones y recuperación de contraseña no se consideran implementados por esta ampliación de roles. Ver modelo-operativo.md y D13-D18.

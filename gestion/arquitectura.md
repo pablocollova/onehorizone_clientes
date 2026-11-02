@@ -39,3 +39,7 @@ Actualización implementada en `fix/invitations-session-revocation`, sin despleg
 Conservar React/Express/Prisma/PostgreSQL y desplegar por separado web y API cuando se apruebe. Añadir validación centralizada, autorización por objeto, observabilidad y entornos aislados. Introducir almacenamiento privado de documentos con autorización de descarga; contratos, tareas y renovaciones solo después de definir sus estados y relaciones. No introducir microservicios ni migrar stack durante la recuperación.
 
 Antes de publicar: identificar proveedor, rama de producción y previews, migraciones automáticas, secretos, rewrites SPA y API, backups y restauración. La aprobación debe identificar commit, entorno y efectos de datos, con plan de reversión.
+
+## Evolución operativa acordada (2026-11-02)
+
+D13-D18 y [modelo operativo](modelo-operativo.md) amplían el destino: pagos con estados y asignaciones múltiples, destinatarios One Horizon/proveedor, desembolsos y reembolsos diferenciados, presupuestos versionados, catálogo ampliable y trabajos planificados, recuperación y cuatro roles. Son requisitos/diseño objetivo, no todos módulos existentes. Esta rama añade PLATFORM_USER al enum y a los permisos de lectura; migración aditiva solo local. Persistencia financiera nueva y resto de entidades objetivo no se han creado. Las APIs y el stack actual se conservan.

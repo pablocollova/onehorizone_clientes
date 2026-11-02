@@ -1,4 +1,5 @@
 import React from 'react';
+import { isPlatformReader } from '../lib/permissions';
 import { NavLink } from 'react-router-dom';
 import {
     LayoutDashboard,
@@ -73,13 +74,13 @@ export const Sidebar = () => {
                 ))}
 
                 {/* Optional Admin section */}
-                {(user?.role === 'PLATFORM_ADMIN' || user?.role === 'CLIENT_ADMIN') && (
+                {(isPlatformReader(user?.role) || user?.role === 'CLIENT_ADMIN') && (
                     <>
                         <div className="mt-8 mb-2 px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                             Administration
                         </div>
 
-                        {user?.role === 'PLATFORM_ADMIN' && (
+                        {isPlatformReader(user?.role) && (
                             <NavLink
                                 to="/app/admin/clients"
                                 className={({ isActive }) =>

@@ -7,7 +7,7 @@ const prisma = require("../prisma");
 const { saveOperation, operationError, validateFilters } = require("../services/operationalIntegrity");
 
 // Operational counts only: financial balances require explicit accounting rules.
-router.get("/overview", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res, next) => {
+router.get("/overview", requireAuth, requireRole(["PLATFORM_ADMIN", "PLATFORM_USER"]), async (req, res, next) => {
     try {
         const counts = await prisma.$transaction(async db => {
             const [clients, locations, activeUsers, pendingInvitations, pendingInvoices, pendingServices, documents] = await Promise.all([
@@ -81,8 +81,8 @@ router.post("/clients", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req
     }
 });
 
-// GET /api/admin/clients — PLATFORM_ADMIN only
-router.get("/clients", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
+// GET /api/admin/clients — internal platform roles
+router.get("/clients", requireAuth, requireRole(["PLATFORM_ADMIN", "PLATFORM_USER"]), async (req, res) => {
     try {
         const clients = await prisma.client.findMany({
             orderBy: { createdAt: "asc" },
@@ -99,8 +99,8 @@ router.get("/clients", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req,
     }
 });
 
-// GET /api/admin/users — PLATFORM_ADMIN only
-router.get("/users", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
+// GET /api/admin/users — internal platform roles
+router.get("/users", requireAuth, requireRole(["PLATFORM_ADMIN", "PLATFORM_USER"]), async (req, res) => {
     try {
         const { clientId } = req.query;
         const users = await prisma.user.findMany({
@@ -127,7 +127,7 @@ router.get("/users", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, r
 // ─── Invoices ─────────────────────────────────────────────────────────────────
 
 // GET /api/admin/invoices — list with optional filters: clientId, type, status
-router.get("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
+router.get("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN", "PLATFORM_USER"]), async (req, res) => {
     try {
         validateFilters('invoice', req.query);
         const { clientId, type, status } = req.query;
@@ -180,7 +180,7 @@ router.patch("/invoices/:id", requireAuth, requireRole(["PLATFORM_ADMIN"]), asyn
 // ─── Service Records ──────────────────────────────────────────────────────────
 
 // GET /api/admin/service-records — list with optional filters: clientId, billingMode, status
-router.get("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
+router.get("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN", "PLATFORM_USER"]), async (req, res) => {
     try {
         validateFilters('serviceRecord', req.query);
         const { clientId, billingMode, status } = req.query;

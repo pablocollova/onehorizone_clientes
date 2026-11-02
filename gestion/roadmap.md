@@ -12,3 +12,7 @@ El orden expresa dependencias, no fechas prometidas. Responsable de aceptación 
 | 5. Preparación de salida | QA completo, móvil/accesibilidad, SEO, privacidad, observabilidad, backup y ensayo de restauración | Módulos de entrega cerrados | Evidencia reproducible de QA; commit/entorno/migraciones y rollback revisables; aprobación explícita de Pablo antes de desplegar |
 
 Family puede mejorar en paralelo editorialmente una vez estabilizada la base, sin competir con la consulta de negocio. Integraciones de pago, CRM, firma o automatizaciones quedan por decidir después de definir necesidad y alcance. Ninguna fecha o integración es un compromiso aprobado.
+
+## Actualización de alcance por Pablo (2026-11-02)
+
+Consultar D13-D18 y [modelo operativo](modelo-operativo.md) antes de continuar fases 2-4. El objetivo financiero distingue pagos directos a proveedores, desembolsos reembolsables de One Horizon y honorarios, con confirmación/imputación por ambos administradores y equivalente EUR para GBP/USD. El circuito servicio→presupuesto→aceptación→fecha→trabajo→factura y cuarto rol interno son parte del alcance. Las condiciones de saldo/conciliación antes propuestas no quedaron aprobadas por responder las aclaraciones.

@@ -20,6 +20,15 @@ const renderLogin = () => render(
 )
 
 describe('Login', () => {
+  it('takes an internal read-only user to the One Horizon dashboard', async () => {
+    server.use(http.post('http://localhost/api/auth/login', () => HttpResponse.json({ token: 'reader-token', user: { name: 'Fictional Reader', role: 'PLATFORM_USER' } })))
+    const user = userEvent.setup()
+    renderLogin()
+    await user.type(screen.getByPlaceholderText('Username'), 'fictional-reader')
+    await user.type(screen.getByPlaceholderText('Password'), 'fictional-password')
+    await user.click(screen.getByRole('button', { name: 'Login' }))
+    expect(await screen.findByRole('heading', { name: 'Admin Clients' })).toBeInTheDocument()
+  })
   it('authenticates a client user and navigates to dashboard', async () => {
     const user = userEvent.setup()
     renderLogin()
