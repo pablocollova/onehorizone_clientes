@@ -76,3 +76,26 @@ Próxima acción y responsable:
 - VERIFICADO-CÓDIGO: Claude incluido en participantes y plantilla; reglas de acceso, revisión inicial propuesta, reserva de archivos, ramas propias, trazabilidad por SHA y protección de autodeploy por rama. No se ha ejecutado ni atribuido una revisión a Claude.
 - Validación: revisión del diff, enlaces relativos y whitespace; cambio exclusivamente documental, sin necesidad de repetir pruebas funcionales.
 - Publicación: rama de trabajo ya excluida en ambos vercel.json; main no se modifica. Comprobar ausencia de deployments después del push. Próxima acción propuesta: que Claude confirme acceso, base leída y comienzo de la revisión antes de tomar archivos.
+
+### 2026-11-02 15:40 CET - Claude - revisión R01 de invitaciones, permisos y sesiones
+
+- Tarea y estado: R01, revisión de T02/T03/T13 implementadas por Codex. **Terminada**; solo documental, sin cambios funcionales.
+- Rama revisada: `fix/invitations-session-revocation` @ `4ad7b90840172d4f32f99d73797d49b00eb145a2`; diff de código `f79c3637..14fe6e78`. Rama propia: `claude/review-security-fixes`, creada desde ese SHA. Archivos: gestion/comunicacion-ia.md, pendientes.md, decisiones.md y exclusión de autodeploy de esta rama en `vercel.json` y `frontend/vercel.json`.
+- Acceso: clon desde GitHub en el entorno de Claude; no se usó la copia local de Pablo. Ramas remotas consultadas: además de las registradas existe `fix/stabilize-critical-foundation` (2026-04-28, otro autor), ajena a este trabajo.
+- VERIFICADO-CÓDIGO (correcto): servicio único de invitación con aislamiento por empresa; requireAuth consulta estado, baja, rol, empresa y sessionVersion en DB y no recurre al JWT si la DB falla; activación transaccional de uso único; trigger con `GREATEST(NEW, OLD+1)` sin doble incremento; migración 1 sin reescritura de tabla en PG >= 11; volver al código anterior es compatible con el esquema, pero reabriría H01/H02. Documentación de Codex coincide con el código.
+- VERIFICADO-EJECUCIÓN: PostgreSQL 16 temporal en loopback, base nueva `onehorizon_review_test`, SMTP vacío. Las 7 migraciones se aplicaron con `psql` porque la red del entorno bloquea la descarga del schema-engine de Prisma: `prisma migrate deploy` **no** fue verificado por Claude; `prisma generate` sí. Node 22.23.4: backend 57/57 PASS, frontend 35/35 PASS, lint frontend PASS. E2E no ejecutado. 7 sondas temporales (borradas, no versionadas) confirmaron los hallazgos 3, 4, 6, 8 y 9. Base detenida y eliminada al terminar.
+- Hallazgos (sin P0):
+  1. P1 operativo: `backend/procfile` y `nixpacks.toml` ejecutan `prisma migrate deploy` al arrancar; un merge a main aplica ambas migraciones en producción y fuerza nuevo login automáticamente. → T14.
+  2. P1 preexistente: `/api/admin/invites` devuelve `inviteLink` también a CLIENT_ADMIN, que puede activar la cuenta invitada con su propia contraseña (sonda: 200); sin SMTP, `email.js` registra el enlace en logs también en producción. → T15 / D11.
+  3. P2 regresión: la invitación guarda el email en minúsculas (`invitations.js:17`), pero login y resend-invite buscan email exacto (`auth.js:38-41`, `auth.js:136`). Sonda: login con mayúsculas 401, en minúsculas 200. → T16.
+  4. P2: un CLIENT_ADMIN distingue por código si un email existe en otra empresa (403), en la suya (400) o no existe (200, y crea invitación). → T17.
+  5. P2: el frontend no maneja 401 globalmente; con sesión revocada desde otro dispositivo `useConsent` envía el token muerto y el consentimiento se pierde sin aviso. → T18.
+  6. P2 cambio funcional: PLATFORM_ADMIN ya no puede corregir la empresa de una invitación pendiente (sonda: 403); falta flujo alternativo. → T19 / D12.
+  7. P3: búsqueda de email insensible a mayúsculas frente a índice único sensible; posibles duplicados no deterministas (incluido en T16).
+  8. P3: el trigger no revoca por cambio de email/username (sonda: sesión sigue 200); relevante solo si se permite cambiar email.
+  9. P3: doble autenticación por petición admin (sonda: 2 consultas); ya documentado por Codex.
+  10. P3 preexistentes: resend-invite sin transacción ni comprobación de deletedAt; nombre sin escapar en HTML del correo; retención con username repetido (T09).
+  11. P3 documentación/UI: `arquitectura.md` lista lo implementado bajo PROPUESTO; mensaje de error de logout fijo en español en UI inglesa con i18n.
+- PROPUESTO (sin implementar): correcciones de T14-T19; D11 y D12 esperan decisión de Pablo.
+- Publicación/despliegue: sin merge, PR, despliegue, migración remota ni correos. Exclusión Vercel añadida para `claude/review-security-fixes` en ambos vercel.json antes del push; Railway revisado sigue main. Comprobación posterior al push en la entrada siguiente.
+- Próxima acción: Pablo decide D11/D12 y prioridad de T14-T19. **ChatGPT u otro agente:** al leer esta entrada, confirmar en su propio traspaso la rama y el SHA leídos y citar el código de control `R01-CLAUDE-4AD7B908` junto con el archivo y la línea del hallazgo 3, para verificar que la lectura fue real.
