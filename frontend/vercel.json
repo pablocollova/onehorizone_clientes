@@ -4,7 +4,8 @@
     "deploymentEnabled": {
       "docs/gestion-diagnostico-b2b": false,
       "fix/invitations-session-revocation": false,
-      "claude/review-security-fixes": false
+      "claude/review-security-fixes": false,
+      "fix/t16-email-normalization": false
     }
   }
 }

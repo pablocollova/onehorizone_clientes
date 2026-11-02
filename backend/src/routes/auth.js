@@ -7,6 +7,20 @@ const prisma = require('../prisma'); // 👈 IMPORTANTE: importar prisma
 const { signAuthToken, requireAuth } = require("../middleware/auth");
 const { sendActivationEmail } = require("../services/email");
 
+function normalizeEmail(value) {
+    return typeof value === 'string' ? value.trim().toLowerCase() : '';
+}
+
+async function findUnambiguousEmailUser(email, includeClient = false) {
+    // Legacy rows may retain mixed case; never choose one of two case-only duplicates.
+    const matches = await prisma.user.findMany({
+        where: { email: { equals: email, mode: 'insensitive' } },
+        take: 2,
+        ...(includeClient ? { include: { client: true } } : {}),
+    });
+    return matches.length === 1 ? matches[0] : null;
+}
+
 function publicUser(user) {
     return {
         id: user.id,
@@ -29,17 +43,16 @@ const resendInviteLimiter = rateLimit({
 // POST /api/auth/login
 router.post("/login", async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password } = req.body || {};
 
-        if (!username || !password) {
+        if (typeof username !== 'string' || !username || typeof password !== 'string' || !password) {
             return res.status(400).json({ error: "username and password required" });
         }
         // Support login by username OR email
         const isEmail = username.includes('@');
-        const user = await prisma.user.findUnique({
-            where: isEmail ? { email: username } : { username },
-            include: { client: true },
-        });
+        const user = isEmail
+            ? await findUnambiguousEmailUser(normalizeEmail(username), true)
+            : await prisma.user.findUnique({ where: { username }, include: { client: true } });
 
         // Check if user exists and has a password
         if (!user || user.status !== "ACTIVE" || user.deletedAt || !user.password) {
@@ -123,15 +136,13 @@ router.post("/activate", async (req, res) => {
 // POST /api/auth/resend-invite
 router.post("/resend-invite", resendInviteLimiter, async (req, res) => {
     try {
-        const { email } = req.body;
+        const email = normalizeEmail(req.body?.email);
 
         if (!email) {
             return res.status(400).json({ error: "email is required" });
         }
 
-        const user = await prisma.user.findUnique({
-            where: { email }
-        });
+        const user = await findUnambiguousEmailUser(email);
 
         if (!user || user.status !== "INVITED") {
             // Return success even if not found to prevent email enumeration
@@ -162,12 +173,12 @@ router.post("/resend-invite", resendInviteLimiter, async (req, res) => {
                 userId: user.id,
                 tokenHash,
                 expiresAt,
-                sentToEmail: email
+                sentToEmail: user.email
             }
         });
 
         // Send Email
-        await sendActivationEmail(email, rawToken, user.name);
+        await sendActivationEmail(user.email, rawToken, user.name);
 
         return res.json({ ok: true, message: "If the account exists and is pending, an email was sent" });
 

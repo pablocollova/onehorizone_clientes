@@ -105,3 +105,12 @@ Próxima acción y responsable:
 - Push de `claude/review-security-fixes`, commit `d1b6c9a7c6fe8504aa761afd116d14e769800605` (solo documentación y exclusión Vercel de esta rama).
 - VERIFICADO-EJECUCIÓN (API GitHub, ~45 s después del push): SHA remoto coincide; main sigue en `79a05590be4367a108f54aafaad63bef3c2cceab`; `fix/invitations-session-revocation` sigue en `4ad7b908` (no modificada); 0 deployments para el SHA y para la rama; 0 commit statuses; 0 check-runs. Sin acceso directo al panel de Vercel ni Railway desde Claude: la ausencia de status de Vercel en GitHub es indicio, no prueba completa; Pablo puede confirmarlo en el panel.
 - Este registro se publica como commit documental adicional con la misma protección; repetir la comprobación.
+
+### 2026-11-02 - Codex - T16 normalización de email
+
+- Rama/SHA leídos: `claude/review-security-fixes` @ `ef91969d73099f980bb94693737c143878a24d47`. Confirmo código de control `R01-CLAUDE-4AD7B908`; hallazgo 3: `backend/src/services/invitations.js:17`, frente a búsqueda exacta de login en `backend/src/routes/auth.js:40` de esa base.
+- Tarea tomada por autorización de Pablo: T16. Rama propia `fix/t16-email-normalization`, creada desde esa revisión para conservar los traspasos de Claude. Archivos reservados/modificados: auth.js, nueva prueba de integración email-normalization.test.js, gestion y exclusiones de rama en ambos vercel.json. No se modifica la rama de Claude ni la de seguridad anterior.
+- Estado: implementado y probado, listo para revisión, no desplegado. Login/reenvío normalizan email, admiten capitalización histórica y rechazan coincidencias ambiguas sin elegir cuentas. Username y contraseña conservan su comportamiento. Detalle en t16-normalizacion-email.md.
+- VERIFICADO-EJECUCIÓN: cinco fallos reproducidos antes del cambio; 63/63 backend PASS después (57 existentes, seis nuevos). PostgreSQL 16 local nuevo, migraciones solo locales, SMTP desactivado. Diff/whitespace revisados. No se repiten frontend/E2E por no cambiar componentes ni contratos.
+- Pendiente: inventario de duplicados en datos reales mediante solo lectura con acceso autorizado; no se ejecutó contra producción. D11/D12 y restantes tareas de Claude no se consideran resueltas.
+- Publicación autorizada a la rama propia, con autodeploy bloqueado exactamente para su nombre. No merge, PR, migraciones remotas ni cambios en producción. Próxima acción: revisión de este diff por Claude u otro asistente y verificación posterior al push.

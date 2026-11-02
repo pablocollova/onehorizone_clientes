@@ -17,6 +17,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y 
 | [Comunicación IA](comunicacion-ia.md) | Protocolo y registro de traspasos |
 | [Publicación GitHub](publicacion-github.md) | Integraciones verificadas y barreras contra despliegue |
 | [Invitaciones y sesiones](seguridad-invitaciones-sesiones.md) | Corrección, pruebas y límites de la rama de seguridad |
+| [T16: email](t16-normalizacion-email.md) | Normalización en login/reenvío y pruebas de regresión |
 
 ## Convenciones de evidencia
 
