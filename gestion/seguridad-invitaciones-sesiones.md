@@ -2,6 +2,8 @@
 
 Fecha: 2026-11-02. Responsable: Codex. Rama: `fix/invitations-session-revocation`, creada desde `f79c36377f81b924db43820fe5786cd9421b8e36`. Trabajo autorizado por Pablo; no autoriza despliegue ni merge a main.
 
+Implementación publicada en commit `14fe6e7838b84f66f4208882c24c4814b9b3ec21`; informe disponible en https://github.com/pablocollova/onehorizone_clientes/blob/fix/invitations-session-revocation/gestion/seguridad-invitaciones-sesiones.md. Estado: listo para revisión, no desplegado. Ver comunicación IA para comprobaciones de publicación.
+
 ## VERIFICADO-CÓDIGO: cambios implementados en la rama
 
 - Los endpoints `/api/admin/users/invite` y `/api/admin/invites` comparten `backend/src/services/invitations.js`. Un CLIENT_ADMIN solo invita dentro de su empresa y nunca crea un PLATFORM_ADMIN. No se puede modificar una invitación ajena por conocer su email. Tampoco se usa una reinvitación como mecanismo de transferencia entre empresas para el administrador global.
