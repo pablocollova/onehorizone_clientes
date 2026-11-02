@@ -15,6 +15,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode y ChatGPT. 
 | [Decisiones](decisiones.md) | Acuerdos y propuestas sin aprobar |
 | [Pendientes](pendientes.md) | Trabajo accionable y bloqueos |
 | [Comunicación IA](comunicacion-ia.md) | Protocolo y registro de traspasos |
+| [Publicación GitHub](publicacion-github.md) | Integraciones verificadas y barreras contra despliegue |
 
 ## Convenciones de evidencia
 
