@@ -1,12 +1,10 @@
+import { BalanceSummary } from '../components/BalanceSummary';
 import { isPlatformReader } from '../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import {
-    ArrowUpRight,
-    ArrowDownRight,
     FileText,
     AlertCircle,
-    TrendingUp,
     DownloadCloud,
     RefreshCw,
     FolderOpen,
@@ -16,31 +14,6 @@ import { apiGet } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
-
-const StatCard = ({ title, value, trend, trendUp, icon: Icon, className }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`bg-white p-6 rounded-2xl shadow-sm border border-gray-100 ${className}`}
-    >
-        <div className="flex justify-between items-start mb-4">
-            <div>
-                <p className="text-text-dark/60 text-sm font-medium mb-1">{title}</p>
-                <h3 className="text-3xl font-bold text-primary">{value}</h3>
-            </div>
-            <div className={`p-3 rounded-xl ${trendUp ? 'bg-green-50 text-green-600' : 'bg-primary/5 text-primary'}`}>
-                <Icon size={24} />
-            </div>
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-            <span className={`flex items-center gap-1 font-medium ${trendUp ? 'text-green-600' : 'text-red-500'}`}>
-                {trendUp ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
-                {trend}
-            </span>
-            <span className="text-text-dark/40">vs last month</span>
-        </div>
-    </motion.div>
-);
 
 const StatCardSkeleton = ({ className }) => (
     <div className={`bg-white p-6 rounded-2xl shadow-sm border border-gray-100 animate-pulse ${className}`}>
@@ -99,9 +72,6 @@ const DocumentRowSkeleton = () => (
 );
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-
-const formatEuros = (cents) =>
-    new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents ?? 0);
 
 const formatDate = (dateStr) => {
     if (!dateStr) return '—';
@@ -177,24 +147,6 @@ export const Dashboard = () => {
 
     // ── Resolve display values ──
     // Support both flat numbers from the mock endpoint and cents from the real /dashboard/summary
-    const currentBalance = data
-        ? (data.currentBalance !== undefined
-            ? formatEuros(data.currentBalance)             // mock: already in euros
-            : formatEuros((data.cards?.currentBalanceCents ?? 0) / 100))
-        : null;
-
-    const balanceByLocation = data
-        ? (data.balanceByLocation !== undefined
-            ? formatEuros(data.balanceByLocation)
-            : formatEuros((data.cards?.balanceByLocationCents ?? 0) / 100))
-        : null;
-
-    const pendingInvoices = data
-        ? (data.pendingInvoices !== undefined
-            ? data.pendingInvoices
-            : data.cards?.pendingInvoices ?? 0)
-        : null;
-
     const docs = data
         ? (data.recentDocuments ?? data.recentDocuments ?? [])
         : [];
@@ -207,43 +159,11 @@ export const Dashboard = () => {
                 <p className="text-text-dark/60">Welcome back. Here is what's happening with your account.</p>
             </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                {loading ? (
-                    <>
-                        <StatCardSkeleton className="md:col-span-5" />
-                        <StatCardSkeleton className="md:col-span-4" />
-                        <StatCardSkeleton className="md:col-span-3" />
-                    </>
-                ) : (
-                    <>
-                        <StatCard
-                            title="Current Balance"
-                            value={currentBalance}
-                            trend="+5.2%"
-                            trendUp
-                            icon={TrendingUp}
-                            className="md:col-span-5"
-                        />
-                        <StatCard
-                            title="Balance by Location"
-                            value={balanceByLocation}
-                            trend="+2.1%"
-                            trendUp
-                            icon={TrendingUp}
-                            className="md:col-span-4"
-                        />
-                        <StatCard
-                            title="Pending Invoices"
-                            value={String(pendingInvoices)}
-                            trend="Due soon"
-                            trendUp={false}
-                            icon={AlertCircle}
-                            className="md:col-span-3"
-                        />
-                    </>
-                )}
-            </div>
+            {loading ? <StatCardSkeleton /> : <>
+                {Object.values(data?.warnings || {}).some(Boolean) ? <p className="p-4 bg-amber-50">Cuenta con información histórica o reembolsos pendientes de revisión. Los saldos no descuentan pagos históricos sin conciliar.</p> : null}
+                <BalanceSummary balances={data?.balances || []} />
+                <Link to="/app/statement" className="text-primary underline">Ver cuenta corriente e imputaciones</Link>
+            </>}
 
             {/* Recent Documents */}
             <motion.div

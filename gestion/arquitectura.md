@@ -43,3 +43,7 @@ Antes de publicar: identificar proveedor, rama de producción y previews, migrac
 ## Evolución operativa acordada (2026-11-02)
 
 D13-D18 y [modelo operativo](modelo-operativo.md) amplían el destino: pagos con estados y asignaciones múltiples, destinatarios One Horizon/proveedor, desembolsos y reembolsos diferenciados, presupuestos versionados, catálogo ampliable y trabajos planificados, recuperación y cuatro roles. Son requisitos/diseño objetivo, no todos módulos existentes. Esta rama añade PLATFORM_USER al enum y a los permisos de lectura; migración aditiva solo local. Persistencia financiera nueva y resto de entidades objetivo no se han creado. Las APIs y el stack actual se conservan.
+
+## Persistencia financiera manual en rama, 2026-11-02
+
+Se añaden PaymentReceipt, PaymentAllocation, VendorAdvance, ExchangeRate y FinanceEvent, preservando Payment histórico. Módulo accounts centraliza autorización por empresa/rol, transacciones Serializable e historial atómico; lecturas RepeatableRead. Fuente monetaria: importe original en céntimos, sin saldo editable; equivalentes manuales con aritmética BigInt. Migración 20261102180000_operational_payments aplicada solo a PostgreSQL local; no backfill. Diagramas/propuestas anteriores no implican que catálogo/presupuestos/contratos ya estén persistidos. Detalle y compatibilidad de dashboard en cuenta-corriente-pagos.md. Una futura salida requiere migraciones/generación y aprobación; no desplegada.

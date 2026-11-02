@@ -44,3 +44,7 @@ Rama sin publicar. Ambos vercel.json excluyen exactamente su nombre, pero antes 
 ## Revisión del plan por aclaraciones de negocio (2026-11-02)
 
 La respuesta de Pablo NO aprueba las reglas contables sugeridas en la primera pregunta. Se incorpora [modelo-operativo.md](modelo-operativo.md), con modalidades de proveedor/honorarios, pagos e imputaciones separados, confirmación por ambos administradores, presupuesto versionado y trabajo, cuatro roles, activación/reset y equivalente EUR para GBP/USD. D13-D18 documentan lo confirmado. T21 incorpora el cuarto rol interno de lectura; T22 recuperación y T23 catálogo/presupuestos se registran como trabajo pendiente. El plan financiero debe seguir esa fuente: sumar facturas emitidas/vencidas sin distinguir destinatario no es una solución aceptable para los tres casos descritos.
+
+## Avance implementado: cuenta corriente, 2026-11-02
+
+La entrega siguiente ya implementa pagos nuevos con estados, imputaciones y saldos por moneda/destinatario, confirmables por ambos administradores. Añade saldo neto (deuda menos confirmado sin aplicar), historial y cotización manual EUR, además de registro de adelanto completo de One Horizon. No sustituye las propuestas pendientes de conciliación/reversión ni transforma Payment histórico. Detalle de comportamiento adoptado y límites en cuenta-corriente-pagos.md; pruebas en comunicación. Las demás entidades de catálogo/presupuestos/contratos y recuperación continúan pendientes.

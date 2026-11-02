@@ -4,6 +4,7 @@ const ENUMS = {
     serviceStatus: ['PENDING', 'COMPLETED', 'CANCELED'],
     billingMode: ['REBILL', 'DIRECT_VENDOR'],
 };
+const { isTransactionConflict } = require('../transactionConflict');
 
 class OperationalError extends Error {
     constructor(message, status = 400) {
@@ -41,6 +42,11 @@ async function validateOperation(db, kind, record) {
         assert(value instanceof Date && Number.isFinite(value.getTime()), `Invalid ${field}`);
     }
     if (isInvoice && record.id) {
+        const original = await db.invoice.findUnique({ where: { id: record.id } });
+        const hasFinance = await db.paymentAllocation.findFirst({ where: { invoiceId: record.id } }) || await db.vendorAdvance.findUnique({ where: { invoiceId: record.id } });
+        if (hasFinance) {
+            assert(['clientId', 'currency', 'totalCents', 'type', 'vendorId', 'status'].every(key => record[key] === original[key]), 'Cannot change financial fields of an invoice with allocations or an advance');
+        }
         // A global administrator must not orphan inverse tenant associations either.
         for (const model of ['serviceRecord', 'document']) {
             assert(!await db[model].findFirst({ where: { invoiceId: record.id, clientId: { not: record.clientId } } }), 'Invoice has linked records in another client');
@@ -94,7 +100,7 @@ async function saveOperation(prisma, kind, body, id, include) {
 
 function operationError(error, res) {
     if (error instanceof OperationalError) return res.status(error.status).json({ error: 'VALIDATION_ERROR', message: error.message });
-    if (['P2034', 'P2003'].includes(error.code)) return res.status(409).json({ error: 'RELATION_CONFLICT', message: 'The related data changed; reload and retry' });
+    if (isTransactionConflict(error) || error.code === 'P2003') return res.status(409).json({ error: 'RELATION_CONFLICT', message: 'The related data changed; reload and retry' });
     return null;
 }
 

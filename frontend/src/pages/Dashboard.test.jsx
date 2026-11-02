@@ -27,8 +27,9 @@ describe('Dashboard', () => {
   it('loads financial overview data through MSW', async () => {
     renderDashboard()
 
-    expect(await screen.findByText('Current Balance')).toBeInTheDocument()
+    expect(await screen.findByText('Deuda pendiente')).toBeInTheDocument()
     expect(await screen.findByText('Invoice April.pdf')).toBeInTheDocument()
+    expect(screen.queryByText(/vs last month/i)).not.toBeInTheDocument()
   })
 
   it('shows an error state when dashboard data cannot load', async () => {

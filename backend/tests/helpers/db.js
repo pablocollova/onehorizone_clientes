@@ -10,6 +10,11 @@ function nextId(prefix) {
 }
 
 async function cleanTestDb() {
+  await prisma.financeEvent.deleteMany()
+  await prisma.paymentAllocation.deleteMany()
+  await prisma.paymentReceipt.deleteMany()
+  await prisma.vendorAdvance.deleteMany()
+  await prisma.exchangeRate.deleteMany()
   await prisma.auditLog.deleteMany()
   await prisma.gdprRequest.deleteMany()
   await prisma.consentLog.deleteMany()

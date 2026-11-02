@@ -28,3 +28,7 @@ Base T16 70190d86; rama codex/t04-operational-integrity. Se incorpora una primer
 ## Cuarto rol y alcance ampliado (2026-11-02, Codex)
 
 PLATFORM_USER es el cuarto rol implementado en la rama local: lector interno global de los listados y resumen existentes, sin escrituras administrativas/invitaciones. CLIENT_USER sigue limitado a su empresa. El alcance confirmado de cliente_admin incluye confirmar/imputar pagos y aceptar presupuestos de su empresa, pero esos módulos aún están pendientes. Catálogo, presupuestos versionados, pagos con estados/imputaciones y recuperación de contraseña no se consideran implementados por esta ampliación de roles. Ver modelo-operativo.md y D13-D18.
+
+## Entrega cuenta corriente/pagos manuales — 2026-11-02
+
+Implementados en rama local: estado de cuenta real y pagos, estados En proceso/Revisión/Confirmado, confirmación e imputación por PLATFORM_ADMIN y CLIENT_ADMIN scoped, saldos por moneda/destinatario, saldo neto de cuenta y equivalentes EUR con cotización manual trazable. El dashboard cliente usa estos datos y retira tendencias ficticias. Los demás placeholders no quedan cerrados. Históricos Payment/PAID no se convierten en recibos confirmados; se advierten como revisión pendiente. Alcance exacto/API/límites en [cuenta corriente y pagos](cuenta-corriente-pagos.md).

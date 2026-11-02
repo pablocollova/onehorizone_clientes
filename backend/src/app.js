@@ -77,6 +77,7 @@ app.use("/api", clientsRoutes);
 app.use(clientsRoutes);
 app.use(invoicesRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/accounts", require('./routes/accounts'));
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.use((err, req, res, next) => {

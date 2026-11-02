@@ -20,6 +20,7 @@ export const users = {
 }
 
 export const dashboardSummary = {
+  balances: [{currency:'EUR',recipient:'ONE_HORIZON',billedCents:125000,outstandingCents:125000,appliedCents:0,confirmedCents:0,unappliedCents:0,processingCents:0,reviewCents:0,outstandingEurCents:125000}],
   currentBalance: 1250,
   balanceByLocation: 900,
   pendingInvoices: 2,

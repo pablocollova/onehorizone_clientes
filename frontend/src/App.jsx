@@ -1,3 +1,4 @@
+import { AccountsWorkspace } from './pages/AccountsWorkspace';
 import { Overview } from './pages/admin/Overview';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
@@ -40,6 +41,7 @@ function App() {
           <Route path="/app/admin" element={<AdminLayout />}>
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<Overview />} />
+            <Route path="accounts" element={<AccountsWorkspace />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
             <Route path="invoices" element={<Invoices />} />
@@ -55,7 +57,7 @@ function App() {
             <Route path="documents" element={<PlaceholderPage title="Documents" />} />
             <Route path="locations" element={<PlaceholderPage title="Locations" />} />
             <Route path="files" element={<PlaceholderPage title="Files" />} />
-            <Route path="payments" element={<PlaceholderPage title="Payments" />} />
+            <Route path="payments" element={<AccountsWorkspace paymentsOnly />} />
             <Route path="privacy-settings" element={<PrivacySettings />} />
           </Route>
 

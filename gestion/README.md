@@ -11,6 +11,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y 
 | [Diagnóstico](diagnostico.md) | Hallazgos y evidencia |
 | [Arquitectura](arquitectura.md) | Estado técnico y evolución propuesta |
 | [Módulos](modulos.md) | Inventario funcional real |
+| [Cuenta corriente y pagos](cuenta-corriente-pagos.md) | Flujos implementados, saldos, cotizaciones, API y límites de datos históricos |
 | [Modelo operativo](modelo-operativo.md) | Aclaraciones de Pablo, modalidades financieras, roles y evolución propuesta |
 | [Entregas operativas](entregas-operativas.md) | Alcance autorizado, secuencia, entrega T04 y decisiones pendientes |
 | [Roadmap](roadmap.md) | Secuencia y criterios de aceptación |

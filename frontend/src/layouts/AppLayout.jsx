@@ -3,6 +3,7 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { Sidebar } from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 import { Menu } from 'lucide-react';
+import { roleLabels } from '../lib/permissions';
 
 export const AppLayout = () => {
     const { user } = useAuth();
@@ -11,7 +12,6 @@ export const AppLayout = () => {
     if (!user) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
-    console.log("AppLayout user:", user);
     return (
         <div className="min-h-screen bg-neutral-bg flex">
             <Sidebar />
@@ -25,13 +25,13 @@ export const AppLayout = () => {
                     </div>
 
                     <div className="hidden md:block">
-                        <h2 className="text-lg font-bold text-text-dark">Horizon Corp</h2>
+                        <h2 className="text-lg font-bold text-text-dark">{user.client?.name || 'Portal de clientes'}</h2>
                     </div>
 
                     <div className="flex items-center gap-4">
                         <div className="text-right hidden sm:block">
                             <div className="text-sm font-bold text-text-dark">{user.name}</div>
-                            <div className="text-xs text-text-dark/50">Premium Client</div>
+                            <div className="text-xs text-text-dark/50">{roleLabels[user.role]}</div>
                         </div>
                         <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg border-2 border-white shadow-sm">
                             {user.name.charAt(0)}

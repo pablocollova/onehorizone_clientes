@@ -189,7 +189,7 @@ describe.sequential('backend integration', () => {
         .set(authHeader(admin.user))
         .expect(200)
         .expect(({ body }) => {
-          expect(body.currentBalance).toBe(300)
+          expect(body.currentBalance).toBeNull()
           expect(body.pendingInvoices).toBe(3)
         })
 

@@ -16,3 +16,7 @@ Family puede mejorar en paralelo editorialmente una vez estabilizada la base, si
 ## Actualización de alcance por Pablo (2026-11-02)
 
 Consultar D13-D18 y [modelo operativo](modelo-operativo.md) antes de continuar fases 2-4. El objetivo financiero distingue pagos directos a proveedores, desembolsos reembolsables de One Horizon y honorarios, con confirmación/imputación por ambos administradores y equivalente EUR para GBP/USD. El circuito servicio→presupuesto→aceptación→fecha→trabajo→factura y cuarto rol interno son parte del alcance. Las condiciones de saldo/conciliación antes propuestas no quedaron aprobadas por responder las aclaraciones.
+
+## Avance de fase financiera — 2026-11-02
+
+Primera entrega T06 local: recorrido real para ambos administradores, pago parcial y múltiples imputaciones, aislamiento, separación proveedor/One Horizon, estados y saldos por moneda con equivalente EUR manual. Reembolsos reconocidos solo con adelanto completo registrado por One Horizon. T24 mantiene conciliación histórica, correcciones/reversiones/devoluciones; fase documental T08 sigue abierta. Ver cuenta-corriente-pagos.md y evidencia final en comunicación. Sin despliegue ni migraciones remotas.

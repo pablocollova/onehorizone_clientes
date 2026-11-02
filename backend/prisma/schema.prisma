@@ -91,6 +91,9 @@ model Client {
   invoices       Invoice[]
   documents      Document[]
   serviceRecords ServiceRecord[]
+  receipts       PaymentReceipt[]
+  rates          ExchangeRate[]
+  financeEvents  FinanceEvent[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -116,6 +119,7 @@ model Vendor {
   email          String?
   invoices       Invoice[]
   serviceRecords ServiceRecord[]
+  receipts       PaymentReceipt[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 }
@@ -140,9 +144,94 @@ model Invoice {
   payments       Payment[]
   documents      Document[]
   serviceRecords ServiceRecord[]
+  allocations    PaymentAllocation[]
+  advance        VendorAdvance?
 
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
+}
+
+enum ReceiptStatus {
+  PROCESSING
+  REVIEW
+  CONFIRMED
+}
+
+enum PaymentRecipient {
+  ONE_HORIZON
+  VENDOR
+}
+
+model PaymentReceipt {
+  id          String @id @default(cuid())
+  clientId    String
+  client      Client @relation(fields: [clientId], references: [id])
+  currency    String
+  amountCents Int
+  recipient   PaymentRecipient
+  vendorId    String?
+  vendor      Vendor? @relation(fields: [vendorId], references: [id])
+  status      ReceiptStatus @default(PROCESSING)
+  paidAt      DateTime
+  reference   String
+  requestKey  String
+  createdBy   String
+  confirmedBy String?
+  confirmedAt DateTime?
+  createdAt   DateTime @default(now())
+  allocations PaymentAllocation[]
+  @@unique([clientId, requestKey])
+  @@index([clientId, createdAt])
+}
+
+model PaymentAllocation {
+  id          String @id @default(cuid())
+  receiptId   String
+  receipt     PaymentReceipt @relation(fields: [receiptId], references: [id])
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  amountCents Int
+  requestKey  String
+  createdBy   String
+  createdAt   DateTime @default(now())
+  @@unique([receiptId, requestKey])
+  @@index([invoiceId])
+}
+
+model VendorAdvance {
+  id          String @id @default(cuid())
+  invoiceId   String @unique
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  reference   String
+  paidAt      DateTime
+  createdBy   String
+  createdAt   DateTime @default(now())
+}
+
+model ExchangeRate {
+  id          String @id @default(cuid())
+  clientId    String
+  client      Client @relation(fields: [clientId], references: [id])
+  currency    String
+  eurMicros   Int
+  effectiveAt DateTime
+  source      String
+  createdBy   String
+  createdAt   DateTime @default(now())
+  @@index([clientId, currency, effectiveAt])
+}
+
+model FinanceEvent {
+  id          String @id @default(cuid())
+  clientId    String
+  client      Client @relation(fields: [clientId], references: [id])
+  entityId    String
+  action      String
+  actorId     String
+  actorRole   String
+  details     Json
+  createdAt   DateTime @default(now())
+  @@index([clientId, createdAt])
 }
 
 model Payment {
