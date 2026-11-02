@@ -4,7 +4,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 
 | ID | Prioridad | Trabajo | Estado / responsable |
 | --- | --- | --- | --- |
-| T01 | P0 | Identificar hosting activo, ramas, previews, migraciones automáticas y backups; habilitar publicación documental sin despliegue | Pendiente / sin asignar |
+| T01 | P0 | Identificar hosting activo, ramas, previews, migraciones automáticas y backups; habilitar publicación documental sin despliegue | Parcial: Vercel/Railway y ramas revisados; documentación publicada con protección de rama. Backups y preparación operativa siguen pendientes. Ver publicacion-github.md |
 | T02 | P0 | Reproducir y corregir reasignación de INVITED entre clientes en ambos endpoints; probar email ya invitado ajeno | Pendiente / sin asignar |
 | T03 | P0 | Revalidar usuario/estado/rol o mecanismo de revocación de sesión; probar baja con token previo | Pendiente / sin asignar |
 | T04 | P1 | Validar relaciones client/location/invoice y entradas monetarias, fechas y enums | Pendiente / sin asignar |

@@ -20,6 +20,6 @@ La opción oficial evita despliegues automáticos de la rama indicada; las ramas
 
 ## Estado de publicación
 
-Comprobación previa completada: los servicios Railway revisados siguen `main` y la rama documental está excluida de autodeploy de Vercel por configuración versionada. El usuario autorizó publicar únicamente esta rama, sin despliegue. No se confía en `[skip ci]` como garantía universal entre proveedores. No se creará PR ni se actualizará main en esta tarea. El registro de comunicación contiene el resultado de la publicación y la verificación posterior.
+**PUBLICADO.** Comprobación previa completada: los servicios Railway revisados siguen `main` y la rama documental está excluida de autodeploy de Vercel por configuración versionada. El usuario autorizó publicar únicamente esta rama, sin despliegue. No se confía en `[skip ci]` como garantía universal entre proveedores. No se creó PR ni se actualizó main. El registro de comunicación contiene el resultado de la publicación y la verificación posterior.
 
 Tras publicar, comprobar SHA remoto, ausencia de nuevos despliegues para la rama/commit en GitHub y Vercel, y que producción sigue apuntando al despliegue anterior. Registrar resultados con fecha; la ausencia observada de eventos no garantiza que una futura modificación de automatismos no los active.
