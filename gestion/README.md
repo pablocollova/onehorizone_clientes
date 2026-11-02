@@ -3,7 +3,7 @@
 Fecha: 2026-11-02 (Europe/Paris). Repositorio canónico: `pablocollova/onehorizone_clientes`.
 Base auditada: `79a05590be4367a108f54aafaad63bef3c2cceab` (`main` al clonar).
 
-Este directorio es la memoria versionada para Pablo, Codex, OpenCode y ChatGPT. Leer primero este índice y luego comunicación, pendientes y decisiones. La conversación anterior aporta intención; el código aporta evidencia de implementación.
+Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y Claude. Leer primero este índice y luego comunicación, pendientes y decisiones. La conversación anterior aporta intención; el código aporta evidencia de implementación.
 
 | Documento | Contenido |
 | --- | --- |

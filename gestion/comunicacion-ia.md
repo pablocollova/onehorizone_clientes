@@ -1,4 +1,4 @@
-# Comunicación entre Codex, OpenCode y ChatGPT
+# Comunicación entre Codex, OpenCode, ChatGPT y Claude
 
 ## Protocolo operativo
 
@@ -7,14 +7,25 @@
 3. Trabajar en rama aislada. El código es evidencia de implementación; pruebas ejecutadas son evidencia de comportamiento. Distinguir ambos de propuestas y mensajes históricos.
 4. Al terminar, actualizar pendientes, decisiones si aplica y agregar traspaso con archivos, pruebas exactas, resultado, bloqueos y próximo paso. Conservar historial; no reescribir entradas de otro agente.
 5. Otro agente revisa el diff y la evidencia cuando se le asigne revisión; este protocolo no inicia agentes automáticamente. Si dos ramas divergen, reconciliar mediante revisión del diff, sin force-push ni elegir una versión a ciegas.
-6. ChatGPT sin acceso al repositorio recibe estos archivos o commit/enlaces que pueda consultar. No afirmar sincronización automática ni memoria compartida entre productos. Cada asistente confirma el commit que realmente leyó.
+6. Cualquier asistente sin acceso al repositorio, incluidos ChatGPT y Claude, recibe estos archivos o commit/enlaces que pueda consultar. Si no puede acceder, informa qué conexión falta. No afirmar sincronización automática ni memoria compartida entre productos. Cada asistente confirma la rama y el commit que realmente leyó.
 7. Publicar en GitHub solo cuando se conozcan los efectos de automatización. No merge a main, despliegues, migraciones remotas, seeds sobre datos reales, cambios de secretos ni cambios de producción sin aprobación explícita para el alcance concreto. No enviar correos o mensajes reales como parte de una prueba.
+
+## Incorporación y coordinación de Claude
+
+Claude participa con las mismas reglas que Codex, OpenCode y ChatGPT; no tiene permisos especiales ni autorización para desplegar. Su incorporación al protocolo no implica que ya esté conectado o haya revisado el código.
+
+- Punto de partida actual: `fix/invitations-session-revocation`. Leer README, comunicación, informe de seguridad, pendientes, decisiones, arquitectura y visión. Comprobar el HEAD remoto antes de comenzar; main todavía no incorpora las correcciones de esta rama.
+- Primer encargo propuesto para Claude: revisión de las correcciones de permisos, invitaciones, activación y revocación, incluidas las dos migraciones. Registrar hallazgos priorizados con archivo/línea, evidencia y pruebas ejecutadas o pendientes. Es un encargo propuesto, no una tarea ya tomada o una revisión realizada.
+- Antes de editar, registrar tarea tomada, autor, rama, commit base, archivos reservados y criterio de aceptación. Una solicitud de revisión no autoriza cambios funcionales. Si hay otro responsable activo sobre esos archivos, coordinar el traspaso antes de modificarlos.
+- Para implementar cambios autorizados, crear una rama propia desde la base acordada y referenciar el ID de tarea de pendientes. Las exclusiones Vercel existentes cubren nombres concretos: verificar y bloquear autodeploy de cada rama nueva antes de publicarla. No copiar la protección de otra rama dando por hecho que alcanza.
+- Registrar las revisiones y respuestas bajo el nombre real del asistente: Claude, Codex, OpenCode o ChatGPT. Citar rama y SHA revisados, separar hallazgos de propuestas y no declarar resuelto un pendiente solo porque otro chat lo afirma.
+- GitHub y los archivos de gestion son el canal común. Leer novedades al empezar y antes de entregar; agregar un traspaso al finalizar. No hay comunicación directa ni sincronización automática entre chats. Pablo conserva la decisión de negocio y la aprobación de producción.
 
 ## Plantilla de traspaso
 
 ```text
 Fecha/hora y zona:
-Autor (Codex / OpenCode / ChatGPT / humano):
+Autor (Codex / OpenCode / ChatGPT / Claude / humano):
 Tarea y estado (tomada / en curso / revisión / terminada / bloqueada):
 Rama y commit base / resultado:
 Objetivo y archivos:
@@ -57,3 +68,11 @@ Próxima acción y responsable:
 - Autodeploy: se mantiene exclusión de la rama documental y se añade exclusión exacta de esta rama en `vercel.json` y `frontend/vercel.json`. Railway revisado sigue main. Publicación a rama y verificación final se informan al cerrar; no abrir PR ni tocar main.
 - Próxima acción: revisión de código y decisión de siguiente prioridad. H03 y demás pendientes siguen abiertos; una futura salida necesita aprobación explícita.
 - Publicado: commit de implementación `14fe6e7838b84f66f4208882c24c4814b9b3ec21` en origin/fix/invitations-session-revocation. Verificación posterior: SHA remoto coincide, main sigue en `79a05590be4367a108f54aafaad63bef3c2cceab`, cero deployments GitHub para el SHA, cero workflows de la rama y cero deployments Vercel de la rama. Se publica este registro como commit documental adicional con la misma protección. API, frontend y PostgreSQL temporales detenidos al terminar; node_modules restaurado al estado versionado, sin cambios de dependencias en el commit.
+
+### 2026-11-02 - Codex - incorporación de Claude al protocolo
+
+- Solicitud de Pablo: incluir a Claude y publicar la documentación en la rama de trabajo, sin tocar producción.
+- Base: `1bb182a624da301a7e6404a55adbb83241069ec6`; rama `fix/invitations-session-revocation`. Archivos: README y comunicacion-ia de gestion.
+- VERIFICADO-CÓDIGO: Claude incluido en participantes y plantilla; reglas de acceso, revisión inicial propuesta, reserva de archivos, ramas propias, trazabilidad por SHA y protección de autodeploy por rama. No se ha ejecutado ni atribuido una revisión a Claude.
+- Validación: revisión del diff, enlaces relativos y whitespace; cambio exclusivamente documental, sin necesidad de repetir pruebas funcionales.
+- Publicación: rama de trabajo ya excluida en ambos vercel.json; main no se modifica. Comprobar ausencia de deployments después del push. Próxima acción propuesta: que Claude confirme acceso, base leída y comienzo de la revisión antes de tomar archivos.
