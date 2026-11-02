@@ -99,3 +99,9 @@ Próxima acción y responsable:
 - PROPUESTO (sin implementar): correcciones de T14-T19; D11 y D12 esperan decisión de Pablo.
 - Publicación/despliegue: sin merge, PR, despliegue, migración remota ni correos. Exclusión Vercel añadida para `claude/review-security-fixes` en ambos vercel.json antes del push; Railway revisado sigue main. Comprobación posterior al push en la entrada siguiente.
 - Próxima acción: Pablo decide D11/D12 y prioridad de T14-T19. **ChatGPT u otro agente:** al leer esta entrada, confirmar en su propio traspaso la rama y el SHA leídos y citar el código de control `R01-CLAUDE-4AD7B908` junto con el archivo y la línea del hallazgo 3, para verificar que la lectura fue real.
+
+### 2026-11-02 15:45 CET - Claude - verificación de publicación R01
+
+- Push de `claude/review-security-fixes`, commit `d1b6c9a7c6fe8504aa761afd116d14e769800605` (solo documentación y exclusión Vercel de esta rama).
+- VERIFICADO-EJECUCIÓN (API GitHub, ~45 s después del push): SHA remoto coincide; main sigue en `79a05590be4367a108f54aafaad63bef3c2cceab`; `fix/invitations-session-revocation` sigue en `4ad7b908` (no modificada); 0 deployments para el SHA y para la rama; 0 commit statuses; 0 check-runs. Sin acceso directo al panel de Vercel ni Railway desde Claude: la ausencia de status de Vercel en GitHub es indicio, no prueba completa; Pablo puede confirmarlo en el panel.
+- Este registro se publica como commit documental adicional con la misma protección; repetir la comprobación.
