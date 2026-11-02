@@ -2,6 +2,8 @@
 
 Fecha 2026-11-02. Base y alcance en [README](README.md). Revisión estática del código, configuración y pruebas existentes. No se accedió a datos de clientes ni a infraestructura de producción. Las consecuencias descritas son inferencias de código, pendientes de reproducción aislada.
 
+Actualización de la rama `fix/invitations-session-revocation`: H01/H02 ya se reprodujeron y se corrigieron con pruebas; H11 se endureció para ejecutar esas pruebas con DB local aislada. Ver [informe de seguridad](seguridad-invitaciones-sesiones.md). La tabla conserva el diagnóstico de la base original; producción no recibió estas correcciones.
+
 ## Prioridades
 
 | ID | Prioridad | Hallazgo verificado y consecuencia | Evidencia |

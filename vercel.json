@@ -2,7 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "git": {
     "deploymentEnabled": {
-      "docs/gestion-diagnostico-b2b": false
+      "docs/gestion-diagnostico-b2b": false,
+      "fix/invitations-session-revocation": false
     }
   }
 }

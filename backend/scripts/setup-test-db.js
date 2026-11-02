@@ -1,16 +1,13 @@
 const { spawnSync } = require('child_process')
 const { Client } = require('pg')
+const { validateTestDatabaseUrl } = require('../src/testDatabaseUrl')
 
 const DEFAULT_TEST_URL = 'postgresql://onehorizon:onehorizon@localhost:5432/onehorizon_test'
 
 function getTestUrl() {
   const url = process.env.DATABASE_URL_TEST || DEFAULT_TEST_URL
 
-  if (!url.includes('onehorizon_test') && !url.includes('_test')) {
-    throw new Error('DATABASE_URL_TEST must target a test database containing onehorizon_test or _test')
-  }
-
-  return url
+  return validateTestDatabaseUrl(url)
 }
 
 function run(command, args, env) {

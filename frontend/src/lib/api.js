@@ -25,7 +25,9 @@ export async function apiGet(path, options = {}) {
             const body = await res.json();
             if (body?.error) message = body.error;
         } catch { /* response body was not JSON */ }
-        throw new Error(message);
+        const error = new Error(message);
+        error.status = res.status;
+        throw error;
     }
 
     return res.json();
@@ -46,7 +48,9 @@ export async function apiPost(path, body, options = {}) {
             const errBody = await res.json();
             if (errBody?.error) message = errBody.error;
         } catch { /* response body was not JSON */ }
-        throw new Error(message);
+        const error = new Error(message);
+        error.status = res.status;
+        throw error;
     }
 
     return res.json();

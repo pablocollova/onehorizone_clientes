@@ -25,7 +25,7 @@ const navItems = [
 ];
 
 export const Sidebar = () => {
-    const { logout, user } = useAuth();
+    const { logout, logoutError, loggingOut, user } = useAuth();
 
     return (
         <aside className="w-64 bg-white border-r border-gray-100 flex flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex">
@@ -140,11 +140,13 @@ export const Sidebar = () => {
             <div className="p-4 border-t border-gray-50">
                 <button
                     onClick={logout}
+                    disabled={loggingOut}
                     className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 w-full transition-colors"
                 >
                     <LogOut size={18} />
                     Sign Out
                 </button>
+                {logoutError && <p role="alert" className="px-4 text-sm text-red-600">{logoutError}</p>}
             </div>
 
         </aside>

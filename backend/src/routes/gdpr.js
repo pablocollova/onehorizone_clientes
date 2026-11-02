@@ -1,7 +1,7 @@
 // backend/src/routes/gdpr.js
 const router = require("express").Router();
 const prisma = require("../prisma");
-const { getJwtSecret, requireAuth } = require("../middleware/auth");
+const { requireAuth } = require("../middleware/auth");
 const auditLog = require("../middleware/auditLog");
 
 function publicUserData(user) {
@@ -27,27 +27,18 @@ function publicUserData(user) {
 }
 
 // Public route to store cookie consent
-router.post("/consent", async (req, res) => {
+router.post("/consent", (req, res, next) => {
+  if (req.headers.authorization) return requireAuth(req, res, next);
+  return next();
+}, async (req, res) => {
   try {
     const { type, value, source } = req.body;
     
     // Accept array of consents
     const consents = Array.isArray(req.body) ? req.body : [{ type, value, source }];
     
-    // We try to get userId if they pass a token, but it's optional here for public banners
-    let userId = null;
-    const auth = req.headers.authorization || "";
-    const token = auth.startsWith("Bearer ") ? auth.slice(7) : null;
-    
-    if (token) {
-      const jwt = require("jsonwebtoken");
-      try {
-        const payload = jwt.verify(token, getJwtSecret());
-        userId = payload.userId || payload.id;
-      } catch (e) {
-        // ignore invalid token for public consent
-      }
-    }
+    // Anonymous consent is public; an identified consent requires a live session.
+    const userId = req.user?.id || null;
 
     const ipAddress = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || null;
     const userAgent = req.headers['user-agent'] || null;
@@ -166,6 +157,7 @@ router.post("/me/delete", auditLog("GDPR_DELETE"), async (req, res) => {
         docType: null,
         docNumber: null,
         status: "DISABLED",
+        sessionVersion: { increment: 1 },
         deletedAt: new Date(),
         // username might be needed to keep uniques, or we randomize it
         username: `deleted_${userId}`,

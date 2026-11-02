@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const rateLimit = require("express-rate-limit");
 const prisma = require('../prisma'); // 👈 IMPORTANTE: importar prisma
-const { signAuthToken } = require("../middleware/auth");
+const { signAuthToken, requireAuth } = require("../middleware/auth");
 const { sendActivationEmail } = require("../services/email");
 
 function publicUser(user) {
@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
         });
 
         // Check if user exists and has a password
-        if (!user || user.status !== "ACTIVE" || !user.password) {
+        if (!user || user.status !== "ACTIVE" || user.deletedAt || !user.password) {
             return res.status(401).json({ error: "Invalid credentials or account not active" });
         }
 
@@ -77,45 +77,34 @@ router.post("/activate", async (req, res) => {
         // Hash the incoming token
         const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
 
-        // Find valid token
-        const inviteToken = await prisma.inviteToken.findFirst({
-            where: {
-                tokenHash,
-                usedAt: null,
-                expiresAt: { gt: new Date() }
-            },
-            include: { user: true }
-        });
-
-        if (!inviteToken) {
-            return res.status(400).json({ error: "Invalid or expired token" });
-        }
-
-        const user = inviteToken.user;
-
-        // Hash new password
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Update User
-        const updatedUser = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                password: hashedPassword,
-                status: "ACTIVE",
-                emailVerifiedAt: new Date(),
-                phone: profile?.phone || user.phone,
-                address: profile?.address || user.address,
-                docType: profile?.docType || user.docType,
-                docNumber: profile?.docNumber || user.docNumber,
-                name: profile?.name || user.name
-            }
-        });
-
-        // Mark token as used
-        await prisma.inviteToken.update({
-            where: { id: inviteToken.id },
-            data: { usedAt: new Date() }
-        });
+        // Consume the token and activate only a pending account in one transaction.
+        const updatedUser = await prisma.$transaction(async (tx) => {
+            const inviteToken = await tx.inviteToken.findFirst({
+                where: { tokenHash, usedAt: null, expiresAt: { gt: new Date() } },
+                include: { user: true },
+            });
+            if (!inviteToken || inviteToken.user.status !== "INVITED" || inviteToken.user.deletedAt) return null;
+            const consumed = await tx.inviteToken.updateMany({
+                where: { id: inviteToken.id, usedAt: null, expiresAt: { gt: new Date() } },
+                data: { usedAt: new Date() },
+            });
+            if (consumed.count !== 1) return null;
+            const user = inviteToken.user;
+            const activated = await tx.user.update({
+                where: { id: user.id },
+                data: {
+                    password: hashedPassword, status: "ACTIVE", emailVerifiedAt: new Date(),
+                    sessionVersion: { increment: 1 },
+                    phone: profile?.phone || user.phone, address: profile?.address || user.address,
+                    docType: profile?.docType || user.docType, docNumber: profile?.docNumber || user.docNumber,
+                    name: profile?.name || user.name,
+                },
+            });
+            await tx.inviteToken.updateMany({ where: { userId: user.id, usedAt: null }, data: { usedAt: new Date() } });
+            return activated;
+        }, { isolationLevel: 'Serializable' });
+        if (!updatedUser) return res.status(400).json({ error: "Invalid or expired token" });
 
         const jwtToken = signAuthToken(updatedUser);
 
@@ -125,6 +114,7 @@ router.post("/activate", async (req, res) => {
         });
 
     } catch (error) {
+        if (error.code === "P2034") return res.status(409).json({ error: "Activation changed concurrently; retry" });
         console.error("🔥 Error and activate:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
@@ -184,6 +174,16 @@ router.post("/resend-invite", resendInviteLimiter, async (req, res) => {
     } catch (error) {
         console.error("🔥 Error and resend-invite:", error);
         return res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+// Revokes every token for this account, including the token making this request.
+router.post("/logout", requireAuth, async (req, res, next) => {
+    try {
+        await prisma.user.update({ where: { id: req.user.id }, data: { sessionVersion: { increment: 1 } } });
+        return res.json({ ok: true });
+    } catch (error) {
+        return next(error);
     }
 });
 

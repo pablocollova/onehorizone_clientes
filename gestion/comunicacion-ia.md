@@ -46,3 +46,13 @@ Próxima acción y responsable:
 - Push completado: rama remota `docs/gestion-diagnostico-b2b`, primer SHA publicado `3300b5773ae7c34863111cfda21c80632e0f1327`; tracking local configurado. Documentación disponible en https://github.com/pablocollova/onehorizone_clientes/tree/docs/gestion-diagnostico-b2b/gestion
 - Comprobación posterior al primer push: SHA remoto coincide; main permanece en `79a05590be4367a108f54aafaad63bef3c2cceab`; API GitHub devuelve cero deployments para el commit; Vercel devuelve cero deployments para la rama y conserva `dpl_Fj8wRMoTEndGWFcsYNxUA79JBKYC` como último despliegue de producción. No se creó PR, no se cambiaron ajustes remotos y no se ejecutaron migraciones, seed ni despliegues.
 - Se publica también este registro mediante un commit documental adicional con las mismas protecciones. Comprobar nuevamente después de cada futuro push; no asumir que `[skip ci]` protege todos los proveedores.
+
+### 2026-11-02 - Codex - invitaciones y sesiones
+
+- Tareas T02/T03 y barrera T13 implementadas en `fix/invitations-session-revocation`, base `f79c36377f81b924db43820fe5786cd9421b8e36`. Estado: listo para revisión, sin despliegue ni merge. Detalle completo en `seguridad-invitaciones-sesiones.md`.
+- VERIFICADO-EJECUCIÓN: seis reproducciones fallan con código original y demuestran H01/H02; correcciones: 57/57 backend, 35/35 frontend, 9/9 E2E, lint frontend y Prisma validate PASS. PostgreSQL temporal local nuevo; SMTP desactivado. Ninguna prueba usa datos remotos.
+- Cambios: servicio compartido de invitación con autorización por empresa y transacción, activación de uso único, verificación de estado/rol/empresa/version en DB, revocación global en logout/baja y trigger de invalidación ante cambios de identidad. Frontend muestra error/reintento si no se confirma revocación.
+- Migraciones nuevas: sessionVersion y trigger; solo aplicadas localmente. Un despliegue futuro requiere ambas y nuevo login para todos los JWT anteriores. Rollout/producción no autorizados; no ejecutar db push como sustituto del SQL del trigger.
+- Corrección incidental de prueba E2E GDPR: selector exacto de username; sin cambiar el producto. Dependencias se reinstalaron localmente para ejecutar pruebas; no se incluyen artefactos ni cambios de node_modules.
+- Autodeploy: se mantiene exclusión de la rama documental y se añade exclusión exacta de esta rama en `vercel.json` y `frontend/vercel.json`. Railway revisado sigue main. Publicación a rama y verificación final se informan al cerrar; no abrir PR ni tocar main.
+- Próxima acción: revisión de código y decisión de siguiente prioridad. H03 y demás pendientes siguen abiertos; una futura salida necesita aprobación explícita.

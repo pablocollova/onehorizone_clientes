@@ -10,7 +10,7 @@ test('client can view and export GDPR data', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Your Personal Data' })).toBeVisible()
   const personalData = page.getByRole('main')
   await expect(personalData.getByText('Horizon Admin')).toBeVisible()
-  await expect(personalData.getByText('horizon_admin')).toBeVisible()
+  await expect(personalData.getByText('horizon_admin', { exact: true })).toBeVisible()
 
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export JSON' }).click()

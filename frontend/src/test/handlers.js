@@ -13,6 +13,7 @@ import {
 const API_URL = 'http://localhost'
 
 export const handlers = [
+  http.post(`${API_URL}/api/auth/logout`, () => HttpResponse.json({ ok: true })),
   http.post(`${API_URL}/api/auth/login`, async ({ request }) => {
     const body = await request.json()
 

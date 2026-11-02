@@ -13,6 +13,8 @@ export const AuthProvider = ({ children }) => {
     });
     const [token, setToken] = useState(() => localStorage.getItem('token'));
     const loading = false;
+    const [logoutError, setLogoutError] = useState(null);
+    const [loggingOut, setLoggingOut] = useState(false);
 
     const login = async (username, password) => {
         const data = await apiPost('/api/auth/login', { username, password });
@@ -25,7 +27,19 @@ export const AuthProvider = ({ children }) => {
         return userData;
     };
 
-    const logout = () => {
+    const logout = async () => {
+        setLogoutError(null);
+        setLoggingOut(true);
+        try {
+            if (localStorage.getItem('token')) await apiPost('/api/auth/logout', {});
+        } catch (error) {
+            if (error.status !== 401) {
+                setLogoutError('No pudimos revocar la sesión. Comprobá la conexión e intentá de nuevo.');
+                return;
+            }
+        } finally {
+            setLoggingOut(false);
+        }
         setUser(null);
         setToken(null);
         localStorage.removeItem('user');
@@ -36,7 +50,7 @@ export const AuthProvider = ({ children }) => {
     const getToken = () => localStorage.getItem('token');
 
     return (
-        <AuthContext.Provider value={{ user, token, login, logout, loading, getToken }}>
+        <AuthContext.Provider value={{ user, token, login, logout, logoutError, loggingOut, loading, getToken }}>
             {!loading && children}
         </AuthContext.Provider>
     );

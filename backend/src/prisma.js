@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
 const { PrismaPg } = require('@prisma/adapter-pg')
 const { Pool } = require('pg')
+const { validateTestDatabaseUrl } = require('./testDatabaseUrl')
 
 function resolveDatabaseUrl() {
     if (process.env.NODE_ENV !== 'test') {
@@ -13,11 +14,7 @@ function resolveDatabaseUrl() {
         throw new Error('DATABASE_URL_TEST is required when NODE_ENV=test')
     }
 
-    if (!testUrl.includes('onehorizon_test') && !testUrl.includes('_test')) {
-        throw new Error('Refusing to run tests: DATABASE_URL_TEST must target a database containing onehorizon_test or _test')
-    }
-
-    return testUrl
+    return validateTestDatabaseUrl(testUrl)
 }
 
 const databaseUrl = resolveDatabaseUrl()

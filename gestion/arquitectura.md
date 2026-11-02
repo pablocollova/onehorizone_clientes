@@ -34,6 +34,8 @@ API pública: raíz, health, `/api/auth/*`, consentimiento GDPR. GDPR privado ap
 
 ## PROPUESTO
 
+Actualización implementada en `fix/invitations-session-revocation`, sin desplegar: JWT incluye sessionVersion; autenticación consulta usuario/estado/rol/empresa/version vigentes. Logout revoca todas las sesiones. Dos migraciones añaden el campo y un trigger SQL para invalidar tokens ante cambios de identidad. Invitaciones y activación usan transacciones Serializable. Detalles y límites en [invitaciones y sesiones](seguridad-invitaciones-sesiones.md). La arquitectura descrita arriba conserva la evidencia de la base auditada.
+
 Conservar React/Express/Prisma/PostgreSQL y desplegar por separado web y API cuando se apruebe. Añadir validación centralizada, autorización por objeto, observabilidad y entornos aislados. Introducir almacenamiento privado de documentos con autorización de descarga; contratos, tareas y renovaciones solo después de definir sus estados y relaciones. No introducir microservicios ni migrar stack durante la recuperación.
 
 Antes de publicar: identificar proveedor, rama de producción y previews, migraciones automáticas, secretos, rewrites SPA y API, backups y restauración. La aprobación debe identificar commit, entorno y efectos de datos, con plan de reversión.

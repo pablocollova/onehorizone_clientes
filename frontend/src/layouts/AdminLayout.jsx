@@ -17,7 +17,7 @@ const adminNav = [
 ];
 
 export const AdminLayout = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, logoutError, loggingOut } = useAuth();
 
     // Guard — must be PLATFORM_ADMIN
     if (!user) return <Navigate to="/login" replace />;
@@ -78,12 +78,14 @@ export const AdminLayout = () => {
                         <p className="text-xs text-gray-400">Platform Admin</p>
                     </div>
                     <button
+                        disabled={loggingOut}
                         onClick={logout}
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 w-full transition-colors"
                     >
                         <LogOut size={18} />
                         Sign Out
                     </button>
+                    {logoutError && <p role="alert" className="px-4 text-sm text-red-600">{logoutError}</p>}
                 </div>
             </aside>
 
