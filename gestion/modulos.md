@@ -20,3 +20,7 @@ Todo estado de implementación siguiente es VERIFICADO-CÓDIGO; no es certificac
 | Calidad | Vitest frontend/backend, Supertest, Playwright, scripts manuales | Ejecución actual por registrar; resultados históricos no garantizan estado actual |
 
 Fuentes: `frontend/src/App.jsx`, `frontend/src/pages/`, `frontend/src/sections/`, `backend/src/routes/`, `backend/prisma/schema.prisma`, `e2e/`.
+
+## Actualización en rama operativa, 2026-11-02 (Codex)
+
+Base T16 70190d86; rama codex/t04-operational-integrity. Se incorpora una primera vista administrativa de conteos reales en /app/admin/overview (API /api/admin/overview, solo PLATFORM_ADMIN), menú Overview y entrada de /app/admin. Se validan relaciones e inputs en las escrituras administrativas existentes de facturas/trabajos. Detalle, límites y secuencia en [entregas operativas](entregas-operativas.md). El dashboard financiero cliente, estado de cuenta, pagos y almacenamiento documental no cambian en esta entrega; no se consideran terminados. Esta entrada actualiza el inventario histórico sin reescribirlo.

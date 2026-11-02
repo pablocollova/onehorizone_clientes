@@ -11,6 +11,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y 
 | [Diagnóstico](diagnostico.md) | Hallazgos y evidencia |
 | [Arquitectura](arquitectura.md) | Estado técnico y evolución propuesta |
 | [Módulos](modulos.md) | Inventario funcional real |
+| [Entregas operativas](entregas-operativas.md) | Alcance autorizado, secuencia, entrega T04 y decisiones pendientes |
 | [Roadmap](roadmap.md) | Secuencia y criterios de aceptación |
 | [Decisiones](decisiones.md) | Acuerdos y propuestas sin aprobar |
 | [Pendientes](pendientes.md) | Trabajo accionable y bloqueos |

@@ -7,7 +7,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T01 | P0 | Identificar hosting activo, ramas, previews, migraciones automáticas y backups; habilitar publicación documental sin despliegue | Parcial: Vercel/Railway y ramas revisados; documentación publicada con protección de rama. Backups y preparación operativa siguen pendientes. Ver publicacion-github.md |
 | T02 | P0 | Reproducir y corregir reasignación de INVITED entre clientes en ambos endpoints; probar email ya invitado ajeno | Implementado y probado en fix/invitations-session-revocation / Codex; revisado por Claude (R01, sin P0), no desplegado |
 | T03 | P0 | Revalidar usuario/estado/rol o mecanismo de revocación de sesión; probar baja con token previo | Implementado y probado en fix/invitations-session-revocation / Codex; revisado por Claude (R01, sin P0), no desplegado |
-| T04 | P1 | Validar relaciones client/location/invoice y entradas monetarias, fechas y enums | Pendiente / sin asignar |
+| T04 | P1 | Validar relaciones client/location/invoice y entradas monetarias, fechas y enums | Codex: implementado en escrituras actuales de facturas/trabajos y probado localmente en codex/t04-operational-integrity; pendiente revisión. Relaciones inversas documentales incluidas; sin inspección/reparación de datos históricos ni garantías de SQL directo. Ver entregas-operativas.md |
 | T05 | P1 | Conectar formulario a destino real y definir atención comercial | Pendiente / sin asignar; Pablo define destino |
 | T06 | P1 | Conectar estado de cuenta y corregir saldo/pagos/monedas; quitar métricas ficticias | Pendiente / sin asignar |
 | T07 | P1 | Preparar PostgreSQL local aislado y reejecutar backend/E2E sin contactar servicios externos | Completado para rama de seguridad con PostgreSQL temporal loopback: backend y E2E PASS; Docker daemon sigue no disponible |
@@ -23,6 +23,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T17 | P2 | Respuesta uniforme en invitaciones para no revelar si un email existe en otra empresa (403/400/200 distinguibles por CLIENT_ADMIN) | Pendiente / sin asignar. Hallazgo 4 R01 |
 | T18 | P2 | Manejo global de 401 en frontend (limpiar sesión y redirigir) y reintento anónimo del consentimiento cuando el token está revocado | Pendiente / sin asignar. Hallazgo 5 R01 |
 | T19 | P2 | Flujo para corregir la empresa de una invitación pendiente (p. ej. cancelar y reinvitar), ahora bloqueado con 403 también para PLATFORM_ADMIN | Pendiente de decisión D12 / Pablo. Hallazgo 6 R01 |
+| T20 | P1 | Resumen administrativo global desde datos reales | Codex: primera vista de conteos implementada y probada localmente en codex/t04-operational-integrity; resumen financiero y documentos descargables siguen pendientes |
 | R01 | — | Revisión de T02/T03/T13 (Claude) sobre `4ad7b908` | Terminada: sin P0; hallazgos en comunicacion-ia.md. Revisión de otro agente pendiente |
 
 ## Datos aún no confirmados

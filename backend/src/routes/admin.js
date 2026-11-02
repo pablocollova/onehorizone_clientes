@@ -4,6 +4,25 @@ const { requireAuth } = require("../middleware/auth");
 const { requireRole } = require("../middleware/roles");
 const { inviteUser, InvitationError } = require("../services/invitations");
 const prisma = require("../prisma");
+const { saveOperation, operationError, validateFilters } = require("../services/operationalIntegrity");
+
+// Operational counts only: financial balances require explicit accounting rules.
+router.get("/overview", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res, next) => {
+    try {
+        const counts = await prisma.$transaction(async db => {
+            const [clients, locations, activeUsers, pendingInvitations, pendingInvoices, pendingServices, documents] = await Promise.all([
+                db.client.count(), db.location.count(),
+                db.user.count({ where: { status: "ACTIVE", deletedAt: null } }),
+                db.user.count({ where: { status: "INVITED", deletedAt: null } }),
+                db.invoice.count({ where: { status: { in: ["ISSUED", "OVERDUE"] } } }),
+                db.serviceRecord.count({ where: { status: "PENDING" } }),
+                db.document.count(),
+            ]);
+            return { clients, locations, activeUsers, pendingInvitations, pendingInvoices, pendingServices, documents };
+        }, { isolationLevel: "RepeatableRead" });
+        return res.json({ counts, generatedAt: new Date().toISOString() });
+    } catch (error) { return next(error); }
+});
 
 // Allowed roles for inviting
 const INVITE_ROLES = ["PLATFORM_ADMIN", "CLIENT_ADMIN"];
@@ -110,6 +129,7 @@ router.get("/users", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, r
 // GET /api/admin/invoices — list with optional filters: clientId, type, status
 router.get("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
+        validateFilters('invoice', req.query);
         const { clientId, type, status } = req.query;
         const where = {};
         if (clientId) where.clientId = clientId;
@@ -127,6 +147,7 @@ router.get("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req
         });
         return res.json(invoices);
     } catch (error) {
+        if (operationError(error, res)) return;
         console.error("🔥 Error fetching invoices:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
@@ -135,38 +156,11 @@ router.get("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req
 // POST /api/admin/invoices — create a new invoice
 router.post("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
-        const { clientId, locationId, vendorId, type, totalCents, currency, dueDate, status, number } = req.body;
-
-        if (!clientId || !type || totalCents === undefined) {
-            return res.status(400).json({ error: "clientId, type, and totalCents are required" });
-        }
-
-        const validTypes = ["ONEHORIZON_FEE", "VENDOR_REBILL", "VENDOR_DIRECT"];
-        if (!validTypes.includes(type)) {
-            return res.status(400).json({ error: `type must be one of: ${validTypes.join(", ")}` });
-        }
-
-        const invoice = await prisma.invoice.create({
-            data: {
-                clientId,
-                locationId: locationId || null,
-                vendorId: vendorId || null,
-                type,
-                totalCents: Number(totalCents),
-                currency: currency || "EUR",
-                dueDate: dueDate ? new Date(dueDate) : null,
-                status: status || "ISSUED",
-                number: number || null,
-            },
-            include: {
-                client: { select: { id: true, name: true } },
-                location: { select: { id: true, label: true } },
-                vendor: { select: { id: true, name: true } },
-            },
-        });
+        const invoice = await saveOperation(prisma, "invoice", req.body, null, { client: { select: { id: true, name: true } }, location: { select: { id: true, label: true } }, vendor: { select: { id: true, name: true } } });
         return res.status(201).json(invoice);
     } catch (error) {
-        console.error("🔥 Error creating invoice:", error);
+        if (operationError(error, res)) return;
+        console.error("Operational write failed:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -174,31 +168,11 @@ router.post("/invoices", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (re
 // PATCH /api/admin/invoices/:id — update an invoice
 router.patch("/invoices/:id", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
-        const existing = await prisma.invoice.findUnique({ where: { id: req.params.id } });
-        if (!existing) return res.status(404).json({ error: "Invoice not found" });
-
-        const allowed = ["clientId", "locationId", "vendorId", "type", "totalCents", "currency", "dueDate", "status", "number"];
-        const data = {};
-        for (const key of allowed) {
-            if (req.body[key] !== undefined) {
-                if (key === "totalCents") data[key] = Number(req.body[key]);
-                else if (key === "dueDate") data[key] = req.body[key] ? new Date(req.body[key]) : null;
-                else data[key] = req.body[key] || null;
-            }
-        }
-
-        const invoice = await prisma.invoice.update({
-            where: { id: req.params.id },
-            data,
-            include: {
-                client: { select: { id: true, name: true } },
-                location: { select: { id: true, label: true } },
-                vendor: { select: { id: true, name: true } },
-            },
-        });
-        return res.json(invoice);
+        const invoice = await saveOperation(prisma, "invoice", req.body, req.params.id, { client: { select: { id: true, name: true } }, location: { select: { id: true, label: true } }, vendor: { select: { id: true, name: true } } });
+        return res.status(200).json(invoice);
     } catch (error) {
-        console.error("🔥 Error updating invoice:", error);
+        if (operationError(error, res)) return;
+        console.error("Operational write failed:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -208,6 +182,7 @@ router.patch("/invoices/:id", requireAuth, requireRole(["PLATFORM_ADMIN"]), asyn
 // GET /api/admin/service-records — list with optional filters: clientId, billingMode, status
 router.get("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
+        validateFilters('serviceRecord', req.query);
         const { clientId, billingMode, status } = req.query;
         const where = {};
         if (clientId) where.clientId = clientId;
@@ -226,6 +201,7 @@ router.get("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), asy
         });
         return res.json(records);
     } catch (error) {
+        if (operationError(error, res)) return;
         console.error("🔥 Error fetching service records:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
@@ -234,41 +210,11 @@ router.get("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), asy
 // POST /api/admin/service-records — create a new service record
 router.post("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
-        const { clientId, locationId, vendorId, title, description, serviceDate, costCents, currency, billingMode, status, invoiceId } = req.body;
-
-        if (!clientId || !title || !serviceDate || costCents === undefined) {
-            return res.status(400).json({ error: "clientId, title, serviceDate, and costCents are required" });
-        }
-
-        const validModes = ["REBILL", "DIRECT_VENDOR"];
-        if (billingMode && !validModes.includes(billingMode)) {
-            return res.status(400).json({ error: `billingMode must be one of: ${validModes.join(", ")}` });
-        }
-
-        const record = await prisma.serviceRecord.create({
-            data: {
-                clientId,
-                locationId: locationId || null,
-                vendorId: vendorId || null,
-                title,
-                description: description || null,
-                serviceDate: new Date(serviceDate),
-                costCents: Number(costCents),
-                currency: currency || "EUR",
-                billingMode: billingMode || "REBILL",
-                status: status || "PENDING",
-                invoiceId: invoiceId || null,
-            },
-            include: {
-                client: { select: { id: true, name: true } },
-                location: { select: { id: true, label: true } },
-                vendor: { select: { id: true, name: true } },
-                invoice: { select: { id: true, number: true } },
-            },
-        });
+        const record = await saveOperation(prisma, "serviceRecord", req.body, null, { client: { select: { id: true, name: true } }, location: { select: { id: true, label: true } }, vendor: { select: { id: true, name: true } }, invoice: { select: { id: true, number: true } } });
         return res.status(201).json(record);
     } catch (error) {
-        console.error("🔥 Error creating service record:", error);
+        if (operationError(error, res)) return;
+        console.error("Operational write failed:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 });
@@ -276,32 +222,11 @@ router.post("/service-records", requireAuth, requireRole(["PLATFORM_ADMIN"]), as
 // PATCH /api/admin/service-records/:id — update a service record
 router.patch("/service-records/:id", requireAuth, requireRole(["PLATFORM_ADMIN"]), async (req, res) => {
     try {
-        const existing = await prisma.serviceRecord.findUnique({ where: { id: req.params.id } });
-        if (!existing) return res.status(404).json({ error: "Service record not found" });
-
-        const allowed = ["clientId", "locationId", "vendorId", "title", "description", "serviceDate", "costCents", "currency", "billingMode", "status", "invoiceId"];
-        const data = {};
-        for (const key of allowed) {
-            if (req.body[key] !== undefined) {
-                if (key === "costCents") data[key] = Number(req.body[key]);
-                else if (key === "serviceDate") data[key] = new Date(req.body[key]);
-                else data[key] = req.body[key];
-            }
-        }
-
-        const record = await prisma.serviceRecord.update({
-            where: { id: req.params.id },
-            data,
-            include: {
-                client: { select: { id: true, name: true } },
-                location: { select: { id: true, label: true } },
-                vendor: { select: { id: true, name: true } },
-                invoice: { select: { id: true, number: true } },
-            },
-        });
-        return res.json(record);
+        const record = await saveOperation(prisma, "serviceRecord", req.body, req.params.id, { client: { select: { id: true, name: true } }, location: { select: { id: true, label: true } }, vendor: { select: { id: true, name: true } }, invoice: { select: { id: true, number: true } } });
+        return res.status(200).json(record);
     } catch (error) {
-        console.error("🔥 Error updating service record:", error);
+        if (operationError(error, res)) return;
+        console.error("Operational write failed:", error);
         return res.status(500).json({ error: "Internal server error" });
     }
 });

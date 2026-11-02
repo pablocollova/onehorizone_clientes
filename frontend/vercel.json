@@ -5,7 +5,8 @@
       "docs/gestion-diagnostico-b2b": false,
       "fix/invitations-session-revocation": false,
       "claude/review-security-fixes": false,
-      "fix/t16-email-normalization": false
+      "fix/t16-email-normalization": false,
+      "codex/t04-operational-integrity": false
     }
   }
 }

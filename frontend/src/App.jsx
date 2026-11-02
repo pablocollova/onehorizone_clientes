@@ -1,3 +1,4 @@
+import { Overview } from './pages/admin/Overview';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { PublicLayout } from './layouts/PublicLayout';
@@ -37,7 +38,8 @@ function App() {
 
           {/* Platform Admin Routes — guarded by AdminLayout */}
           <Route path="/app/admin" element={<AdminLayout />}>
-            <Route index element={<Navigate to="clients" replace />} />
+            <Route index element={<Navigate to="overview" replace />} />
+            <Route path="overview" element={<Overview />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
             <Route path="invoices" element={<Invoices />} />
