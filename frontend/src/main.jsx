@@ -4,8 +4,11 @@ import './index.css'
 import App from './App.jsx'
 import './i18n.js'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+async function start() {
+  if (import.meta.env.VITE_DEMO_MODE === 'true') {
+    const { installDemo } = await import('./demo/api');
+    installDemo();
+  }
+  createRoot(document.getElementById('root')).render(<StrictMode><App /></StrictMode>);
+}
+start();

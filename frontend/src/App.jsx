@@ -19,11 +19,15 @@ import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { PrivacySettings } from './pages/PrivacySettings';
 import { PrivateServices } from './pages/PrivateServices';
+import { lazy, Suspense } from 'react';
+
+const DemoPanel = import.meta.env.VITE_DEMO_MODE === 'true' ? lazy(() => import('./demo/DemoPanel')) : null;
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        {DemoPanel ? <Suspense fallback={null}><DemoPanel /></Suspense> : null}
         <CookieConsentBanner />
         <Routes>
           {/* Public Routes */}

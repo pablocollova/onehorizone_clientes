@@ -8,7 +8,8 @@
       "fix/t16-email-normalization": false,
       "codex/t04-operational-integrity": false,
       "codex/dashboard-workspaces": false,
-      "codex/landing-b2b-first": false
+      "codex/landing-b2b-first": false,
+      "codex/dashboard-demo": false
     }
   }
 }
