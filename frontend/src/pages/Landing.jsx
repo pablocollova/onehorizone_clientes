@@ -1,22 +1,47 @@
-import React from 'react';
-import { Hero } from '../sections/Hero';
-import { WhoWeAre } from '../sections/WhoWeAre';
-import { WhyChooseUs } from '../sections/WhyChooseUs';
-import { Services } from '../sections/Services';
-import { Bundles } from '../sections/Bundles';
-import { PrivateClientsTeaser } from '../sections/PrivateClientsTeaser';
-import { Contact } from '../sections/Contact';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ArrowUpRight, ArrowRight, Check, Plus, MapPin, Mail, Phone } from 'lucide-react';
+import './landing.css';
 
 export const Landing = () => {
-    return (
-        <>
-            <Hero />
-            <WhoWeAre />
-            <Services />
-            <WhyChooseUs />
-            <Bundles />
-            <PrivateClientsTeaser />
-            <Contact />
-        </>
-    );
+  const { t, i18n } = useTranslation();
+  const say = (en, es) => (i18n.language || 'en').startsWith('es') ? es : en;
+  const [service, setService] = useState('');
+  const [prepared, setPrepared] = useState(false);
+  const choose = value => { setService(value); setPrepared(false); };
+  const submit = event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const body = `${data.get('name')}\n${data.get('email')}\n\n${service}\n\n${data.get('message')}`;
+    window.location.href = `mailto:info@onehorizon.es?subject=${encodeURIComponent('One Horizon · ' + service)}&body=${encodeURIComponent(body)}`;
+    setPrepared(true);
+  };
+  const family = [
+    [say('Home utilities','Suministros del hogar'),say('Electricity, water, internet and household setup, with bills kept in order.','Electricidad, agua, internet y puesta en marcha de tu hogar, con las facturas en orden.')],
+    [say('Documents & local admin','Documentación y trámites'),say('NIE, empadronamiento, translations and appointments, coordinated with local partners.','NIE, empadronamiento, traducciones y citas, coordinados con colaboradores locales.')],
+    [say('Property maintenance','Mantenimiento del hogar'),say('Reliable trades, repairs and scheduled follow-up for your home.','Profesionales de confianza, reparaciones y seguimiento del mantenimiento de tu hogar.')],
+    [say('Insurance & essentials','Seguros y servicios esenciales'),say('Home, health and everyday cover arranged through trusted providers.','Seguros de hogar, salud y coberturas cotidianas a través de proveedores de confianza.')],
+    [say('Social Security','Seguridad Social'),say('Help with registration and health-card paperwork for you and your family.','Apoyo con el alta y los trámites de la tarjeta sanitaria para ti y tu familia.')],
+    [say('School enrollment','Escolarización'),say('Guidance and paperwork for enrolling your children in school.','Orientación y apoyo con los trámites de escolarización de tus hijos.')],
+  ];
+  const interests = ['Business setup or opening','Ongoing operational support','Compliance, licences, or documentation','Private client support','Other'];
+  return <div className="oh-landing">
+    <section className="oh-hero" id="hero">
+      <div className="oh-hero-copy"><p className="oh-eyebrow"><span/>COSTA DEL SOL · SPAIN</p>
+        <h1>{say('Your next chapter.','Tu próxima etapa.')}<br/><em>{say('Open for business.','Lista para abrir.')}</em></h1>
+        <p className="oh-hero-lead">{say('Your operational partner for business in Spain.','Tu aliado para poner en marcha tu negocio en España.')}</p>
+        <p className="oh-muted">{say('We coordinate openings, takeovers and day-to-day operations. You focus on the business you came here to build.','Coordinamos aperturas, traspasos y la operativa diaria. Tú te concentras en el negocio que viniste a construir.')}</p>
+        <div className="oh-actions"><a className="oh-button" href="#contact" onClick={()=>choose(interests[0])}>{say('Let’s get you operational','Pongamos tu negocio en marcha')}<ArrowUpRight size={18}/></a><a className="oh-text-link" href="#services">{say('Explore services','Explorar servicios')}<ArrowRight size={17}/></a></div>
+        <div className="oh-hero-note">{say('Local knowledge. Practical support. One point of contact.','Conocimiento local. Apoyo práctico. Un único contacto.')}</div>
+      </div>
+      <figure className="oh-hero-image"><img src="/images/hero_costa_del_sol.png" alt={say('A Mediterranean terrace overlooking the Costa del Sol','Una terraza mediterránea con vistas a la Costa del Sol')} fetchPriority="high"/><figcaption><MapPin size={16}/>{say('A place to build something of your own.','Un lugar para construir algo propio.')}</figcaption><span className="oh-image-index">01 / ONE HORIZON</span></figure>
+    </section>
+    <section id="who-we-help" className="oh-section oh-audiences"><div className="oh-section-heading"><p className="oh-eyebrow">01 — {say('WHO WE HELP','A QUIÉN AYUDAMOS')}</p><h2>{say('Ambition meets','Tu proyecto,')}<br/><em>{say('local know-how.','con respaldo local.')}</em></h2><p className="oh-muted">{t('who_we_are.description')}</p></div><div className="oh-audience-list">{[0,1,2,3].map(i=><article key={i}><span className="oh-number">0{i+1}</span><div><h3>{t(`who_we_are.audiences.${i}.label`)}</h3><p>{t(`who_we_are.audiences.${i}.desc`)}</p></div><ArrowUpRight size={21} aria-hidden="true"/></article>)}</div></section>
+    <section id="services" className="oh-section oh-services"><div className="oh-section-heading"><p className="oh-eyebrow">02 — {say('BUSINESS SERVICES','SERVICIOS PARA EMPRESAS')}</p><h2>{say('The details, handled.','Los detalles, resueltos.')}<br/><em>{say('The business, moving.','Tu negocio, en marcha.')}</em></h2><p className="oh-muted">{t('services.description')}</p></div><div className="oh-service-list">{[0,1,2,3,4,5].map(i=><details key={i}><summary><span className="oh-number">0{i+1}</span><h3>{t(`services.business.${i}.title`)}</h3><Plus size={20}/></summary><div className="oh-service-detail"><p>{t(`services.business.${i}.desc`)}</p><a href="#contact" onClick={()=>choose(t(`services.business.${i}.title`))}>{say('Talk to us about this','Hablemos de este servicio')}<ArrowUpRight size={16}/></a></div></details>)}</div></section>
+    <section id="why-choose-us" className="oh-why"><div className="oh-section"><p className="oh-eyebrow">{say('WHY ONE HORIZON','POR QUÉ ONE HORIZON')}</p><h2>{say('More time for your business.','Más tiempo para tu negocio.')}<br/><em>{say('Less chasing the details.','Menos gestiones pendientes.')}</em></h2><div className="oh-reasons">{['local','time','trusted','contact'].map((key,i)=><article key={key}><span className="oh-number">0{i+1}</span><h3>{t(`why_choose_us.reasons.${key}_title`)}</h3><p>{t(`why_choose_us.reasons.${key}_desc`)}</p></article>)}</div><details className="oh-about"><summary>{say('The role we play in your business','Nuestro papel en tu negocio')}<Plus size={18}/></summary><p>{t('who_we_are.callout.title')} {t('who_we_are.callout.description')}</p><ul>{[0,1,2,3,4].map(i=><li key={i}>{t(`who_we_are.features.${i}`)}</li>)}</ul></details></div></section>
+    <section id="how-we-work" className="oh-section"><div className="oh-heading-row"><div><p className="oh-eyebrow">03 — {say('HOW WE WORK','CÓMO TRABAJAMOS')}</p><h2>{say('Here for the opening.','Desde la apertura.')}<br/><em>{say('And what comes next.','Y en todo lo que viene.')}</em></h2></div><p className="oh-muted">{t('bundles.description')}</p></div><div className="oh-phases">{[0,1].map(i=><article key={i} className={'oh-phase'+(i?' oh-phase-dark':'')}><span className="oh-phase-number">0{i+1}</span><p className="oh-eyebrow">{t(`bundles.bundle_${i}.label`)}</p><h3>{t(`bundles.bundle_${i}.name`)}</h3><p>{t(`bundles.bundle_${i}.desc`)}</p><ul>{[0,1,2,3,4].map(j=><li key={j}><Check size={16}/>{t(`bundles.bundle_${i}.features.${j}`)}</li>)}</ul><a className="oh-text-link" href="#contact" onClick={()=>choose(interests[i])}>{t(`bundles.bundle_${i}.button`)}<ArrowUpRight size={18}/></a></article>)}</div><aside id="portal" className="oh-portal"><div><p className="oh-eyebrow">{say('YOUR CLIENT SPACE','TU ESPACIO DE CLIENTE')}</p><h3>{say('A clearer view of the practical side.','La parte práctica, más organizada.')}</h3><p>{t('bundles.banner.description')}</p></div><Link to="/login" className="oh-button oh-button-outline">{say('Client portal','Portal de clientes')}<ArrowUpRight size={17}/></Link></aside></section>
+    <section id="family" className="oh-family"><div className="oh-section"><div className="oh-heading-row"><div><p className="oh-eyebrow">{say('FOR FAMILIES & INDIVIDUALS','PARA FAMILIAS Y PARTICULARES')}</p><h2>One Horizon <em>Family.</em></h2><p className="oh-muted">{say('A new place. A familiar feeling. The same team and the same care, for the practical side of settling in on the Costa del Sol.','Un lugar nuevo que se siente como casa. El mismo equipo y la misma dedicación para ayudarte a instalarte en la Costa del Sol.')}</p></div><Link to="/private-services" className="oh-text-link">{say('Discover Family','Descubre Family')}<ArrowUpRight size={18}/></Link></div><div className="oh-family-grid">{family.map(([title,desc])=><article key={title}><h3>{title}</h3><p>{desc}</p><a href="#contact" onClick={()=>choose(title)} aria-label={say('Ask about ','Consultar por ')+title}><ArrowUpRight size={20}/></a></article>)}</div><p className="oh-family-note">{say('Plus, practical ongoing help and an organised place for your household documents.','Además, apoyo continuo y un espacio organizado para la documentación de tu hogar.')}</p></div></section>
+    <section id="contact" className="oh-section oh-contact"><div><p className="oh-eyebrow">04 — {say('LET’S TALK','HABLEMOS')}</p><h2>{say('Big plans start','Los grandes planes')}<br/><em>{say('with a conversation.','empiezan hablando.')}</em></h2><p className="oh-muted">{say('Opening a business, taking over an operation or settling in with your family? Tell us where you are and where you want to go.','¿Abres un negocio, tomas el relevo de una empresa o te instalas con tu familia? Cuéntanos dónde estás y qué quieres conseguir.')}</p><div className="oh-contact-links"><a href="mailto:info@onehorizon.es"><Mail size={18}/>info@onehorizon.es</a><a href="tel:+34613942784"><Phone size={18}/>+34 613 942 784</a><span><MapPin size={18}/>Costa del Sol, Spain</span></div></div><form onSubmit={submit} className="oh-form"><div className="oh-form-row"><label htmlFor="oh-name">{t('contact.form.name')}<input id="oh-name" name="name" autoComplete="name" required maxLength={150}/></label><label htmlFor="oh-email">{t('contact.form.email')}<input id="oh-email" name="email" type="email" autoComplete="email" required/></label></div><label htmlFor="oh-service">{t('contact.form.service')}<select id="oh-service" name="service" value={service} onChange={e=>choose(e.target.value)} required><option value="">{t('contact.form.service_placeholder')}</option>{interests.map((v,i)=><option key={v} value={v}>{t(`contact.form.service_options.${['business_setup','operations_support','compliance','private','other'][i]}`)}</option>)}{service&&!interests.includes(service)&&<option value={service}>{service}</option>}</select></label><label htmlFor="oh-message">{t('contact.form.message')}<textarea id="oh-message" name="message" rows={4} required maxLength={2500} placeholder={t('contact.form.message_placeholder')}/></label><p className="oh-form-note">{say('This opens your email app with your enquiry ready to send. You can also email or call us directly.','Se abrirá tu aplicación de correo con la consulta lista para enviar. También puedes escribirnos o llamarnos directamente.')} <Link to="/privacy-policy">{t('footer.privacy')}</Link></p><button className="oh-button" type="submit">{say('Prepare my consultation','Preparar mi consulta')}<ArrowUpRight size={18}/></button>{prepared&&<p role="status">{say('Send your enquiry from your email app. This page has not sent a message.','Envía la consulta desde tu aplicación de correo. Esta página no ha enviado ningún mensaje.')}</p>}</form></section>
+  </div>;
 };
