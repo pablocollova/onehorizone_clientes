@@ -30,7 +30,7 @@ for (const role of ['PLATFORM_ADMIN', 'CLIENT_ADMIN']) {
         } else {
             await login(page, 'platform_admin', 'admin123');
             await expect(page).toHaveURL(/\/app\/admin\/clients/);
-            await page.getByRole('link', { name: 'Cuenta corriente y pagos' }).click();
+            await page.goto('/app/admin/accounts');
             await page.getByRole('combobox', { name: 'Empresa', exact: true }).selectOption(company.id);
         }
         await page.getByRole('link', { name: 'Comprobantes del pago' }).click();
@@ -65,7 +65,7 @@ for (const role of ['PLATFORM_ADMIN', 'CLIENT_ADMIN']) {
         expect((await request.get(`${backendUrl}/api/documents/${result.documents[0].id}/download`, { headers: { Authorization: `Bearer ${foreign.token}` } })).status()).toBe(404);
         if (role === 'CLIENT_ADMIN') {
             const readerEmail = await invite('CLIENT_USER');
-            await page.getByRole('button', { name: 'Sign Out' }).click(); await expect(page).toHaveURL(/\/login/);
+            await page.getByRole('button', { name: 'Cerrar sesión' }).click(); await expect(page).toHaveURL(/\/login/);
             await login(page, readerEmail, 'Fictional-doc-password-123'); await expect(page).toHaveURL(/\/app\/dashboard/);
             await page.goto(`/app/documents?receiptId=${payment.id}`);
             await expect(page.getByRole('heading', { name: 'organized.pdf', exact: true })).toBeVisible();

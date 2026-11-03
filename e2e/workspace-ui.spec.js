@@ -11,7 +11,7 @@ test('administrator creates and edits an invoice, registers a service and sees t
     await page.goto('/app/admin/invoices');
     await page.getByRole('button', { name: 'Nueva factura' }).click();
     const dialog = page.getByRole('dialog');
-    await dialog.getByLabel('Empresa', { exact: true }).selectOption(company.id);
+    await dialog.getByRole('combobox', { name: 'Empresa', exact: true }).selectOption(company.id);
     await dialog.getByLabel('Número de factura').fill(`UI-${suffix}`);
     await dialog.getByLabel('Importe', { exact: true }).fill('100,00');
     await dialog.getByRole('button', { name: 'Guardar factura' }).click();
@@ -23,7 +23,7 @@ test('administrator creates and edits an invoice, registers a service and sees t
     await expect(page.getByRole('row').filter({ hasText: `UI-${suffix}` })).toContainText('125,00');
     await page.goto('/app/admin/service-records');
     await page.getByRole('button', { name: 'Registrar servicio' }).click();
-    await dialog.getByLabel('Empresa', { exact: true }).selectOption(company.id);
+    await dialog.getByRole('combobox', { name: 'Empresa', exact: true }).selectOption(company.id);
     await dialog.getByLabel('Nombre del servicio').fill(`Servicio de prueba UI ${suffix}`);
     await dialog.getByLabel('Fecha de trabajo').fill('2026-11-03');
     await dialog.getByLabel('Coste registrado').fill('25,50');
@@ -33,6 +33,7 @@ test('administrator creates and edits an invoice, registers a service and sees t
     await expect(page.getByRole('article').filter({ hasText: `Servicio de prueba UI ${suffix}` })).toContainText('Finalizado');
     await page.goto('/app/admin/overview');
     await expect(page.getByRole('heading', { name: 'Una visión clara de tu operación.' })).toBeVisible();
+    await expect(page.getByText('Cargando información…', { exact: true })).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath('dashboard-admin.png'), fullPage: true });
     await page.setViewportSize({ width: 390, height: 844 });
     await page.getByRole('button', { name: 'Abrir menú' }).click();
@@ -47,6 +48,7 @@ test('client reads its invoices and services with no administrative controls on 
     await expect(page).toHaveURL(/\/app\/dashboard/);
     await dismissCookieBanner(page);
     await expect(page.getByRole('heading', { name: /Hola,/ })).toBeVisible();
+    await expect(page.getByText('Cargando información…', { exact: true })).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath('dashboard-client-mobile.png'), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     await page.getByRole('button', { name: 'Abrir menú' }).click();

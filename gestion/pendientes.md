@@ -29,6 +29,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T23 | P1 | Catálogo ampliable, solicitud, presupuesto versionado, aceptación por cliente_admin, fecha/trabajo y factura | Pendiente; alcance D16, estados/responsables detallados propuestos en modelo-operativo.md |
 | T24 | P1 | Conciliación de Payment histórico y marcas PAID, reversiones/devoluciones y correcciones financieras con auditoría | Pendiente: no importar/confirmar históricos automáticamente ni ejecutar operaciones reales; registrar reglas específicas antes de habilitar correcciones |
 | T25 | P1 | Preparación de almacenamiento documental persistente, backup DB+archivos, incorporación histórica y conciliación de huérfanos | Pendiente; no ejecutar sobre producción ni interpretar rutas LEGACY sin verificación. Driver local configurable implementado, no proveedor remoto ni purga automática |
+| T26 | P1 | Completar interfaz de dashboards admin/cliente para facturas, pagos y servicios e integrar documentos T08 | Codex: implementado y validado localmente en codex/dashboard-workspaces, base 90b0ce36 e integración 03f3d4c6 del otro Codex. Ver interfaz-dashboards.md y comunicación para pruebas/publicación. Pendiente revisión independiente; sin despliegue. T23 no incluido |
 | R01 | — | Revisión de T02/T03/T13 (Claude) sobre `4ad7b908` | Terminada: sin P0; hallazgos en comunicacion-ia.md. Revisión de otro agente pendiente |
 
 ## Datos aún no confirmados

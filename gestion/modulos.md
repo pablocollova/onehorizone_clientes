@@ -36,3 +36,7 @@ Implementados en rama local: estado de cuenta real y pagos, estados En proceso/R
 ## Documentación privada implementada en rama — 2026-11-03
 
 /app/documents y /app/files ya no son placeholders; /app/admin/documents añade selector de empresa. Ambos administradores cargan/organizan dentro de su ámbito, lectores descargan sin escritura; factura/pago enlazan sus documentos. Bytes en filesystem privado explícito, claves opacas e integridad, sin rutas físicas en API. Los registros LEGACY no se convierten automáticamente en archivos descargables. No incluye firma/contratos operativos ni gestión de establecimientos. Detalle en documentacion-privada.md y pruebas en comunicación.
+
+## Interfaz integrada de dashboards — 2026-11-03
+
+En `codex/dashboard-workspaces`, T26 reúne la entrega documental `03f3d4c6` con nuevos resúmenes admin/cliente, navegación móvil, facturas con alta/edición y filtros, servicios con alta/estado y consulta propia, y cuenta corriente organizada por secciones. Se preservan permisos, mutaciones financieras y archivos privados. Ver [interfaz](interfaz-dashboards.md) y evidencia en comunicación. No está desplegado; catálogo, presupuestos y aceptación T23 siguen pendientes.

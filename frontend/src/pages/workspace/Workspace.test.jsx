@@ -54,6 +54,19 @@ it('does not expose invoice writing to an internal reader', async () => {
     setup(<InvoiceWorkspace />, 'PLATFORM_USER');
     await screen.findByText('Registro de facturas');
     expect(screen.queryByRole('button', { name: 'Nueva factura' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Editar factura/ })).not.toBeInTheDocument();
+});
+
+it('preserves the invoice edit form when the backend rejects a financial change', async () => {
+    server.use(http.patch('*/api/admin/invoices/invoice-1', () => HttpResponse.json({ error: 'Factura con pagos: cambio bloqueado.' }, { status: 409 })));
+    const user = setup(<InvoiceWorkspace />, 'PLATFORM_ADMIN');
+    await user.click(await screen.findByRole('button', { name: 'Editar factura sin número' }));
+    const dialog = screen.getByRole('dialog', { name: 'Editar factura' });
+    await user.clear(within(dialog).getByLabelText('Importe'));
+    await user.type(within(dialog).getByLabelText('Importe'), '42,50');
+    await user.click(within(dialog).getByRole('button', { name: 'Guardar cambios' }));
+    expect(await within(dialog).findByRole('alert')).toHaveTextContent('cambio bloqueado');
+    expect(within(dialog).getByLabelText('Importe')).toHaveValue('42,50');
 });
 
 it('reads scoped account invoices and links to their account and documents', async () => {

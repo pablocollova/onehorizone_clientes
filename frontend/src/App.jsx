@@ -1,15 +1,10 @@
-<<<<<<< HEAD
 import { WorkspaceLayout } from './layouts/WorkspaceLayout';
 import { OperationsOverview } from './pages/workspace/OperationsOverview';
 import { ClientOverview } from './pages/workspace/ClientOverview';
 import { InvoiceWorkspace } from './pages/workspace/InvoiceWorkspace';
 import { ServiceWorkspace } from './pages/workspace/ServiceWorkspace';
 import { FinanceWorkspace } from './pages/workspace/FinanceWorkspace';
-=======
 import { DocumentsWorkspace } from './pages/DocumentsWorkspace';
-import { AccountsWorkspace } from './pages/AccountsWorkspace';
-import { Overview } from './pages/admin/Overview';
->>>>>>> 03f3d4c6a1dc7a2f76609504331c1a18ea62f8dc
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { PublicLayout } from './layouts/PublicLayout';

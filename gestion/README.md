@@ -11,6 +11,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y 
 | [Diagnóstico](diagnostico.md) | Hallazgos y evidencia |
 | [Arquitectura](arquitectura.md) | Estado técnico y evolución propuesta |
 | [Módulos](modulos.md) | Inventario funcional real |
+| [Interfaz de dashboards](interfaz-dashboards.md) | Administración/clientes, integración de facturas, pagos, servicios y documentos |
 | [Documentación privada](documentacion-privada.md) | Carga/organización/descarga, permisos, almacenamiento y límites |
 | [Cuenta corriente y pagos](cuenta-corriente-pagos.md) | Flujos implementados, saldos, cotizaciones, API y límites de datos históricos |
 | [Modelo operativo](modelo-operativo.md) | Aclaraciones de Pablo, modalidades financieras, roles y evolución propuesta |

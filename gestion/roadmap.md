@@ -24,3 +24,7 @@ Primera entrega T06 local: recorrido real para ambos administradores, pago parci
 ## Avance documental — 2026-11-03
 
 Primera entrega de documentación T08 implementada localmente: carga acotada, organización y descarga privada por empresa/rol con vínculo factura/recibo y eventos. No equivale a incorporación de archivos históricos, almacenamiento de producción o módulo contractual completo. T25 conserva volumen persistente, backup/restauración y reconciliación de huérfanos/incorporación histórica. Gestión de establecimientos aún pendiente. Evidencia de pruebas y límites en comunicación y documentacion-privada.md.
+
+## Interfaz integrada — 2026-11-03
+
+T26 implementado y validado en `codex/dashboard-workspaces`: interfaz admin/cliente para facturas, pagos y servicios, integrando T08 del otro Codex. Pendiente revisión independiente; publicación y evidencia en comunicación. Esta interfaz no cierra T23, T24 o T25 ni habilita producción. Detalle y continuidad en interfaz-dashboards.md.

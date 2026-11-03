@@ -84,6 +84,7 @@ function AccountDetails({ clientId, user, organized }) {
         allocationKey.current = crypto.randomUUID(); setAllocation({ receiptId: '', invoiceId: '', amount: '' });
     }); };
     const selectedReceipt = data?.receipts.find(x => x.id === allocation.receiptId);
+    const visibleReceipts = (data?.receipts || []).filter(x => (!organized || !paymentStatus || x.status === paymentStatus) && (!organized || (x.reference || '').toLocaleLowerCase().includes(paymentSearch.toLocaleLowerCase())));
     const vendors = [...new Map((data?.invoices || []).filter(x => x.type === 'VENDOR_DIRECT' && x.vendor).map(x => [x.vendor.id, x.vendor])).values()];
     return <div className="space-y-6">
         {organized ? <div className="workspace-tabs" role="group" aria-label="Vistas de cuenta">{[['payments','Pagos e imputaciones'],['invoices','Facturas de cuenta'],['settings','Monedas y adelantos'],['activity','Historial']].map(([value,label]) => <button key={value} type="button" aria-pressed={tab === value} className={tab === value ? 'active' : ''} onClick={() => setTab(value)}>{label}</button>)}</div> : null}
@@ -101,7 +102,7 @@ function AccountDetails({ clientId, user, organized }) {
             </section>
             <section hidden={organized && tab !== 'payments'} className="space-y-3"><h2 className="text-xl font-bold">Pagos registrados</h2>
                 {organized ? <div className="workspace-toolbar"><label className="workspace-search"><span className="sr-only">Buscar pago por referencia</span><input placeholder="Buscar pago por referencia" value={paymentSearch} onChange={e => setPaymentSearch(e.target.value)} /></label><select className="workspace-filter" aria-label="Estado del pago" value={paymentStatus} onChange={e => setPaymentStatus(e.target.value)}><option value="">Todos los estados</option>{Object.entries(states).map(([key,value]) => <option key={key} value={key}>{value}</option>)}</select></div> : null}
-                {data.receipts.filter(x => (!organized || !paymentStatus || x.status === paymentStatus) && (!organized || (x.reference || '').toLocaleLowerCase().includes(paymentSearch.toLocaleLowerCase()))).map(x => <article key={x.id} className="bg-white border rounded-xl p-4 space-y-2">
+                {visibleReceipts.map(x => <article key={x.id} className="bg-white border rounded-xl p-4 space-y-2">
                     <h3 className="font-semibold">{x.reference} · {money(x.amountCents, x.currency)} · {recipientLabel(x.recipient)} {x.vendor?.name}</h3>
                     {x.currency !== 'EUR' ? <p>{x.amountEurCents === null ? 'Equivalente EUR pendiente' : 'Equivalente informativo: ' + money(x.amountEurCents)}</p> : null}<p>{states[x.status]} · Fecha de pago: {new Date(x.paidAt).toLocaleDateString('es-ES')}</p>
                     {x.confirmedBy ? <p>Confirmado por {data.events.find(event => event.action === 'PAYMENT_CONFIRMED' && event.entityId === x.id)?.details.actorName || x.confirmedBy} · {new Date(x.confirmedAt).toLocaleString('es-ES')}. La confirmación declarada no acredita conciliación bancaria.</p> : null}
@@ -110,7 +111,7 @@ function AccountDetails({ clientId, user, organized }) {
                     {x.allocations.map(a => <p key={a.id}>→ {data.invoices.find(i => i.id === a.invoiceId)?.number || a.invoiceId}: {money(a.amountCents, x.currency)}</p>)}
                     {canWrite && x.status !== 'CONFIRMED' ? <button disabled={busy || loading} className={buttonClass} onClick={() => run(() => apiPost(`/api/accounts/payments/${x.id}/state`, { status: x.status === 'PROCESSING' ? 'REVIEW' : 'CONFIRMED' }))}>{x.status === 'PROCESSING' ? 'Enviar a revisión' : 'Confirmar pago'}: {x.reference}</button> : null}
                 </article>)}
-                {!data.receipts.length ? <p>No hay pagos registrados.</p> : null}
+                {!visibleReceipts.length ? <p>{data.receipts.length ? 'No hay pagos con esos filtros.' : 'No hay pagos registrados.'}</p> : null}
             </section>
             {canWrite ? <fieldset hidden={organized && !['payments','settings'].includes(tab)} disabled={busy || loading} className="space-y-6">
                 <legend className="font-bold text-xl">Operar la cuenta</legend>
