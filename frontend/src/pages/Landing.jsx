@@ -1,22 +1,36 @@
-import React from 'react';
-import { Hero } from '../sections/Hero';
-import { WhoWeAre } from '../sections/WhoWeAre';
-import { WhyChooseUs } from '../sections/WhyChooseUs';
-import { Services } from '../sections/Services';
-import { Bundles } from '../sections/Bundles';
-import { PrivateClientsTeaser } from '../sections/PrivateClientsTeaser';
-import { Contact } from '../sections/Contact';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { ArrowUpRight, ArrowRight, Check, MapPin, PlugZap, Files, ShieldCheck, Umbrella, Wrench, ClipboardList, FileText, CreditCard, FolderOpen, Compass } from 'lucide-react';
+import { publicCopy, consultationDraft } from '../lib/landingContent';
 
-export const Landing = () => {
-    return (
-        <>
-            <Hero />
-            <WhoWeAre />
-            <Services />
-            <WhyChooseUs />
-            <Bundles />
-            <PrivateClientsTeaser />
-            <Contact />
-        </>
-    );
-};
+const serviceIcons = [PlugZap, Files, ShieldCheck, Umbrella, Wrench, ClipboardList];
+const portalIcons = [FileText, CreditCard, FolderOpen, Wrench];
+
+export function Landing() {
+ const { i18n } = useTranslation();
+ const c = publicCopy(i18n.language);
+ return <div className="business-landing" id="top">
+  <section className="business-hero business-container" aria-labelledby="business-title">
+   <div className="business-hero-copy"><p className="business-kicker"><span />{c.eyebrow}</p><h1 id="business-title">{c.hero}<br /><em>{c.heroAccent}</em></h1><p className="business-lead">{c.intro}</p><div className="business-actions"><a className="business-button" href="#contact">{c.primary}<ArrowUpRight size={17} /></a><a className="business-text-link" href="#services">{c.secondary}<ArrowRight size={16} /></a></div><p className="business-location"><MapPin size={14} />Costa del Sol, Spain</p></div>
+   <div className="business-hero-visual"><img src="/images/hero_costa_del_sol.png" alt={c.imageAlt} width="1024" height="1024" fetchPriority="high" /><div className="business-photo-caption"><Compass size={26} strokeWidth={1.2} /><div><strong>{c.imageLabel}</strong><span>{c.imageNote}</span></div></div><span className="business-photo-index">ONE HORIZON / BUSINESS</span></div>
+  </section>
+  <div className="business-ribbon"><div className="business-container">{c.ribbon.map(x => <span key={x}><Check size={15} />{x}</span>)}<span className="business-ribbon-place">COSTA DEL SOL ↗</span></div></div>
+  <section id="who-we-help" className="business-section business-container"><div className="business-section-heading"><div><p className="business-kicker">{c.audienceLabel}</p><h2>{c.audienceTitle}</h2></div><p>{c.audienceIntro}</p></div><div className="business-audiences">{c.audiences.map(([title, text], index) => <article key={title}><span className="business-index">0{index + 1}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+  <section id="services" className="business-services"><div className="business-container business-section"><div className="business-section-heading"><div><p className="business-kicker">{c.servicesLabel}</p><h2>{c.servicesTitle}</h2></div><p>{c.servicesIntro}</p></div><div className="business-service-grid">{c.services.map(([title, text, note], index) => { const Icon = serviceIcons[index]; return <article key={title}><div className="business-service-top"><Icon size={25} strokeWidth={1.4} /><span>0{index + 1}</span></div><h3>{title}</h3><p>{text}</p><span className="business-service-note">{note}</span></article>; })}</div></div></section>
+  <section id="how-we-work" className="business-process"><div className="business-container business-section"><div className="business-section-heading"><div><p className="business-kicker">{c.processLabel}</p><h2>{c.processTitle}</h2></div><p>{c.processIntro}</p></div><div className="business-phases">{c.phases.map(([number, label, title, text, steps, action]) => <article key={number}><div className="business-phase-label"><span>{number}</span>{label}</div><h3>{title}</h3><p>{text}</p><ol>{steps.map(step => <li key={step}>{step}</li>)}</ol><a href="#contact" className="business-text-link">{action}<ArrowUpRight size={17} /></a></article>)}</div><p className="business-scope">{c.scopeNote}</p></div></section>
+  <section id="portal" className="business-section business-container business-portal"><div><p className="business-kicker">{c.portalLabel}</p><h2>{c.portalTitle}</h2><p className="business-lead">{c.portalText}</p><Link to="/login" className="business-button">{c.portalCta}<ArrowUpRight size={17} /></Link><small>{c.portalNote}</small></div><div className="business-portal-panel"><div className="business-portal-brand"><Compass size={25} strokeWidth={1.3} />ONE HORIZON<span>CLIENT WORKSPACE</span></div><h3>{c.portalPanelTitle}</h3><p>{c.portalPanelText}</p><div className="business-portal-modules">{c.portalTags.map((label, index) => { const Icon = portalIcons[index]; return <div key={label}><Icon size={19} strokeWidth={1.4} /><span>{label}</span><Check size={14} /></div>; })}</div></div></section>
+  <section className="business-family business-container" aria-labelledby="family-title"><div><p className="business-kicker">{c.familyLabel}</p><h2 id="family-title">{c.familyTitle}</h2><p>{c.familyText}</p></div><Link to="/private-services" className="business-text-link">{c.familyCta}<ArrowUpRight size={18} /></Link></section>
+  <section className="business-section business-container business-faq"><div><p className="business-kicker">{c.faqLabel}</p><h2>{c.faqTitle}</h2></div><div>{c.faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+  <Consultation copy={c} />
+ </div>;
+}
+
+function Consultation({ copy: c }) {
+ const [draft, setDraft] = useState('');
+ function prepare(event) {
+  event.preventDefault();
+  setDraft(consultationDraft(Object.fromEntries(new FormData(event.currentTarget)), c));
+ }
+ return <section id="contact" className="business-contact"><div className="business-container business-section business-contact-grid"><div><p className="business-kicker">{c.contactLabel}</p><h2>{c.contactTitle}</h2><p className="business-lead">{c.contactText}</p><a href="mailto:info@onehorizon.es" className="business-contact-email">info@onehorizon.es<ArrowUpRight size={21} /></a><a href="tel:+34613942784">+34 613 942 784</a><p className="business-location"><MapPin size={14} />{c.location}</p></div><form aria-label={c.formLabel} className="business-contact-form" onSubmit={prepare} onChange={() => setDraft('')}><div className="business-form-grid"><label>{c.name}<input name="name" autoComplete="name" maxLength={100} required /></label><label>{c.email}<input name="email" type="email" autoComplete="email" maxLength={200} required /></label><label>{c.company}<input name="company" autoComplete="organization" maxLength={150} /></label><label>{c.place}<input name="place" maxLength={150} placeholder="Marbella, Málaga…" /></label><label>{c.need}<select name="need" defaultValue="" required><option value="" disabled>{c.choose}</option>{c.needs.map((x, i) => <option key={x} value={i}>{x}</option>)}</select></label><label>{c.timeframe}<select name="timeframe" defaultValue=""><option value="">{c.choose}</option>{c.timeframes.map((x, i) => <option key={x} value={i}>{x}</option>)}</select></label><label className="business-form-wide">{c.message}<textarea name="message" required rows={4} maxLength={1500} placeholder={c.messagePlaceholder} /></label></div><p className="business-form-note">{c.formNote} {c.privacyPrefix} <Link to="/privacy-policy">{c.privacy}</Link>.</p><button type="submit" className="business-button">{c.prepare}<ArrowUpRight size={17} /></button>{draft ? <div className="business-draft"><p role="status">{c.ready}</p><a className="business-button" href={draft}>{c.openEmail}<ArrowUpRight size={16} /></a><p>{c.fallback} <a href="mailto:info@onehorizon.es">info@onehorizon.es</a>.</p></div> : null}</form></div></section>;
+}

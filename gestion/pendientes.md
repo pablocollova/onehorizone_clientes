@@ -34,4 +34,6 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 
 ## Datos aún no confirmados
 
+L01 — Landing B2B-first: implementada en `codex/landing-b2b-first`, con Family secundaria y ES/EN. Ver `landing-b2b.md` y traspaso en comunicación. Preview manual autorizado por Pablo para revisión; producción y recepción centralizada de consultas no autorizadas/implementadas por este cambio.
+
 Proveedor y URL de producción, equivalencia de su commit con main, destino/responsable de leads, capacidad operativa por servicio, reglas de saldo y conciliación, almacenamiento documental, roles de negocio adicionales, volúmenes, plazos y alcance de lanzamiento. Consultar fuentes conectadas disponibles antes de pedir información al usuario. Solicitar solo datos restantes, nunca secretos en chats o Markdown.

@@ -1,24 +1,10 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Compass, ArrowUpRight } from 'lucide-react';
+import { publicCopy } from '../lib/landingContent';
 
-export const Footer = () => {
-    const { t } = useTranslation();
-    return (
-        <footer className="bg-primary text-white py-12">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="flex flex-col md:flex-row justify-between items-center">
-                    <div className="mb-6 md:mb-0">
-                        <span className="text-2xl font-bold tracking-tight">ONE HORIZON</span>
-                        <p className="text-white/60 text-sm mt-2">© {new Date().getFullYear()} {t('footer.rights')}</p>
-                    </div>
-
-                    <div className="flex space-x-8 text-sm text-white/80">
-                        <a href="#" className="hover:text-white transition-colors">{t('footer.privacy')}</a>
-                        <a href="#" className="hover:text-white transition-colors">{t('footer.terms')}</a>
-                        <a href="#" className="hover:text-white transition-colors">{t('footer.cookie')}</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    );
-};
+export function Footer() {
+ const { i18n } = useTranslation();
+ const c = publicCopy(i18n.language);
+ return <footer className="business-footer"><div className="business-container"><div className="business-footer-top"><div><Link to="/" className="business-brand"><Compass size={29} strokeWidth={1.2} /><span>ONE HORIZON</span></Link><p>{c.footerText}</p></div><div><Link to="/login">{c.portal}<ArrowUpRight size={13} /></Link><Link to="/private-services">One Horizon Family<ArrowUpRight size={13} /></Link><a href="mailto:info@onehorizon.es">info@onehorizon.es<ArrowUpRight size={13} /></a></div></div><div className="business-footer-bottom"><span>© {new Date().getFullYear()} {c.rights}</span><Link to="/privacy-policy">{c.privacy}</Link><a href="/#top">{c.back} ↑</a></div></div></footer>;
+}

@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "git": {
     "deploymentEnabled": {
       "docs/gestion-diagnostico-b2b": false,
@@ -7,7 +8,8 @@
       "claude/review-security-fixes": false,
       "fix/t16-email-normalization": false,
       "codex/t04-operational-integrity": false,
-      "codex/dashboard-workspaces": false
+      "codex/dashboard-workspaces": false,
+      "codex/landing-b2b-first": false
     }
   }
 }

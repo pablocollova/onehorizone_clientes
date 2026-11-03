@@ -7,7 +7,8 @@
       "claude/review-security-fixes": false,
       "fix/t16-email-normalization": false,
       "codex/t04-operational-integrity": false,
-      "codex/dashboard-workspaces": false
+      "codex/dashboard-workspaces": false,
+      "codex/landing-b2b-first": false
     }
   }
 }

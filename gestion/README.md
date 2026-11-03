@@ -8,6 +8,7 @@ Este directorio es la memoria versionada para Pablo, Codex, OpenCode, ChatGPT y 
 | Documento | Contenido |
 | --- | --- |
 | [Visión](vision.md) | Dirección comercial y límites |
+| [Landing B2B-first](landing-b2b.md) | Rediseño comercial, referencia PDF, contacto y preview autorizado |
 | [Diagnóstico](diagnostico.md) | Hallazgos y evidencia |
 | [Arquitectura](arquitectura.md) | Estado técnico y evolución propuesta |
 | [Módulos](modulos.md) | Inventario funcional real |

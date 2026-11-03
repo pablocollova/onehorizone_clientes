@@ -4,7 +4,7 @@
     "business_services": "Business Services",
     "how_we_work": "How We Work",
     "portal": "Client Portal",
-    "private_clients": "For Private Clients",
+    "private_clients": "One Horizon Family",
     "login": "Login",
     "book_consultation": "Book a Business Consultation"
   },
@@ -174,7 +174,7 @@
     }
   },
   "private_page": {
-    "subtitle": "Private Client Services",
+    "subtitle": "One Horizon Family",
     "title": "Selected private support for clients living, relocating, or managing property in Costa del Sol.",
     "description": "Our main positioning is business-first, but we also support a smaller number of private clients who need reliable local coordination and practical help on the ground.",
     "note": "If your priority is a business opening, acquisition, or operational issue, the main business consultation route remains the best place to start.",

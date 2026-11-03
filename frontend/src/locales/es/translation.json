@@ -4,7 +4,7 @@
     "business_services": "Servicios para Empresas",
     "how_we_work": "Cómo Trabajamos",
     "portal": "Portal del Cliente",
-    "private_clients": "Para Clientes Privados",
+    "private_clients": "One Horizon Family",
     "login": "Ingresar",
     "book_consultation": "Reservar Consulta de Negocio"
   },
@@ -174,7 +174,7 @@
     }
   },
   "private_page": {
-    "subtitle": "Servicios para Clientes Privados",
+    "subtitle": "One Horizon Family",
     "title": "Soporte privado seleccionado para quienes viven, se reubican o gestionan una propiedad en Costa del Sol.",
     "description": "Nuestro posicionamiento principal es business-first, pero también acompañamos a un número más acotado de clientes privados que necesitan coordinación local confiable y ayuda práctica sobre el terreno.",
     "note": "Si tu prioridad es una apertura, adquisición o problema operativo de negocio, la ruta principal de consulta empresarial sigue siendo el mejor punto de partida.",
