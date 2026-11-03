@@ -1,116 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, LogIn } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from './ui/Button';
+import { useState, useEffect } from 'react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-const businessLinks = [
-    { href: '/#who-we-help', key: 'who_we_help' },
-    { href: '/#services', key: 'business_services' },
-    { href: '/#how-we-work', key: 'how_we_work' },
-    { href: '/#portal', key: 'portal' },
-];
+import './marketing-nav.css';
 
 export const Navbar = () => {
-    const { t, i18n } = useTranslation();
-    const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
-            <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-                <Link to="/">
-                    <img src="/images/logo.png" alt="One Horizon Logo" className="w-40 md:w-[180px] h-auto" />
-                </Link>
-
-                <div className="hidden md:flex items-center space-x-8">
-                    {businessLinks.map((link) => (
-                        <NavLink key={link.key} href={link.href}>{t(`navbar.${link.key}`)}</NavLink>
-                    ))}
-                    <Link to="/private-services" className="rounded-full border border-primary/15 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5">
-                        {t('navbar.private_clients')}
-                    </Link>
-                    
-                    <div className="flex items-center gap-4 border-l border-gray-200 pl-4">
-                        <button 
-                            onClick={() => i18n.changeLanguage(i18n.language === 'en' ? 'es' : 'en')}
-                            className="font-bold text-primary hover:text-accent transition-colors flex items-center gap-1"
-                        >
-                            {i18n.language === 'en' ? 'ES' : 'EN'}
-                        </button>
-                        <Button variant="outline" className="flex items-center gap-2 border-primary/20 hover:bg-primary/5" onClick={() => navigate('/login')}>
-                            <LogIn size={16} /> {t('navbar.login')}
-                        </Button>
-                        <Button variant="primary" onClick={() => { window.location.href = '/#contact'; }}>
-                            {t('navbar.book_consultation')}
-                        </Button>
-                    </div>
-                </div>
-
-                <button className="md:hidden text-primary" onClick={() => setIsOpen(!isOpen)}>
-                    {isOpen ? <X size={28} /> : <Menu size={28} />}
-                </button>
-            </div>
-
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="absolute top-full left-0 w-full bg-white shadow-lg overflow-hidden md:hidden"
-                    >
-                        <div className="flex flex-col p-6 space-y-4">
-                            {businessLinks.map((link) => (
-                                <MobileNavLink key={link.key} href={link.href} onClick={() => setIsOpen(false)}>{t(`navbar.${link.key}`)}</MobileNavLink>
-                            ))}
-                            <Link to="/private-services" onClick={() => setIsOpen(false)} className="text-lg text-primary font-semibold block py-2 border-b border-gray-100">
-                                {t('navbar.private_clients')}
-                            </Link>
-                            
-                            <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                                <span className="text-text-dark font-medium">Language</span>
-                                <button 
-                                    onClick={() => {
-                                        i18n.changeLanguage(i18n.language === 'en' ? 'es' : 'en');
-                                        setIsOpen(false);
-                                    }}
-                                    className="px-4 py-1 rounded-full bg-neutral-bg font-bold text-primary hover:bg-primary/10 transition-colors"
-                                >
-                                    {i18n.language === 'en' ? 'ES' : 'EN'}
-                                </button>
-                            </div>
-
-                            <Button variant="outline" className="w-full flex items-center justify-center gap-2" onClick={() => { navigate('/login'); setIsOpen(false); }}>
-                                <LogIn size={16} /> {t('navbar.login')}
-                            </Button>
-                            <Button variant="primary" className="w-full" onClick={() => { window.location.href = '/#contact'; setIsOpen(false); }}>
-                                {t('navbar.book_consultation')}
-                            </Button>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </nav>
-    );
+  const { i18n } = useTranslation();
+  const es = (i18n.language || 'en').startsWith('es');
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => { setOpen(false); }, [location.pathname, location.hash]);
+  useEffect(() => {
+    const escape = e => { if (e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', escape);
+    return () => window.removeEventListener('keydown', escape);
+  }, []);
+  const links = [['/#who-we-help',es?'Para quién':'Who we help'],['/#services',es?'Servicios':'Services'],['/#how-we-work',es?'Cómo trabajamos':'How we work'],['/#family','One Horizon Family']];
+  return <header className="oh-nav"><a className="oh-skip" href="#main-content">{es?'Ir al contenido':'Skip to content'}</a><div className="oh-nav-inner"><Link className="oh-logo" to="/" aria-label="One Horizon — Home"><img src="/images/logo.png" alt="One Horizon"/></Link><button type="button" className="oh-menu-toggle" aria-label={open?(es?'Cerrar menú':'Close menu'):(es?'Abrir menú':'Open menu')} aria-expanded={open} aria-controls="oh-navigation" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button><nav id="oh-navigation" aria-label={es?'Navegación principal':'Main navigation'} className={open?'is-open':''}>{links.map(([href,label])=><a key={href} href={href} onClick={()=>setOpen(false)}>{label}</a>)}<div className="oh-nav-tools"><Link to="/login">{es?'Área cliente':'Client portal'}</Link><button type="button" aria-label={es?'Switch to English':'Cambiar a español'} onClick={()=>{i18n.changeLanguage(es?'en':'es');setOpen(false);}}>{es?'EN':'ES'}</button><a className="oh-nav-cta" href="/#contact" onClick={()=>setOpen(false)}>{es?'Hablemos':'Let’s talk'}<ArrowUpRight size={15}/></a></div></nav></div></header>;
 };
-
-const NavLink = ({ href, children }) => (
-    <a href={href} className="text-text-dark hover:text-primary font-medium transition-colors">
-        {children}
-    </a>
-);
-
-const MobileNavLink = ({ href, onClick, children }) => (
-    <a href={href} onClick={onClick} className="text-lg text-text-dark font-medium block py-2 border-b border-gray-100">
-        {children}
-    </a>
-);
