@@ -108,3 +108,7 @@ Las reglas aún abiertas (reconocimiento de reembolso previo al desembolso, exce
 ## Actualización de implementación — 2026-11-02, cuenta corriente
 
 El análisis anterior conserva el punto de partida. En esta rama ya están implementados PaymentReceipt, PaymentAllocation, VendorAdvance, ExchangeRate y FinanceEvent, sin sustituir Payment histórico ni crear todavía Receivable/catálogo/presupuestos/contratos. Criterios técnicos concretos, fórmulas de saldo neto/deuda, cotización manual, semántica de dashboard, evidencia y límites en [cuenta-corriente-pagos.md](cuenta-corriente-pagos.md). Las propuestas no incluidas en ese documento no se consideran implementadas ni aprobadas.
+
+## Actualización documental — 2026-11-03
+
+Se implementa carga/organización/descarga de Document y DocumentEvent, con vínculo a recibo/factura/local validado y bytes originales privados. Los cuatro roles tienen la matriz de acceso definida; adjuntar comprobante no confirma ni imputa. La categoría Contratos no implica firma/ciclo contractual. Histórico LEGACY e infraestructura persistente requieren trabajo específico T25. Ver documentacion-privada.md y pruebas en comunicación; no se altera el alcance de negocio ni se autoriza producción.

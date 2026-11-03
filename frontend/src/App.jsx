@@ -1,3 +1,4 @@
+import { DocumentsWorkspace } from './pages/DocumentsWorkspace';
 import { AccountsWorkspace } from './pages/AccountsWorkspace';
 import { Overview } from './pages/admin/Overview';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -42,6 +43,7 @@ function App() {
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<Overview />} />
             <Route path="accounts" element={<AccountsWorkspace />} />
+            <Route path="documents" element={<DocumentsWorkspace />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
             <Route path="invoices" element={<Invoices />} />
@@ -54,9 +56,9 @@ function App() {
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="statement" element={<AccountStatement />} />
-            <Route path="documents" element={<PlaceholderPage title="Documents" />} />
+            <Route path="documents" element={<DocumentsWorkspace />} />
             <Route path="locations" element={<PlaceholderPage title="Locations" />} />
-            <Route path="files" element={<PlaceholderPage title="Files" />} />
+            <Route path="files" element={<DocumentsWorkspace />} />
             <Route path="payments" element={<AccountsWorkspace paymentsOnly />} />
             <Route path="privacy-settings" element={<PrivacySettings />} />
           </Route>

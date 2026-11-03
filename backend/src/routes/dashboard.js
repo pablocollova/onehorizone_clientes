@@ -7,7 +7,7 @@ router.get('/', async (req, res, next) => {
         if (!clientId && !['PLATFORM_ADMIN', 'PLATFORM_USER'].includes(req.user.role)) return res.status(401).json({ error: 'UNAUTHORIZED_CLIENT_REQUIRED' });
         const where = clientId ? { clientId } : {};
         const [recentDocuments, pendingCount, account] = await Promise.all([
-            prisma.document.findMany({ where, take: 4, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, mimeType: true, sizeBytes: true, createdAt: true } }),
+            prisma.document.findMany({ where, take: 4, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, mimeType: true, sizeBytes: true, createdAt: true, storageKind: true } }),
             prisma.invoice.count({ where: { ...where, status: { in: ['ISSUED', 'OVERDUE'] } } }),
             clientId ? statement(req.user, clientId) : null,
         ]);
@@ -20,7 +20,7 @@ router.get('/', async (req, res, next) => {
             balanceByLocation: account ? Math.max(0, ...locations.values()) / 100 : null,
             monetaryScope: 'EUR_ONE_HORIZON_NET_ONLY; use balances per currency and recipient; select a company for financial data',
             pendingInvoices: account ? account.invoices.filter(x => x.eligible && x.totalCents > x.appliedCents).length : pendingCount,
-            balances: account?.balances || [], warnings: account?.warnings || {}, recentDocuments,
+            balances: account?.balances || [], warnings: account?.warnings || {}, recentDocuments: recentDocuments.map(({storageKind, ...doc}) => ({...doc, downloadAvailable: storageKind === 'PRIVATE_LOCAL_V1'})),
         });
     } catch (error) { next(error); }
 });

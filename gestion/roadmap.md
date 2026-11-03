@@ -20,3 +20,7 @@ Consultar D13-D18 y [modelo operativo](modelo-operativo.md) antes de continuar f
 ## Avance de fase financiera — 2026-11-02
 
 Primera entrega T06 local: recorrido real para ambos administradores, pago parcial y múltiples imputaciones, aislamiento, separación proveedor/One Horizon, estados y saldos por moneda con equivalente EUR manual. Reembolsos reconocidos solo con adelanto completo registrado por One Horizon. T24 mantiene conciliación histórica, correcciones/reversiones/devoluciones; fase documental T08 sigue abierta. Ver cuenta-corriente-pagos.md y evidencia final en comunicación. Sin despliegue ni migraciones remotas.
+
+## Avance documental — 2026-11-03
+
+Primera entrega de documentación T08 implementada localmente: carga acotada, organización y descarga privada por empresa/rol con vínculo factura/recibo y eventos. No equivale a incorporación de archivos históricos, almacenamiento de producción o módulo contractual completo. T25 conserva volumen persistente, backup/restauración y reconciliación de huérfanos/incorporación histórica. Gestión de establecimientos aún pendiente. Evidencia de pruebas y límites en comunicación y documentacion-privada.md.

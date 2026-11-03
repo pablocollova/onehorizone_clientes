@@ -3,6 +3,25 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
+export async function apiUploadDocument(file, metadata) {
+    const params = new URLSearchParams(Object.entries(metadata).filter(([, value]) => value !== undefined && value !== null && value !== ''));
+    const res = await fetch(`${API_BASE_URL}/api/documents/upload?${params}`, {
+        method: 'POST', headers: buildHeaders({ 'Content-Type': 'application/octet-stream' }), body: file,
+    });
+    if (!res.ok) { const body = await res.json().catch(() => ({})); throw new Error(body.error || 'No se pudo cargar el archivo.'); }
+    return res.json();
+}
+
+export async function apiDownloadDocument(id, name) {
+    const res = await fetch(`${API_BASE_URL}/api/documents/${encodeURIComponent(id)}/download`, { headers: buildHeaders(), cache: 'no-store' });
+    if (!res.ok) { const body = await res.json().catch(() => ({})); throw new Error(body.error || 'No se pudo descargar el archivo.'); }
+    const url = URL.createObjectURL(await res.blob());
+    const link = document.createElement('a');
+    link.href = url; link.download = name; document.body.appendChild(link); link.click(); link.remove();
+    // Give the browser time to start reading the object URL.
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 /** Build headers, attaching Authorization if a token is stored in localStorage. */
 function buildHeaders(extra = {}) {
     const token = localStorage.getItem("token");
