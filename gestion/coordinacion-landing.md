@@ -6,4 +6,6 @@ Reservas en esta copia: Landing, Navbar/Footer/PublicLayout, estilos/contenido c
 
 Criterios: jerarquía B2B y Family secundaria, rutas/idiomas y portal conservados, CTA/contacto honesto sin envío simulado, móvil/teclado, sin métricas/testimonios inventados. Verificar en navegador y build/lint/frontend. Excluir la nueva rama exactamente de Vercel en ambas raíces antes de publicar, revisar automatismos y registrar SHA. Sin PR, merge, despliegue, correo real ni producción.
 
-Estado: en curso. Evidencia y traspaso final en comunicacion-ia.md y landing-b2b.md al finalizar.
+Estado: implementado, probado y publicado. Código desplegado: `61407ff97d731ac0f8290a9457e0c3a109572f96`. Pablo amplió el encargo solicitando despliegue Vercel para verlo: se autorizó y realizó únicamente preview manual, sin cambiar producción. Deploy `dpl_8N5nPQeHhbwVqiYGsjcoYy28sDWN`, READY, target null (preview). URL base: https://onehorizone-clientes-3zvcllk97-pablocollovas-projects.vercel.app . Requiere acceso Vercel o enlace compartible temporal entregado a Pablo en el chat; el token no se publica en GitHub.
+
+Frontend 63/63 y navegador local 3/3 PASS, lint/build PASS. Navegador remoto: home/Family/login 200 tras recargar, sin pageerror ni API externa y bundle con API de preview deshabilitada. Documentación y traspaso en comunicacion-ia.md y landing-b2b.md. Las otras IA deben leer el SHA real de esta rama: la rama del otro Codex no se modifica ni se presume sincronizada. Producción/main conservan 79a05590; sin promoción, dominios, DB o correos reales.

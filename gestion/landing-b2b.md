@@ -29,3 +29,9 @@ En builds con `VERCEL_ENV=preview`, Vite fija VITE_API_URL a `/preview-api-disab
 Pruebas frontend, lint, build normal y preview, y tres recorridos Playwright locales en `playwright.landing.config.cjs`. Este config solo acepta HTTP loopback y no inicia backend. Se comprueban CTA/anclas, FAQ, borrador sin solicitudes API, idioma, Family/privacidad/login, teclado móvil y anchos 390/768/1100/1280/1440 sin overflow horizontal. Capturas de escritorio y móvil para revisión visual; no se versionan. Resultados finales y URL/SHA del preview en comunicación.
 
 PENDIENTE: validar comercialmente el texto, alcance real de los seis servicios y contacto antes de una salida; recepción de leads centralizada, responsable/tiempo de respuesta, integración CRM/correo, política legal específica y SEO avanzado requieren trabajo propio. No se presenta el borrador mailto como captación automática. No se afirma implementado el ciclo comercial T23 por mostrar servicios en la landing. Producción sigue requiriendo autorización expresa.
+
+## Preview publicado y comprobado
+
+Código `61407ff97d731ac0f8290a9457e0c3a109572f96`, deploy `dpl_8N5nPQeHhbwVqiYGsjcoYy28sDWN`, READY, target null/preview. URL: https://onehorizone-clientes-3zvcllk97-pablocollovas-projects.vercel.app . Se generó enlace compartible temporal para Pablo; no se versiona su token. API REST crea preview omitiendo target (no acepta el literal preview); se corrigió el primer 400 de validación antes de crear ningún deploy.
+
+Verificado en navegador real del preview: portada, Family y login recargan con HTTP 200; bundle contiene /preview-api-disabled, sin solicitudes API fuera del preview ni pageerror. Captura remota inspeccionada. Producción consultada después: continúa dpl_Fj8wRMoTEndGWFcsYNxUA79JBKYC, SHA main 79a05590be4367a108f54aafaad63bef3c2cceab. No cambió main ni se promocionó el preview. Commit posterior a código desplegado solo registra el cierre documental.
