@@ -10,6 +10,7 @@ import { Building2, Users, UserPlus, LogOut, FileText, Wrench } from 'lucide-rea
 import { cn } from '../lib/utils';
 
 const adminNav = [
+    { icon: FileText, label: 'Documentación privada', to: '/app/admin/documents' },
     { icon: FileText, label: 'Cuenta corriente y pagos', to: '/app/admin/accounts' },
     { icon: Building2, label: 'Overview', to: '/app/admin/overview' },
     { icon: Building2, label: 'Clients', to: '/app/admin/clients' },

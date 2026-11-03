@@ -10,6 +10,8 @@ function nextId(prefix) {
 }
 
 async function cleanTestDb() {
+  await prisma.documentEvent.deleteMany()
+  await prisma.document.deleteMany()
   await prisma.financeEvent.deleteMany()
   await prisma.paymentAllocation.deleteMany()
   await prisma.paymentReceipt.deleteMany()
@@ -19,7 +21,6 @@ async function cleanTestDb() {
   await prisma.gdprRequest.deleteMany()
   await prisma.consentLog.deleteMany()
   await prisma.payment.deleteMany()
-  await prisma.document.deleteMany()
   await prisma.serviceRecord.deleteMany()
   await prisma.invoice.deleteMany()
   await prisma.location.deleteMany()

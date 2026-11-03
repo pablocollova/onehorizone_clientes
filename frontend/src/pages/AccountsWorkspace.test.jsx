@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { AuthProvider } from '../context/AuthContext';
@@ -31,7 +32,7 @@ function setup(role = 'CLIENT_ADMIN', currency = 'EUR') {
         http.post('*/api/accounts/payments/:id/allocations', async ({ request }) => { const body = await request.json(); requests.push(body); applied = body.amountCents; return HttpResponse.json({ id: 'allocation-1' }); }),
         http.post('*/api/accounts/exchange-rates', async ({ request }) => { const body = await request.json(); requests.push(body); rate = { eurMicros: 1250000, source: body.source, effectiveAt: body.effectiveAt }; return HttpResponse.json(rate); }),
     );
-    render(<AuthProvider><AccountsWorkspace /></AuthProvider>);
+    render(<AuthProvider><MemoryRouter><AccountsWorkspace /></MemoryRouter></AuthProvider>);
     return { requests, user: userEvent.setup() };
 }
 

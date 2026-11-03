@@ -79,6 +79,7 @@ app.use(invoicesRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/workspace", require('./routes/workspace'));
 app.use("/api/accounts", require('./routes/accounts'));
+app.use("/api/documents", require('./routes/documents'));
 
 // ── Global error handler ───────────────────────────────────────────────────────
 app.use((err, req, res, next) => {

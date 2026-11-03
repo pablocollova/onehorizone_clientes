@@ -11,7 +11,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T05 | P1 | Conectar formulario a destino real y definir atención comercial | Pendiente / sin asignar; Pablo define destino |
 | T06 | P1 | Conectar estado de cuenta y corregir saldo/pagos/monedas; quitar métricas ficticias | Codex: cuenta corriente/pagos manuales e imputaciones de ambos administradores implementados localmente en codex/t04-operational-integrity, con monedas y equivalente EUR manual. Ver cuenta-corriente-pagos.md; pendiente revisión, conciliación histórica/bancaria y correcciones financieras |
 | T07 | P1 | Preparar PostgreSQL local aislado y reejecutar backend/E2E sin contactar servicios externos | Completado para rama de seguridad con PostgreSQL temporal loopback: backend y E2E PASS; Docker daemon sigue no disponible |
-| T08 | P1 | Sustituir placeholders por entregas cliente acotadas: establecimientos, documentos, archivos, pagos | Parcial Codex: pagos ya operativo local; establecimientos/documentos/archivos siguen pendientes |
+| T08 | P1 | Sustituir placeholders por entregas cliente acotadas: establecimientos, documentos, archivos, pagos | Parcial Codex: pagos y documentación privada (carga/organización/descarga) implementados localmente en codex/t04-operational-integrity. Establecimientos e incorporación de archivos históricos siguen pendientes; ver documentacion-privada.md |
 | T09 | P2 | Retención por usuario con username único y programación observable; activación transaccional y SMTP fail-closed fuera de dev | Parcial: activación transaccional probada en rama de seguridad. Retención y SMTP pendientes |
 | T10 | P2 | Limpiar dependencias versionadas y revisar frontend/.env sin divulgar contenido; no borrar historial ni rotar sin evidencia | Pendiente / sin asignar |
 | T11 | P2 | Unificar marca Family, revisar políticas enlazadas, textos, móvil, accesibilidad y SEO | Pendiente / sin asignar |
@@ -28,6 +28,7 @@ Estado inicial 2026-11-02. Todos los cambios funcionales siguientes están propu
 | T22 | P1 | Recuperación de contraseña por correo, token aislado de invitación, un solo uso y revocación de sesiones | Pendiente; D17 autoriza desarrollo con correo ficticio, sin envíos reales ni resolución de D11/D12 |
 | T23 | P1 | Catálogo ampliable, solicitud, presupuesto versionado, aceptación por cliente_admin, fecha/trabajo y factura | Pendiente; alcance D16, estados/responsables detallados propuestos en modelo-operativo.md |
 | T24 | P1 | Conciliación de Payment histórico y marcas PAID, reversiones/devoluciones y correcciones financieras con auditoría | Pendiente: no importar/confirmar históricos automáticamente ni ejecutar operaciones reales; registrar reglas específicas antes de habilitar correcciones |
+| T25 | P1 | Preparación de almacenamiento documental persistente, backup DB+archivos, incorporación histórica y conciliación de huérfanos | Pendiente; no ejecutar sobre producción ni interpretar rutas LEGACY sin verificación. Driver local configurable implementado, no proveedor remoto ni purga automática |
 | R01 | — | Revisión de T02/T03/T13 (Claude) sobre `4ad7b908` | Terminada: sin P0; hallazgos en comunicacion-ia.md. Revisión de otro agente pendiente |
 
 ## Datos aún no confirmados

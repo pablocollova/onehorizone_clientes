@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import { WorkspaceLayout } from './layouts/WorkspaceLayout';
 import { OperationsOverview } from './pages/workspace/OperationsOverview';
 import { ClientOverview } from './pages/workspace/ClientOverview';
 import { InvoiceWorkspace } from './pages/workspace/InvoiceWorkspace';
 import { ServiceWorkspace } from './pages/workspace/ServiceWorkspace';
 import { FinanceWorkspace } from './pages/workspace/FinanceWorkspace';
+=======
+import { DocumentsWorkspace } from './pages/DocumentsWorkspace';
+import { AccountsWorkspace } from './pages/AccountsWorkspace';
+import { Overview } from './pages/admin/Overview';
+>>>>>>> 03f3d4c6a1dc7a2f76609504331c1a18ea62f8dc
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { PublicLayout } from './layouts/PublicLayout';
@@ -40,6 +46,7 @@ function App() {
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<OperationsOverview />} />
             <Route path="accounts" element={<FinanceWorkspace />} />
+            <Route path="documents" element={<DocumentsWorkspace />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
             <Route path="invoices" element={<InvoiceWorkspace />} />
@@ -54,9 +61,9 @@ function App() {
             <Route path="invoices" element={<InvoiceWorkspace />} />
             <Route path="services" element={<ServiceWorkspace />} />
             <Route path="statement" element={<FinanceWorkspace />} />
-            <Route path="documents" element={<PlaceholderPage title="Documents" />} />
+            <Route path="documents" element={<DocumentsWorkspace />} />
             <Route path="locations" element={<PlaceholderPage title="Locations" />} />
-            <Route path="files" element={<PlaceholderPage title="Files" />} />
+            <Route path="files" element={<DocumentsWorkspace />} />
             <Route path="payments" element={<FinanceWorkspace />} />
             <Route path="privacy-settings" element={<PrivacySettings />} />
           </Route>

@@ -21,6 +21,8 @@ frontend/.env
 gdpr_export.json
 playwright-report/
 test-results/
+.private-documents/
+backend/.private-documents/
 backend/_logs*.txt
 backend/*output*.txt
 backend/seed-error.txt

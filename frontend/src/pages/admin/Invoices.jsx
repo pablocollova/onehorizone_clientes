@@ -1,6 +1,7 @@
+import { documentsUrl } from '../../lib/documents';
 import { isPlatformReader } from '../../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { apiGet, apiPost, apiPatch } from '../../lib/api';
 import { FileText, Plus, X, Loader2 } from 'lucide-react';
@@ -254,7 +255,7 @@ export const Invoices = () => {
                                         </select> : <span>{inv.status}</span>}
                                     </td>
                                     <td className="px-3 py-3 text-sm text-text-dark/70">{fmtDate(inv.dueDate)}</td>
-                                    <td className="px-3 py-3 text-xs text-gray-300 font-mono truncate max-w-[100px]" title={inv.id}>{inv.id.slice(-8)}</td>
+                                    <td className="px-3 py-3 text-xs text-gray-300 font-mono truncate max-w-[100px]" title={inv.id}>{inv.id.slice(-8)} <Link className="block underline text-primary" to={documentsUrl(user, {clientId: inv.clientId, invoiceId: inv.id})}>Archivos</Link></td>
                                 </tr>
                             ))}
                             {invoices.length === 0 && (

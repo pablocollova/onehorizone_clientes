@@ -90,6 +90,7 @@ model Client {
   locations      Location[]
   invoices       Invoice[]
   documents      Document[]
+  documentEvents DocumentEvent[]
   serviceRecords ServiceRecord[]
   receipts       PaymentReceipt[]
   rates          ExchangeRate[]
@@ -180,6 +181,7 @@ model PaymentReceipt {
   confirmedAt DateTime?
   createdAt   DateTime @default(now())
   allocations PaymentAllocation[]
+  documents   Document[]
   @@unique([clientId, requestKey])
   @@index([clientId, createdAt])
 }
@@ -252,12 +254,49 @@ model Document {
   location    Location? @relation(fields: [locationId], references: [id])
   invoiceId   String?
   invoice     Invoice?  @relation(fields: [invoiceId], references: [id])
+  receiptId   String?
+  receipt     PaymentReceipt? @relation(fields: [receiptId], references: [id])
 
   name        String
   mimeType    String?
   sizeBytes   Int?
   storagePath String
+  storageKind String @default("LEGACY")
+  checksum    String?
+  uploadKey   String?
+  originalName String?
+  category    DocumentCategory @default(OTHER)
+  folder      String @default("")
+  createdBy   String?
+  updatedAt   DateTime @default(now()) @updatedAt
   createdAt   DateTime  @default(now())
+  events      DocumentEvent[]
+  @@unique([clientId, uploadKey])
+  @@index([clientId, category, createdAt])
+  @@index([receiptId])
+  @@index([invoiceId])
+}
+
+enum DocumentCategory {
+  INVOICE
+  PAYMENT
+  CONTRACT
+  OTHER
+}
+
+model DocumentEvent {
+  id          String @id @default(cuid())
+  clientId    String
+  client      Client @relation(fields: [clientId], references: [id])
+  documentId  String
+  document    Document @relation(fields: [documentId], references: [id])
+  action      String
+  actorId     String
+  actorRole   String
+  actorName   String
+  details     Json
+  createdAt   DateTime @default(now())
+  @@index([clientId, documentId, createdAt])
 }
 
 model ServiceRecord {

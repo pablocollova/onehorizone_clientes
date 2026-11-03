@@ -48,3 +48,7 @@ La respuesta de Pablo NO aprueba las reglas contables sugeridas en la primera pr
 ## Avance implementado: cuenta corriente, 2026-11-02
 
 La entrega siguiente ya implementa pagos nuevos con estados, imputaciones y saldos por moneda/destinatario, confirmables por ambos administradores. Añade saldo neto (deuda menos confirmado sin aplicar), historial y cotización manual EUR, además de registro de adelanto completo de One Horizon. No sustituye las propuestas pendientes de conciliación/reversión ni transforma Payment histórico. Detalle de comportamiento adoptado y límites en cuenta-corriente-pagos.md; pruebas en comunicación. Las demás entidades de catálogo/presupuestos/contratos y recuperación continúan pendientes.
+
+## Entrega documentación privada — 2026-11-03
+
+Se implementa la parte documental de la entrega 3: archivos nuevos privados, vínculos empresa/local/factura/recibo validados, organización lógica auditable y descarga autorizada por rol/empresa. Referencias y bytes inmutables; históricos sin autoimportar. Gestión de establecimientos, firma/ciclo contractual e infraestructura de almacenamiento de producción siguen pendientes. Fuente de comportamiento: documentacion-privada.md; estado de pruebas en comunicación. Sin despliegue ni publicación.

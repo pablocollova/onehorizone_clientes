@@ -32,3 +32,7 @@ PLATFORM_USER es el cuarto rol implementado en la rama local: lector interno glo
 ## Entrega cuenta corriente/pagos manuales — 2026-11-02
 
 Implementados en rama local: estado de cuenta real y pagos, estados En proceso/Revisión/Confirmado, confirmación e imputación por PLATFORM_ADMIN y CLIENT_ADMIN scoped, saldos por moneda/destinatario, saldo neto de cuenta y equivalentes EUR con cotización manual trazable. El dashboard cliente usa estos datos y retira tendencias ficticias. Los demás placeholders no quedan cerrados. Históricos Payment/PAID no se convierten en recibos confirmados; se advierten como revisión pendiente. Alcance exacto/API/límites en [cuenta corriente y pagos](cuenta-corriente-pagos.md).
+
+## Documentación privada implementada en rama — 2026-11-03
+
+/app/documents y /app/files ya no son placeholders; /app/admin/documents añade selector de empresa. Ambos administradores cargan/organizan dentro de su ámbito, lectores descargan sin escritura; factura/pago enlazan sus documentos. Bytes en filesystem privado explícito, claves opacas e integridad, sin rutas físicas en API. Los registros LEGACY no se convierten automáticamente en archivos descargables. No incluye firma/contratos operativos ni gestión de establecimientos. Detalle en documentacion-privada.md y pruebas en comunicación.

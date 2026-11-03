@@ -6,6 +6,8 @@ const prisma = require("../src/prisma");
 async function main() {
   console.log("🌱 Seeding database...");
 
+  await prisma.documentEvent.deleteMany();
+  await prisma.document.deleteMany();
   await prisma.financeEvent.deleteMany();
   await prisma.paymentAllocation.deleteMany();
   await prisma.paymentReceipt.deleteMany();
@@ -16,7 +18,6 @@ async function main() {
   await prisma.consentLog.deleteMany();
   await prisma.serviceRecord.deleteMany();
   await prisma.payment.deleteMany();
-  await prisma.document.deleteMany();
   await prisma.invoice.deleteMany();
   await prisma.inviteToken.deleteMany(); // Must be before User
   await prisma.location.deleteMany();

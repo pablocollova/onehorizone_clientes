@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+import { documentsUrl } from '../lib/documents';
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { isPlatformReader } from '../lib/permissions';
@@ -94,7 +96,7 @@ function AccountDetails({ clientId, user, organized }) {
             <section hidden={organized && tab !== 'invoices'} className="bg-white border rounded-xl p-4 overflow-x-auto">
                 <h2 className="text-xl font-bold mb-3">Facturas y obligaciones</h2>
                 <table className="w-full text-left text-sm"><thead><tr>{['Factura', 'Destinatario', 'Moneda', 'Importe', 'Imputado', 'Pendiente', 'Situación'].map(x => <th key={x} className="p-2">{x}</th>)}</tr></thead>
-                    <tbody>{data.invoices.map(x => <tr key={x.id} className="border-t"><td className="p-2">{x.number || x.id}</td><td>{recipientLabel(x.recipient)}{x.vendor ? ` · ${x.vendor.name}` : ''}</td><td>{x.currency}</td><td>{money(x.totalCents, x.currency)}{x.currency !== 'EUR' ? <small className="block">{x.totalEurCents === null ? 'Equivalente EUR pendiente' : '≈ ' + money(x.totalEurCents)}</small> : null}</td><td>{money(x.appliedCents, x.currency)}</td><td>{x.eligible ? money(x.totalCents - x.appliedCents, x.currency) : 'No reconocida en saldo'}</td><td>{x.legacyPaymentsCount ? 'Revisión de pagos históricos requerida' : x.eligible && x.appliedCents === x.totalCents ? 'Saldada por imputaciones' : x.type === 'VENDOR_REBILL' && !x.advance ? 'Adelanto por registrar' : invoiceStates[x.status] || x.status}</td></tr>)}</tbody>
+                    <tbody>{data.invoices.map(x => <tr key={x.id} className="border-t"><td className="p-2">{x.number || x.id} <Link className="underline block" to={documentsUrl(user, {clientId, invoiceId:x.id})}>Archivos de factura</Link></td><td>{recipientLabel(x.recipient)}{x.vendor ? ` · ${x.vendor.name}` : ''}</td><td>{x.currency}</td><td>{money(x.totalCents, x.currency)}{x.currency !== 'EUR' ? <small className="block">{x.totalEurCents === null ? 'Equivalente EUR pendiente' : '≈ ' + money(x.totalEurCents)}</small> : null}</td><td>{money(x.appliedCents, x.currency)}</td><td>{x.eligible ? money(x.totalCents - x.appliedCents, x.currency) : 'No reconocida en saldo'}</td><td>{x.legacyPaymentsCount ? 'Revisión de pagos históricos requerida' : x.eligible && x.appliedCents === x.totalCents ? 'Saldada por imputaciones' : x.type === 'VENDOR_REBILL' && !x.advance ? 'Adelanto por registrar' : invoiceStates[x.status] || x.status}</td></tr>)}</tbody>
                 </table>{!data.invoices.length ? <p>No hay facturas.</p> : null}
             </section>
             <section hidden={organized && tab !== 'payments'} className="space-y-3"><h2 className="text-xl font-bold">Pagos registrados</h2>
@@ -103,6 +105,7 @@ function AccountDetails({ clientId, user, organized }) {
                     <h3 className="font-semibold">{x.reference} · {money(x.amountCents, x.currency)} · {recipientLabel(x.recipient)} {x.vendor?.name}</h3>
                     {x.currency !== 'EUR' ? <p>{x.amountEurCents === null ? 'Equivalente EUR pendiente' : 'Equivalente informativo: ' + money(x.amountEurCents)}</p> : null}<p>{states[x.status]} · Fecha de pago: {new Date(x.paidAt).toLocaleDateString('es-ES')}</p>
                     {x.confirmedBy ? <p>Confirmado por {data.events.find(event => event.action === 'PAYMENT_CONFIRMED' && event.entityId === x.id)?.details.actorName || x.confirmedBy} · {new Date(x.confirmedAt).toLocaleString('es-ES')}. La confirmación declarada no acredita conciliación bancaria.</p> : null}
+                    <Link className="underline" to={documentsUrl(user, {clientId, receiptId:x.id})}>Comprobantes del pago</Link>
                     <p>Imputado: {money(x.allocations.reduce((n, a) => n + a.amountCents, 0), x.currency)}</p>
                     {x.allocations.map(a => <p key={a.id}>→ {data.invoices.find(i => i.id === a.invoiceId)?.number || a.invoiceId}: {money(a.amountCents, x.currency)}</p>)}
                     {canWrite && x.status !== 'CONFIRMED' ? <button disabled={busy || loading} className={buttonClass} onClick={() => run(() => apiPost(`/api/accounts/payments/${x.id}/state`, { status: x.status === 'PROCESSING' ? 'REVIEW' : 'CONFIRMED' }))}>{x.status === 'PROCESSING' ? 'Enviar a revisión' : 'Confirmar pago'}: {x.reference}</button> : null}

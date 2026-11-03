@@ -1,3 +1,4 @@
+import { apiDownloadDocument } from '../lib/api';
 import { BalanceSummary } from '../components/BalanceSummary';
 import { isPlatformReader } from '../lib/permissions';
 import React, { useState, useEffect, useCallback } from 'react';
@@ -28,7 +29,10 @@ const StatCardSkeleton = ({ className }) => (
     </div>
 );
 
-const DocumentRow = ({ name, type, date, size }) => (
+const DocumentRow = ({ id, name, type, date, size, downloadAvailable }) => {
+    const [error, setError] = useState('');
+    const [busy, setBusy] = useState(false);
+    return (
     <tr className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
         <td className="py-4 pl-4 pr-3">
             <div className="flex items-center gap-3">
@@ -46,13 +50,17 @@ const DocumentRow = ({ name, type, date, size }) => (
         <td className="px-3 py-4 text-right pr-4">
             <button
                 className="text-primary hover:text-accent font-medium text-sm p-2 rounded-full hover:bg-gray-100 transition-colors"
-                title="Download"
+                title={downloadAvailable ? 'Download' : 'Archivo histórico pendiente de incorporación'}
+                disabled={!downloadAvailable || busy}
+                onClick={async () => { setBusy(true); setError(''); try { await apiDownloadDocument(id, name); } catch (err) { setError(err.message); } finally { setBusy(false); } }}
             >
                 <DownloadCloud size={18} />
             </button>
+            {error ? <p role="alert">{error}</p> : null}
         </td>
     </tr>
 );
+};
 
 const DocumentRowSkeleton = () => (
     <tr className="border-b border-gray-50 animate-pulse">
@@ -174,7 +182,7 @@ export const Dashboard = () => {
             >
                 <div className="p-6 border-b border-gray-50 flex justify-between items-center">
                     <h3 className="font-bold text-lg text-primary">Recent Documents</h3>
-                    <button className="text-sm text-accent font-medium hover:text-primary transition-colors">View All</button>
+                    <Link to="/app/documents" className="text-sm text-accent font-medium hover:text-primary transition-colors">View All</Link>
                 </div>
 
                 <div className="overflow-x-auto">
