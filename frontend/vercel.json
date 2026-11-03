@@ -6,7 +6,8 @@
       "fix/invitations-session-revocation": false,
       "claude/review-security-fixes": false,
       "fix/t16-email-normalization": false,
-      "codex/t04-operational-integrity": false
+      "codex/t04-operational-integrity": false,
+      "feat/dashboard-workspaces": false
     }
   }
 }

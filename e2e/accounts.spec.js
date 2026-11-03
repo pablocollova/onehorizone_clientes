@@ -26,13 +26,15 @@ for (const role of ['PLATFORM_ADMIN', 'CLIENT_ADMIN']) {
         } else {
             await login(page, 'platform_admin', 'admin123');
             await expect(page).toHaveURL(/\/app\/admin\/clients/);
-            await page.getByRole('link', { name: 'Cuenta corriente y pagos' }).click();
+            await page.goto('/app/admin/accounts');
             await page.getByLabel('Empresa', { exact: true }).selectOption(company.id);
         }
         await dismissCookieBanner(page);
         const browserErrors = [];
         page.on('pageerror', error => browserErrors.push(error.message));
+        await page.getByRole('button', { name: 'Facturas de cuenta', exact: true }).click();
         await expect(page.getByText(invoice.number, { exact: true })).toBeVisible();
+        await page.getByRole('button', { name: 'Pagos e imputaciones', exact: true }).click();
         await page.getByLabel('Importe del pago', { exact: true }).fill('40.00');
         await page.getByLabel('Referencia del pago', { exact: true }).fill(`Fictional receipt ${suffix}`);
         await page.getByRole('button', { name: 'Registrar pago', exact: true }).click();

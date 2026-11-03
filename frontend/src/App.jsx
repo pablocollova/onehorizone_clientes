@@ -1,21 +1,19 @@
-import { AccountsWorkspace } from './pages/AccountsWorkspace';
-import { Overview } from './pages/admin/Overview';
+import { WorkspaceLayout } from './layouts/WorkspaceLayout';
+import { OperationsOverview } from './pages/workspace/OperationsOverview';
+import { ClientOverview } from './pages/workspace/ClientOverview';
+import { InvoiceWorkspace } from './pages/workspace/InvoiceWorkspace';
+import { ServiceWorkspace } from './pages/workspace/ServiceWorkspace';
+import { FinanceWorkspace } from './pages/workspace/FinanceWorkspace';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { PublicLayout } from './layouts/PublicLayout';
-import { AppLayout } from './layouts/AppLayout';
-import { AdminLayout } from './layouts/AdminLayout';
 import { Landing } from './pages/Landing';
 import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { AccountStatement } from './pages/AccountStatement';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { Activate } from './pages/Activate';
 import { Users } from './pages/admin/Users';
 import { Clients } from './pages/admin/Clients';
 import { Invite } from './pages/admin/Invite';
-import { Invoices } from './pages/admin/Invoices';
-import { ServiceRecords } from './pages/admin/ServiceRecords';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { PrivacySettings } from './pages/PrivacySettings';
@@ -38,26 +36,28 @@ function App() {
           <Route path="/activate" element={<Activate />} />
 
           {/* Platform Admin Routes — guarded by AdminLayout */}
-          <Route path="/app/admin" element={<AdminLayout />}>
+          <Route path="/app/admin" element={<WorkspaceLayout administration />}>
             <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<Overview />} />
-            <Route path="accounts" element={<AccountsWorkspace />} />
+            <Route path="overview" element={<OperationsOverview />} />
+            <Route path="accounts" element={<FinanceWorkspace />} />
             <Route path="clients" element={<Clients />} />
             <Route path="users" element={<Users />} />
-            <Route path="invoices" element={<Invoices />} />
-            <Route path="service-records" element={<ServiceRecords />} />
+            <Route path="invoices" element={<InvoiceWorkspace />} />
+            <Route path="service-records" element={<ServiceWorkspace />} />
             <Route path="invite" element={<Invite />} />
           </Route>
 
           {/* Client Protected Routes — guarded by AppLayout */}
-          <Route path="/app" element={<AppLayout />}>
+          <Route path="/app" element={<WorkspaceLayout />}>
             <Route index element={<Navigate to="dashboard" replace />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="statement" element={<AccountStatement />} />
+            <Route path="dashboard" element={<ClientOverview />} />
+            <Route path="invoices" element={<InvoiceWorkspace />} />
+            <Route path="services" element={<ServiceWorkspace />} />
+            <Route path="statement" element={<FinanceWorkspace />} />
             <Route path="documents" element={<PlaceholderPage title="Documents" />} />
             <Route path="locations" element={<PlaceholderPage title="Locations" />} />
             <Route path="files" element={<PlaceholderPage title="Files" />} />
-            <Route path="payments" element={<AccountsWorkspace paymentsOnly />} />
+            <Route path="payments" element={<FinanceWorkspace />} />
             <Route path="privacy-settings" element={<PrivacySettings />} />
           </Route>
 
