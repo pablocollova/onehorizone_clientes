@@ -7,7 +7,7 @@ export const PublicLayout = () => {
     return (
         <div className="min-h-screen font-sans text-text-dark bg-neutral-bg">
             <Navbar />
-            <main>
+            <main id="main-content">
                 <Outlet />
             </main>
             <Footer />
