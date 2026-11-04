@@ -38,3 +38,11 @@ Invitaciones, activación, recuperación, correo, cobros/transferencias, privaci
 Solo push de esta rama, con exclusión exacta de autodeploy en ambos vercel.json. Preview manual del frontend en el proyecto Vercel existente, build `VITE_DEMO_MODE=true npm run build`, sin target production, dominios, PR o merge. SHA, URL y pruebas finales en `comunicacion-ia.md`. No versionar enlaces con token temporal de acceso Vercel.
 
 Para repetir localmente: `VITE_DEMO_MODE=true` y `VITE_API_URL=/preview-api-disabled`, ejecutar Vite desde frontend en loopback. Build demo además requiere `VERCEL_ENV=preview`. `playwright.demo.config.cjs` restringe E2E a HTTP loopback; las pruebas no requieren API ni PostgreSQL. El entorno Node local requiere `NODE_OPTIONS=--no-experimental-webstorage` para Vitest.
+
+## Resultado publicado
+
+Código `46fc9c6384ae771ad4434d99b5acf1d642781d13`, Vercel `dpl_3GAVSPrTfj3p8WBBzv5wyDAX2TVh`, READY/preview (target null). URL base: https://onehorizone-clientes-2rlpz6g5i-pablocollovas-projects.vercel.app/login . El enlace temporal compartible se entrega solo en el chat, sin token en GitHub. Un commit posterior añade este cierre documental y no cambia el código desplegado.
+
+Cuatro recorridos locales de demo PASS y navegador remoto PASS: login admin/cliente, factura propia visible, ausencia de escritura administrativa para cliente, descarga de PDF ficticio, rechazo local de API externa/empresa ajena403, cero solicitudes API en red y cero pageerror. Lint, build demo y build normal PASS; rechazo deliberado de build demo productivo y comprobación de que build normal no contiene los accesos/adapter PASS. La suite completa frontend no se declara pasada:62/63 inicialmente, timeout de activación; repetición con dos trabajadores mostró timeout de privacidad y otra serial quedó sin finalizar. No se alteraron esos tests para ocultar fallos; registrar y repetir la regresión completa en un entorno estable antes de una integración de producción.
+
+Esta tarea creó únicamente el preview indicado. Se observó un despliegue productivo concurrente de la landing ajeno a estas acciones y no se modificó/canceló. No hay autorización implícita de promoción por entregar esta demo.
