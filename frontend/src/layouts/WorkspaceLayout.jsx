@@ -1,6 +1,7 @@
+import { BrandLogo } from '../components/BrandLogo';
 import { useState } from 'react';
 import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Compass, LayoutDashboard, FileText, CreditCard, Wrench, Building2, Users, FolderOpen, Shield, Menu, X, LogOut, ArrowUpRight, UserPlus } from 'lucide-react';
+import { LayoutDashboard, FileText, CreditCard, Wrench, Building2, Users, FolderOpen, Shield, Menu, X, LogOut, ArrowUpRight, UserPlus } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { isPlatformReader } from '../lib/permissions';
 import '../workspace.css';
@@ -27,7 +28,7 @@ export function WorkspaceLayout({ administration = false }) {
     return <div className="workspace-shell">
         {menu ? <button className="workspace-backdrop" aria-label="Cerrar navegación" onClick={() => setMenu(false)} /> : null}
         <aside className={`workspace-sidebar ${menu ? 'is-open' : ''}`} aria-label="Navegación principal">
-            <NavLink to={`${base}/${internal ? 'overview' : 'dashboard'}`} className="workspace-brand" onClick={() => setMenu(false)}><Compass size={32} strokeWidth={1.3} /><span>ONE HORIZON<small>YOUR OPERATING PARTNER</small></span></NavLink>
+            <NavLink to={`${base}/${internal ? 'overview' : 'dashboard'}`} className="workspace-brand" onClick={() => setMenu(false)}><BrandLogo /></NavLink>
             <div className="workspace-context"><span className="workspace-live-dot" /><span>{internal ? 'Centro de operaciones' : 'Portal de clientes'}</span></div>
             <p className="workspace-nav-title">ESPACIO DE TRABAJO</p>
             <nav aria-label="Navegación principal">{nav.map(([Icon, label, path]) => <NavLink key={path} to={`${base}/${path}`} onClick={() => setMenu(false)} className={({ isActive }) => isActive ? 'is-active' : ''}><Icon size={18} strokeWidth={1.7} /><span>{label}</span></NavLink>)}</nav>
