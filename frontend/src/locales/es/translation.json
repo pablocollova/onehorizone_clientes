@@ -175,23 +175,16 @@
   },
   "private_page": {
     "subtitle": "One Horizon Family",
-    "title": "Soporte privado seleccionado para quienes viven, se reubican o gestionan una propiedad en Costa del Sol.",
-    "description": "Nuestro posicionamiento principal es business-first, pero también acompañamos a un número más acotado de clientes privados que necesitan coordinación local confiable y ayuda práctica sobre el terreno.",
-    "note": "Si tu prioridad es una apertura, adquisición o problema operativo de negocio, la ruta principal de consulta empresarial sigue siendo el mejor punto de partida.",
-    "services": {
-      "0": { "title": "Alta de Suministros del Hogar", "desc": "Luz, agua, internet y configuración de cuentas para una llegada o entrega de propiedad más fluida." },
-      "1": { "title": "Coordinación Documental", "desc": "Ayuda con gestión local práctica, registros y coordinación con partners de confianza." },
-      "2": { "title": "Mantenimiento de Propiedad", "desc": "Oficios confiables y seguimiento local para reparaciones, inspecciones y continuidad del hogar." },
-      "3": { "title": "Soporte de Seguros Privados", "desc": "Seguro de hogar y coberturas esenciales gestionadas con partners adecuados." },
-      "4": { "title": "Portal y Orden Documental", "desc": "Documentos importantes y referencias del hogar organizados en un solo lugar." },
-      "5": { "title": "Ayuda Continua de Confianza", "desc": "Un punto de contacto práctico para temas locales recurrentes que requieren coordinación, no trabajo legal." }
-    },
+    "title": "Instalate en la Costa del Sol con apoyo local",
+    "description": "Te ayudamos a organizar la mudanza, preparar trámites y resolver las gestiones del día a día de tu familia en Málaga y la Costa del Sol.",
+    "explore": "Ver servicios para familias",
+    "catalog": "Cómo podemos ayudarte",
+    "note": "Contanos dónde te instalás, cuándo llegás y qué gestiones necesitás. Acordamos el alcance del acompañamiento y, cuando el caso lo requiere, coordinamos con profesionales habilitados.",
     "cta": {
-      "subtitle": "¿Necesitás soporte para empresa?",
-      "title": "One Horizon está construido primero para compañías operando en España.",
-      "description": "Si estás abriendo, adquiriendo o gestionando un negocio, podemos ayudarte con la parte práctica que queda entre la estrategia y la operación diaria.",
-      "primary": "Reservar consulta de negocio",
-      "secondary": "Volver a la home empresarial"
+      "title": "Contanos qué necesita tu familia",
+      "subject": "Consulta One Horizon Family",
+      "primary": "Consultar por correo",
+      "secondary": "Volver a One Horizon"
     }
   },
   "contact": {

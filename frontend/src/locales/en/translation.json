@@ -175,23 +175,16 @@
   },
   "private_page": {
     "subtitle": "One Horizon Family",
-    "title": "Selected private support for clients living, relocating, or managing property in Costa del Sol.",
-    "description": "Our main positioning is business-first, but we also support a smaller number of private clients who need reliable local coordination and practical help on the ground.",
-    "note": "If your priority is a business opening, acquisition, or operational issue, the main business consultation route remains the best place to start.",
-    "services": {
-      "0": { "title": "Home Utilities Setup", "desc": "Electricity, water, internet, and account configuration for a smoother arrival or property handover." },
-      "1": { "title": "Document Coordination", "desc": "Support with practical local admin, records, and the trusted partner coordination that private clients often need." },
-      "2": { "title": "Property Maintenance", "desc": "Reliable trades and local follow-up for repairs, inspections, and household continuity." },
-      "3": { "title": "Private Insurance Support", "desc": "Home and essential cover arranged through suitable insurance partners." },
-      "4": { "title": "Portal and Record Keeping", "desc": "Important documents and household references kept organised in one place." },
-      "5": { "title": "Trusted Ongoing Help", "desc": "A practical point of contact for recurring local issues that require coordination rather than legal work." }
-    },
+    "title": "Settle into the Costa del Sol with local support",
+    "description": "We help you plan your move, prepare paperwork and organise everyday arrangements for your family in Málaga and the Costa del Sol.",
+    "explore": "Explore family services",
+    "catalog": "How we can help",
+    "note": "Tell us where you are settling, when you arrive and what you need help with. We agree the scope of support and coordinate with authorised professionals when needed.",
     "cta": {
-      "subtitle": "Need business support instead?",
-      "title": "One Horizon is built first for companies operating in Spain.",
-      "description": "If you are opening, acquiring, or running a business, we can help with the practical side that sits between strategy and daily operations.",
-      "primary": "Book a business consultation",
-      "secondary": "Back to business homepage"
+      "title": "Tell us what your family needs",
+      "subject": "One Horizon Family enquiry",
+      "primary": "Enquire by email",
+      "secondary": "Back to One Horizon"
     }
   },
   "contact": {
