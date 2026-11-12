@@ -1,0 +1,37 @@
+.brand-logo {
+    position: relative;
+    display: inline-block;
+    flex: none;
+    width: 148px;
+    height: 80px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.brand-logo img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 128%;
+    max-width: none;
+    height: auto;
+    transform: translate(-50%, -50%);
+}
+
+.workspace-brand .brand-logo,
+.business-footer .brand-logo {
+    background: #f7f7f0;
+    border-radius: 6px;
+}
+
+.business-portal-brand .brand-logo {
+    width: 104px;
+    height: 56px;
+    margin-left: 0;
+}
+
+.business-photo-caption .brand-logo {
+    width: 84px;
+    height: 46px;
+    margin-top: 0;
+}
