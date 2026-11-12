@@ -9,13 +9,23 @@ export function PrivateServices() {
 
     return (
         <div className="business-landing">
-            <section className="business-container business-section">
-                <p className="business-kicker">{t('private_page.subtitle')}</p>
-                <h1 className="text-5xl leading-tight md:text-6xl">{t('private_page.title')}</h1>
-                <p className="business-lead">{t('private_page.description')}</p>
-                <a className="business-button" href="#family-services">
-                    {t('private_page.explore')}
-                </a>
+            <section className="business-container business-section grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                <div>
+                    <p className="business-kicker">{t('private_page.subtitle')}</p>
+                    <h1 className="text-5xl leading-tight md:text-6xl">{t('private_page.title')}</h1>
+                    <p className="business-lead">{t('private_page.description')}</p>
+                    <a className="business-button" href="#family-services">
+                        {t('private_page.explore')}
+                    </a>
+                </div>
+                <img
+                    src="/images/family-costa-del-sol.webp"
+                    alt=""
+                    width="1536"
+                    height="1024"
+                    fetchPriority="high"
+                    className="aspect-[3/2] w-full rounded-md rounded-tl-[4rem] object-cover"
+                />
             </section>
 
             <section id="family-services" className="business-services" aria-labelledby="family-services-title">
@@ -34,14 +44,25 @@ export function PrivateServices() {
                 </div>
             </section>
 
-            <section className="business-container business-section">
-                <h2>{t('private_page.cta.title')}</h2>
-                <p className="business-lead">{t('private_page.note')}</p>
-                <div className="business-actions">
-                    <a href={`mailto:info@onehorizon.es?subject=${subject}`} className="business-button">
-                        {t('private_page.cta.primary')}
-                    </a>
-                    <Link to="/" className="business-text-link">{t('private_page.cta.secondary')}</Link>
+            <section className="business-container business-section grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+                <img
+                    src="/images/family-moving-home.webp"
+                    alt=""
+                    width="1536"
+                    height="1024"
+                    loading="lazy"
+                    decoding="async"
+                    className="order-last aspect-[3/2] w-full rounded-md object-cover lg:order-first"
+                />
+                <div>
+                    <h2>{t('private_page.cta.title')}</h2>
+                    <p className="business-lead">{t('private_page.note')}</p>
+                    <div className="business-actions">
+                        <a href={`mailto:info@onehorizon.es?subject=${subject}`} className="business-button">
+                            {t('private_page.cta.primary')}
+                        </a>
+                        <Link to="/" className="business-text-link">{t('private_page.cta.secondary')}</Link>
+                    </div>
                 </div>
             </section>
         </div>
